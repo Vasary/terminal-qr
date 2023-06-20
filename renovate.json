@@ -1,0 +1,58 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:base"
+  ],
+  "automergeType": "pr",
+  "dependencyDashboard": false,
+  "automerge": true,
+  "prConcurrentLimit": 10,
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "rangeStrategy": "pin",
+  "labels": [
+    "bot",
+    "dependency"
+  ],
+  "ignorePaths": [
+    "**/vendor/**"
+  ],
+  "ignoreDeps": [
+    "php"
+  ],
+  "enabledManagers": [
+    "composer"
+  ],
+  "packageRules": [
+    {
+      "automerge": true,
+      "matchUpdateTypes": [
+        "minor",
+        "patch",
+        "pin",
+        "digest"
+      ]
+    },
+    {
+      "enabled": false,
+      "matchUpdateTypes": [
+        "major"
+      ]
+    },
+    {
+      "matchPackagePrefixes": [
+        "symfony/",
+        "doctrine/",
+        "dama/"
+      ],
+      "matchUpdateTypes": [
+        "patch",
+        "pin",
+        "digest"
+      ],
+      "groupName": "main packages",
+      "groupSlug": "main"
+    }
+  ]
+}

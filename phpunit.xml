@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="tests/bootstrap.php"
+         stopOnFailure="true"
+         stopOnError="true"
+         colors="true"
+         executionOrder="random"
+>
+    <php>
+        <ini name="memory_limit" value="1024M"/>
+        <env name="KERNEL_CLASS" value="App\Kernel"/>
+        <env name="APP_SECRET" value="test"/>
+        <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled"/>
+        <env name="APP_ENV" value="test" force="true"/>
+    </php>
+    <testsuites>
+        <testsuite name="Application">
+            <directory>tests/Application</directory>
+        </testsuite>
+        <testsuite name="Presentation">
+            <directory>tests/Presentation/API</directory>
+        </testsuite>
+        <testsuite name="HealthCheck">
+            <directory>tests/Presentation/HealthCheck</directory>
+        </testsuite>
+    </testsuites>
+    <coverage processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory suffix=".php">src/Infrastructure/Persistence/Doctrine/Migration/</directory>
+        </exclude>
+        <report>
+            <clover outputFile="resource/clover.xml" />
+            <text outputFile="php://stdout" showOnlySummary="true"/>
+        </report>
+    </coverage>
+    <listeners>
+        <listener class="Symfony\Bridge\PhpUnit\SymfonyTestsListener"/>
+    </listeners>
+    <extensions>
+        <extension class="App\Infrastructure\Test\BypassReadonlyHook"/>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
+</phpunit>

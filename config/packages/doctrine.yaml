@@ -1,0 +1,63 @@
+doctrine:
+    dbal:
+        url: 'sqlite:///%kernel.project_dir%/resource/develop.db'
+        driver: sqlite3
+        charset: utf8
+        logging: true
+        types:
+            id: App\Infrastructure\Persistence\Doctrine\Type\IdType
+            code: App\Infrastructure\Persistence\Doctrine\Type\CodeType
+            title: App\Infrastructure\Persistence\Doctrine\Type\TitleType
+            description: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
+            callback: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
+            currency: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
+            host: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
+            key: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
+            portal: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
+    orm:
+        auto_generate_proxy_classes: true
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+
+        mappings:
+            App:
+                type: xml
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Infrastructure/Persistence/Doctrine/Mapping'
+                prefix: 'App\Domain\Model'
+                alias: App
+
+doctrine_migrations:
+    migrations_paths:
+        'App\Infrastructure\Persistence\Doctrine\Migration': '%kernel.project_dir%/src/Infrastructure/Persistence/Doctrine/Migration'
+    enable_profiler: '%kernel.debug%'
+
+when@production:
+    doctrine:
+        dbal:
+            url: 'sqlite:///%kernel.project_dir%/resource/production.db'
+        orm:
+            auto_generate_proxy_classes: false
+            query_cache_driver:
+                type: pool
+                pool: doctrine.system_cache_pool
+            result_cache_driver:
+                type: pool
+                pool: doctrine.result_cache_pool
+    framework:
+        cache:
+            pools:
+                doctrine.result_cache_pool:
+                    adapter: cache.app
+                doctrine.system_cache_pool:
+                    adapter: cache.system
+
+when@test:
+    doctrine:
+        dbal:
+            url: 'sqlite:///%kernel.project_dir%/resource/test.db'
+
+    dama_doctrine_test:
+        enable_static_connection: true
+        enable_static_meta_data_cache: true
+        enable_static_query_cache: true

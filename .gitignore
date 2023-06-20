@@ -1,0 +1,16 @@
+/.env.local
+/.env.local.php
+/.env.*.local
+/config/secrets/prod/prod.decrypt.private.php
+/public/bundles/
+/var/
+/vendor/
+/.idea
+/.fleet
+.phpunit.result.cache
+/.php-cs-fixer.cache
+/clover.xml
+/resource/events.log
+/resource/clover.xml
+/.phpcs-cache
+.DS_Store

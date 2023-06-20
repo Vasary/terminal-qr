@@ -1,0 +1,36 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/Kernel.php'
+            - '../src/Domain/*'
+            - '../src/Infrastructure/Persistence/DataFixtures/*'
+            - '../src/Infrastructure/Persistence/Doctrine/Type/*'
+
+    Symfony\Bridge\Monolog\Processor\TokenProcessor:
+        tags:
+            - { name: monolog.processor, handler: main }
+
+    Symfony\Bridge\Monolog\Processor\RouteProcessor:
+        tags:
+            - { name: monolog.processor, handler: main }
+
+    App\Infrastructure\Logging\Processor\TraceIdProcessor:
+        tags:
+            - { name: monolog.processor, handler: main }
+
+    App\Application\HealthCheck\Business\Checker\Checker:
+        arguments:
+            $checkers:
+                - '@App\Application\HealthCheck\Communication\Plugins\DoctrineConnectionCheckerPlugin'
+
+    App\Infrastructure\Container\Container:
+        arguments:
+            - '@service_container'
+
+    App\Domain\Repository\StoreRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\StoreRepository'
+    App\Domain\Repository\GatewayRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\GatewayRepository'

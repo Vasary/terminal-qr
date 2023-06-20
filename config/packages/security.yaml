@@ -1,0 +1,8 @@
+security:
+  firewalls:
+    develop:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+  access_control:
+    - { path: '^/api', roles: ROLE_CORE }
