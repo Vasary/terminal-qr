@@ -10,6 +10,6 @@ final class SearchCriteriaValidator
 {
     public function validate(SearchCriteria $criteria): void
     {
-
+        // TODO
     }
 }

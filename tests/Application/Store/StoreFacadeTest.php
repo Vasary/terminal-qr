@@ -6,7 +6,6 @@ namespace App\Tests\Application\Store;
 
 use App\Application\Store\Business\Reader\StoreReader;
 use App\Application\Store\Business\StoreFacade;
-use App\Application\Store\Business\StoreFacadeInterface;
 use App\Application\Store\Business\Writer\StoreWriter;
 use App\Domain\Model\Store;
 use App\Domain\Repository\StoreRepositoryInterface;
@@ -38,7 +37,7 @@ final class StoreFacadeTest extends AbstractUnitTestCase
 
         $facade = new StoreFacade($writer, $reader);
 
-        $this->assertInstanceOf(StoreFacadeInterface::class, $facade);
+        $this->assertInstanceOf(StoreFacade::class, $facade);
     }
 
     public function testStoreFacadeShouldCreateStore(): void
@@ -49,8 +48,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
             'description' => $this->faker->text(),
         ]);
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         /** @var StoreRepositoryInterface $repository */
         $repository = $this->getContainer()->get(StoreRepositoryInterface::class);
@@ -67,8 +66,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
     {
         $this->loadFixtures(new StoreFixtures(10));
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         $this->assertCount(10, iterator_to_array($facade->find()));
     }
@@ -90,8 +89,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
             'description' => $this->faker->text(),
         ]);
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         /** @var StoreRepositoryInterface $repository */
         $repository = $this->getContainer()->get(StoreRepositoryInterface::class);
@@ -122,8 +121,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
         $entityManager->persist($store);
         $entityManager->flush();
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         $searchCriteria = SearchCriteria::fromArray(
             [
@@ -156,8 +155,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
     {
         $this->loadFixtures(new StoreFixtures(3));
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         $searchCriteria = SearchCriteria::fromArray(
             [
@@ -185,8 +184,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
     {
         $this->loadFixtures(new StoreFixtures(10));
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         $searchCriteria = SearchCriteria::fromArray(
             [
@@ -225,8 +224,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
     {
         $this->loadFixtures(new StoreFixtures(10));
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         $searchCriteria = SearchCriteria::fromArray(
             [
@@ -265,8 +264,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
     {
         $this->loadFixtures(new StoreFixtures(10));
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         /** @var Store $randomStore */
         $randomStore = iterator_to_array($facade->find())[0];
@@ -292,8 +291,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
         $entityManager->flush();
 
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         $facade->addGateway($store->id(), $gateway->id());
 
@@ -319,8 +318,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
         $entityManager->flush();
 
 
-        /** @var StoreFacadeInterface $facade */
-        $facade = $this->getContainer()->get(StoreFacadeInterface::class);
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
 
         $databaseStore = $facade->findById($store->id());
 

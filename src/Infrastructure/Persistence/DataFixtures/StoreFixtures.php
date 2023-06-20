@@ -14,7 +14,7 @@ use Doctrine\Persistence\ObjectManager;
 
 final class StoreFixtures extends Fixture
 {
-    public function __construct(private readonly int $limit) {}
+    public function __construct(private readonly int $limit = 10) {}
 
     public function load(ObjectManager $manager): void
     {

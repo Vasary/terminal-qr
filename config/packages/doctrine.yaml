@@ -9,11 +9,12 @@ doctrine:
             code: App\Infrastructure\Persistence\Doctrine\Type\CodeType
             title: App\Infrastructure\Persistence\Doctrine\Type\TitleType
             description: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
-            callback: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
-            currency: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
-            host: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
-            key: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
-            portal: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
+            callback: App\Infrastructure\Persistence\Doctrine\Type\CallbackType
+            currency: App\Infrastructure\Persistence\Doctrine\Type\CurrencyType
+            host: App\Infrastructure\Persistence\Doctrine\Type\HostType
+            key: App\Infrastructure\Persistence\Doctrine\Type\KeyType
+            portal: App\Infrastructure\Persistence\Doctrine\Type\PortalType
+            email: App\Infrastructure\Persistence\Doctrine\Type\EmailType
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware

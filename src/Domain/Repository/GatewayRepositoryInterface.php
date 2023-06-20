@@ -6,6 +6,7 @@ namespace App\Domain\Repository;
 
 use App\Domain\Model\Gateway;
 use App\Domain\ValueObject\Id;
+use Generator;
 
 interface GatewayRepositoryInterface
 {
@@ -19,4 +20,12 @@ interface GatewayRepositoryInterface
         string $currency,
         string $key,
     ): Gateway;
+
+    public function find(): Generator;
+
+    public function update(Gateway $gateway): void;
+
+    public function findByCriteria(array $fields, array $orderBy, int $page, int $limit);
+
+    public function delete(Gateway $gateway): void;
 }

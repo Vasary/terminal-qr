@@ -1,0 +1,43 @@
+{% extends '@main/layout.html.twig' %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row d-flex justify-content-center">
+            {% if app.user %}
+                <div class="card p-0">
+                    <div class="card-header">
+                        Attention
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">You are logged in as {{ app.user.userIdentifier }}.</p>
+                        <a href="{{ path('logout') }}" class="btn btn-primary">Logout</a>
+                    </div>
+                </div>
+            {% else %}
+                <div class="col-md-6">
+                    {{ form_start(form) }}
+                    {% if error %}
+                        <div class="alert alert-danger">{{ error }}</div>
+                    {% endif %}
+                    <div class="card px-5 py-5">
+                        <div>
+                            <div class="forms-inputs mb-4">
+                                {{ form_row(form.email) }}
+                            </div>
+                            <div class="forms-inputs mb-4">
+                                {{ form_row(form.password) }}
+                            </div>
+                            <div class="forms-inputs mb-4">
+                                {{ form_row(form.remember) }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form_row(form.submit) }}
+                            </div>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

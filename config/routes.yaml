@@ -1,7 +1,7 @@
-api:
-  resource: ../src/Presentation/API
+UI:
+  resource: ../src/Presentation/UI
   type: attribute
-  prefix: /api
+  prefix: /
 
 health:
   resource: ../src/Presentation/HealthCheck

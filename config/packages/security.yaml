@@ -1,8 +1,36 @@
 security:
+  password_hashers:
+    App\Application\User\User:
+      algorithm: plaintext
+
+  providers:
+    app:
+      id: App\Application\Security\Provider\UserProvider
+
   firewalls:
     develop:
       pattern: ^/(_(profiler|wdt)|css|images|js)/
       security: false
 
+    main:
+      provider: app
+      stateless: false
+      logout:
+        path: logout
+        target: login
+      remember_me:
+        secret: '%kernel.secret%'
+        lifetime: 604800
+        remember_me_parameter: login[remember]
+      form_login:
+        login_path: login
+        check_path: login
+        default_target_path: management_stores
+        username_parameter: login[email]
+        password_parameter: login[password]
+        csrf_parameter: login[token]
+        csrf_token_id: authenticate
+        enable_csrf: true
+
   access_control:
-    - { path: '^/api', roles: ROLE_CORE }
+    - { path: '^/management', roles: ROLE_USER }

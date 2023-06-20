@@ -5,10 +5,12 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Persistence\Doctrine\Repository;
 
 use App\Domain\Model\User;
+use App\Domain\Repository\UserRepositoryInterface;
+use App\Domain\ValueObject\Email;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 
-final class UserRepository
+final class UserRepository implements UserRepositoryInterface
 {
     private ObjectRepository $objectRepository;
 
@@ -17,12 +19,14 @@ final class UserRepository
         $this->objectRepository = $entityManager->getRepository(User::class);
     }
 
-    public function create(): User
+    public function findByEmail(Email $email): ?User
     {
-        $user = new User();
-
-        $this->entityManager->persist($user);
-
-        return $user;
+        return
+            $this->objectRepository->createQueryBuilder('u')
+                ->select('u')
+                ->where('u.email = :email')
+                ->setParameter('email', (string) $email)
+                ->getQuery()
+                ->getOneOrNullResult();
     }
 }

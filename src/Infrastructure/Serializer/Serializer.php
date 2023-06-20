@@ -56,7 +56,6 @@ final class Serializer implements SerializerInterface
     private function getNormalizers(): array
     {
         return [
-            new DateTimeNormalizer(),
             new UUIDNormalizer(),
             new HealthCheckResponseNormalizer(),
             new ObjectNormalizer(),

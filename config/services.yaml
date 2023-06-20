@@ -8,7 +8,6 @@ services:
         exclude:
             - '../src/Kernel.php'
             - '../src/Domain/*'
-            - '../src/Infrastructure/Persistence/DataFixtures/*'
             - '../src/Infrastructure/Persistence/Doctrine/Type/*'
 
     Symfony\Bridge\Monolog\Processor\TokenProcessor:
@@ -34,3 +33,7 @@ services:
 
     App\Domain\Repository\StoreRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\StoreRepository'
     App\Domain\Repository\GatewayRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\GatewayRepository'
+
+    App\Application\Security\Provider\UserProvider:
+        arguments:
+            $repository: '@App\Infrastructure\Persistence\Doctrine\Repository\UserRepository'

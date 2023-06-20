@@ -6,6 +6,7 @@ namespace App\Application\Store\Business;
 
 use App\Application\Store\Business\Reader\StoreReader;
 use App\Application\Store\Business\Writer\StoreWriter;
+use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Store;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
@@ -36,11 +37,17 @@ final readonly class StoreFacade implements StoreFacadeInterface
         return $this->reader->findByCriteria($criteria);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function update(StoreUpdate $transfer): Store
     {
         return $this->writer->update($transfer);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function delete(StoreDelete $transfer): void
     {
         $this->writer->delete($transfer);
@@ -51,11 +58,17 @@ final readonly class StoreFacade implements StoreFacadeInterface
         return $this->reader->findById($id);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function addGateway(Id $storeId, Id $gatewayId): Store
     {
         return $this->writer->addGateway($storeId, $gatewayId);
     }
 
+    /**
+     * @throws NotFoundException
+     */
     public function removeGateway(Id $storeId, Id $gatewayId): Store
     {
         return $this->writer->removeGateway($storeId, $gatewayId);

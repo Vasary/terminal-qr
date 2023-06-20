@@ -11,6 +11,7 @@ use App\Domain\ValueObject\Host;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Key;
 use App\Domain\ValueObject\Portal;
+use App\Domain\ValueObject\Title;
 use App\Infrastructure\Test\Context\ContextTrait;
 use App\Infrastructure\Test\Context\ModelContextInterface;
 use App\Infrastructure\Test\Context\ModelContextTrait;
@@ -26,6 +27,7 @@ final class GatewayContext implements ModelContextInterface
     use TimestampTrait;
 
     public string $id = '3091c5e9-7886-469a-a15e-18a4d9f11134';
+    public string $title = 'My gateway';
     public string $callback = 'http://localhost/callback';
     public string $host = 'localhost';
     public string $portal = 'portal';
@@ -39,6 +41,7 @@ final class GatewayContext implements ModelContextInterface
 
         $this
             ->setProperty($model, 'id', Id::fromString($this->id))
+            ->setProperty($model, 'title', new Title($this->title))
             ->setProperty($model, 'callback', new Callback($this->callback))
             ->setProperty($model, 'host', new Host($this->host))
             ->setProperty($model, 'portal', new Portal($this->portal))

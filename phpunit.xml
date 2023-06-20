@@ -19,9 +19,6 @@
         <testsuite name="Application">
             <directory>tests/Application</directory>
         </testsuite>
-        <testsuite name="Presentation">
-            <directory>tests/Presentation/API</directory>
-        </testsuite>
         <testsuite name="HealthCheck">
             <directory>tests/Presentation/HealthCheck</directory>
         </testsuite>

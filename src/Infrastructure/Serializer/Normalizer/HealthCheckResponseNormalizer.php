@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Serializer\Normalizer;
 
 use App\Application\HealthCheck\Business\Checker\Response;
-use App\Infrastructure\Map\ParametersList;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareInterface;
 use Symfony\Component\Serializer\Normalizer\NormalizerAwareTrait;
 use Symfony\Component\Serializer\Normalizer\NormalizerInterface;

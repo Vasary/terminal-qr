@@ -6,6 +6,7 @@ namespace App\Tests\Presentation\HealthCheck;
 
 use App\Application\HealthCheck\Business\Checker\CheckerInterface;
 use App\Application\HealthCheck\Business\Checker\Response;
+use App\Infrastructure\Json\Json;
 use App\Infrastructure\Test\AbstractUnitTestCase;
 use Mockery;
 
@@ -25,9 +26,17 @@ final class HealthCheckControllerTest extends AbstractUnitTestCase
         $client->request('GET', '/health/check');
 
         $response = $client->getResponse();
+        $decodedContent = json_decode($response->getContent(), true);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
+
+        $healthCheckResponse = $decodedContent[0];
+        $this->assertIsArray($decodedContent);
+        $this->assertArrayHasKey('service', $healthCheckResponse);
+        $this->assertArrayHasKey('result', $healthCheckResponse);
+        $this->assertArrayHasKey('message', $healthCheckResponse);
+        $this->assertTrue($healthCheckResponse['result']);
     }
 
     public function testShouldSuccessfullyRetrieveErrorResponse(): void
@@ -44,8 +53,16 @@ final class HealthCheckControllerTest extends AbstractUnitTestCase
         $client->request('GET', '/health/check');
 
         $response = $client->getResponse();
+        $content = json_decode($response->getContent(), true);
 
         $this->assertEquals(500, $response->getStatusCode());
         $this->assertJson($response->getContent());
+
+        $healthCheckResponse = $content[0];
+        $this->assertIsArray($content);
+        $this->assertArrayHasKey('service', $healthCheckResponse);
+        $this->assertArrayHasKey('result', $healthCheckResponse);
+        $this->assertArrayHasKey('message', $healthCheckResponse);
+        $this->assertFalse($healthCheckResponse['result']);
     }
 }

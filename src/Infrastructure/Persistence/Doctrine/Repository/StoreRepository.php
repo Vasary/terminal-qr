@@ -105,7 +105,6 @@ final class StoreRepository implements StoreRepositoryInterface
     {
         $this->entityManager->persist($store);
         $this->entityManager->flush();
-        $this->entityManager->refresh($store);
     }
 
     public function delete(Store $store): void

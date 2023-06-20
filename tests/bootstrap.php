@@ -10,7 +10,8 @@ passthru(
     <<<CMD
     php $console doctrine:database:drop --force --env=test && \
     php $console doctrine:database:create --no-interaction --env=test && \
-    php $console doctrine:sc:up --force --complete
+    php $console doctrine:sc:up --force --complete && \
+    php $console cache:clear --env=test
     CMD,
     $code
 );

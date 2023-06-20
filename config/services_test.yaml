@@ -4,3 +4,16 @@ services:
 
   App\Application\HealthCheck\Business\Checker\CheckerInterface:
     public: true
+
+  App\Application\Gateway\Business\GatewayFacade:
+    public: true
+    arguments:
+      $reader: '@App\Application\Gateway\Business\Reader\GatewayReader'
+      $writer: '@App\Application\Gateway\Business\Writer\GatewayWriter'
+
+
+  App\Application\Store\Business\StoreFacade:
+    public: true
+    arguments:
+      $writer: '@App\Application\Store\Business\Writer\StoreWriter'
+      $reader: '@App\Application\Store\Business\Reader\StoreReader'
