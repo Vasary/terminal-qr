@@ -33,6 +33,7 @@ services:
 
     App\Domain\Repository\StoreRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\StoreRepository'
     App\Domain\Repository\GatewayRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\GatewayRepository'
+    App\Domain\Repository\UserRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\UserRepository'
 
     App\Application\Security\Provider\UserProvider:
         arguments:

@@ -61,6 +61,14 @@ final readonly class StoreFacade implements StoreFacadeInterface
     /**
      * @throws NotFoundException
      */
+//    public function addUser(Id $storeId, Id $userId): Store
+//    {
+//        return $this->writer->addUser($storeId, $userId);
+//    }
+
+    /**
+     * @throws NotFoundException
+     */
     public function addGateway(Id $storeId, Id $gatewayId): Store
     {
         return $this->writer->addGateway($storeId, $gatewayId);

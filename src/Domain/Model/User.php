@@ -7,17 +7,20 @@ namespace App\Domain\Model;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Id;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 class User
 {
     private Id $id;
     private DateTimeImmutable $updatedAt;
-    private readonly DateTimeImmutable $createdAt;
+    private DateTimeImmutable $createdAt;
 
     private string $password;
+    private Collection $stores;
 
     public function __construct(
-        private readonly Email $email,
+        private Email $email,
         private array $roles = []
     )
     {
@@ -25,6 +28,7 @@ class User
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
         $this->password = '';
+        $this->stores = new ArrayCollection();
     }
 
     public function id(): Id
@@ -48,6 +52,12 @@ class User
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    public function withEmail(string $email): void
+    {
+        $this->email = new Email($email);
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
     public function roles(): array
     {
         return $this->roles;
@@ -57,5 +67,54 @@ class User
     {
         $this->roles[] = $role;
         $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function cleanRoles(): void
+    {
+        $this->roles = [];
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    public function updatedAt(): DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function createdAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function removeStores(): void
+    {
+        foreach ($this->stores as $store) {
+            /** @var Store $store */
+            $this->removeStore($store);
+        }
+    }
+
+    public function addStore(Store $store): void
+    {
+        if ($this->stores->contains($store)) {
+            return;
+        }
+
+        $this->stores->add($store);
+        $store->addUser($this);
+    }
+
+    public function removeStore(Store $store): void
+    {
+        if (!$this->stores->contains($store)) {
+            return;
+        }
+
+        $this->stores->removeElement($store);
+        $store->removeUser($this);
+    }
+
+    public function stores(): Collection
+    {
+        return $this->stores;
     }
 }

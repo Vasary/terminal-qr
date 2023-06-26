@@ -23,5 +23,7 @@
                 </inverse-join-columns>
             </join-table>
         </many-to-many>
+
+        <many-to-many target-entity="App\Domain\Model\User" field="users" />
     </entity>
 </doctrine-mapping>

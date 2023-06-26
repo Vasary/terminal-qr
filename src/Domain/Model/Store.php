@@ -21,11 +21,14 @@ class Store
     /** @var Collection<Gateway> */
     private Collection $gateways;
 
+    private Collection $users;
+
     public function __construct(private Title $title, private Code $code, private Description $description,) {
         $this->id = Id::create();
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
         $this->gateways = new ArrayCollection();
+        $this->users = new ArrayCollection();
     }
 
     public function id(): Id
@@ -101,5 +104,25 @@ class Store
     public function gateway(): Collection
     {
         return $this->gateways;
+    }
+
+    public function addUser(User $user): void
+    {
+        if ($this->users->contains($user)) {
+            return;
+        }
+
+        $this->users->add($user);
+        $user->addStore($this);
+    }
+
+    public function removeUser(User $user): void
+    {
+        if (!$this->users->contains($user)) {
+            return;
+        }
+
+        $this->users->removeElement($user);
+        $user->removeStore($this);
     }
 }

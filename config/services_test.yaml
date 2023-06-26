@@ -17,3 +17,9 @@ services:
     arguments:
       $writer: '@App\Application\Store\Business\Writer\StoreWriter'
       $reader: '@App\Application\Store\Business\Reader\StoreReader'
+
+  App\Application\User\Business\UserFacade:
+    public: true
+    arguments:
+      $writer: '@App\Application\User\Business\Writer\UserWriter'
+      $reader: '@App\Application\User\Business\Reader\UserReader'

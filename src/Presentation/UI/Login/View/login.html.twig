@@ -10,6 +10,7 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">You are logged in as {{ app.user.userIdentifier }}.</p>
+                        <a href="{{ path('management_stores') }}" class="btn btn-primary">Dashboard</a>
                         <a href="{{ path('logout') }}" class="btn btn-primary">Logout</a>
                     </div>
                 </div>

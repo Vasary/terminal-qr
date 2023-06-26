@@ -1,10 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Application\Store\Business\Writer;
 
 use App\Application\Gateway\Business\GatewayFacadeInterface;
+use App\Application\User\Business\UserFacadeInterface;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Store;
 use App\Domain\Repository\StoreRepositoryInterface;
@@ -41,8 +42,7 @@ final readonly class StoreWriter
 
         $store
             ->withTitle($transfer->title())
-            ->withDescription($transfer->description())
-        ;
+            ->withDescription($transfer->description());
 
         $this->repository->update($store);
 
@@ -89,6 +89,20 @@ final readonly class StoreWriter
 
         return $store;
     }
+
+    /**
+     * @throws NotFoundException
+     */
+//    public function addUser(Id $storeId, Id $userId): Store
+//    {
+////        $user = $this->userFacade->findById($userId);
+//        $store = $this->getStore($storeId);
+//
+////        $store->addUser($user);
+////        $this->repository->update($store);
+//
+//        return $store;
+//    }
 
     /**
      * @throws NotFoundException
