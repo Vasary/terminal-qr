@@ -25,7 +25,7 @@ final readonly class StoreWriter
     public function write(StoreCreate $transfer): Store
     {
         return $this->repository->create(
-            $transfer->code(),
+            $this->generateKey($transfer),
             $transfer->title(),
             $transfer->description()
         );
@@ -41,7 +41,6 @@ final readonly class StoreWriter
 
         $store
             ->withTitle($transfer->title())
-            ->withCode($transfer->code())
             ->withDescription($transfer->description())
         ;
 
@@ -103,5 +102,10 @@ final readonly class StoreWriter
         }
 
         return $store;
+    }
+
+    private function generateKey(StoreCreate $transfer): string
+    {
+        return md5($transfer->title() . $transfer->description() . srand(0, 99));
     }
 }

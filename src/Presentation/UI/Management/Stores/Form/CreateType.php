@@ -34,20 +34,6 @@ final class CreateType extends AbstractType
                 ],
             ],
             [
-                'type' => 'code',
-                'class' => TextType::class,
-                'options' => [
-                    'required' => true,
-                    'label' => 'Code',
-                    'attr' => [
-                        'placeholder' => 'Code',
-                    ],
-                    'row_attr' => [
-                        'class' => 'form-floating mb-3',
-                    ],
-                ],
-            ],
-            [
                 'type' => 'gateways',
                 'class' => ChoiceType::class,
                 'options' => [
@@ -100,6 +86,7 @@ final class CreateType extends AbstractType
             'attr' => [
                 'novalidate' => 'novalidate',
             ],
+            'data_class' => Data::class,
         ];
     }
 

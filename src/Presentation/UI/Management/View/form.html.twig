@@ -7,13 +7,13 @@
                  class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis">
                 <span class="fs-4">{{ title }}</span>
             </div>
-            <div class="d-flex justify-content-center mb-4 align-items-center mb-3 mb-lg-0 ">
-                <a href="{{ path('management_stores') }}" type="button" class="btn btn-primary">Cancel</a>
-            </div>
+{#            <div class="d-flex justify-content-center mb-4 align-items-center mb-3 mb-lg-0 ">#}
+{#                <a href="{{ path('management_stores') }}" type="button" class="btn btn-primary">Cancel</a>#}
+{#            </div>#}
         </div>
     </header>
 
-    <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
+    <div class="py-3 mb-3 border-bottom container">
         {{ form(form) }}
     </div>
 {% endblock %}

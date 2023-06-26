@@ -14,7 +14,6 @@ final class GatewayCreate
         private readonly string $host,
         private readonly string $portal,
         private readonly string $currency,
-        private readonly string $key,
     ) {
     }
 
@@ -41,10 +40,5 @@ final class GatewayCreate
     public function currency(): string
     {
         return $this->currency;
-    }
-
-    public function key(): string
-    {
-        return $this->key;
     }
 }

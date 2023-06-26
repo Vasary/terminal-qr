@@ -10,7 +10,6 @@ final class StoreUpdate
 
     public function __construct(
         private readonly string $id,
-        private readonly string $code,
         private readonly string $title,
         private readonly string $description,
 
@@ -20,11 +19,6 @@ final class StoreUpdate
     public function id(): string
     {
         return $this->id;
-    }
-
-    public function code(): string
-    {
-        return $this->code;
     }
 
     public function title(): string

@@ -15,7 +15,6 @@ final class GatewayUpdate
         private readonly string $host,
         private readonly string $portal,
         private readonly string $currency,
-        private readonly string $key,
     ) {
     }
 

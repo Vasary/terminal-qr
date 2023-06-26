@@ -2,14 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace App\Presentation\UI\Management\Stores\StoresController;
+namespace App\Presentation\UI\Management\Stores\Controller;
 
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
-use App\Presentation\UI\Management\Stores\Controller\Response\StoresResponse;
+use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Presentation\UI\Management\Stores\Form\CreateType;
+use App\Presentation\UI\Management\Stores\Form\Data;
 use App\Shared\Transfer\StoreCreate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,28 +26,25 @@ final class CreateController extends AbstractController
     {
         $this->isAccessGranted();
 
-        $form = $this->createForm(CreateType::class);
+        $data = new Data();
 
+        $form = $this->createForm(CreateType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $store = $this->storeFacade->create(StoreCreate::fromArray([
-                    'code' => $form->get('code')->getData(),
-                    'title' => $form->get('title')->getData(),
-                    'description' => $form->get('description')->getData(),
-                ]));
+            $store = $this->storeFacade->create(StoreCreate::fromArray($data->toArray()));
 
-            foreach ($form->get('gateways')->getData() as $terminal) {
-                $this->storeFacade->addGateway($store->id(), Id::fromString($terminal));
+            foreach ($data->gateways as $gateway) {
+                $this->storeFacade->addGateway($store->id(), Id::fromString($gateway));
             }
 
             return $this->redirectToRoute('management_stores');
         }
 
-        $view = $this->renderTemplate('@stores/form.html.twig', [
+        $view = $this->renderTemplate('@management/form.html.twig', [
             'form' => $form,
             'title' => 'Create new store',
         ]);
 
-        return new StoresResponse($view);
+        return new HTMLResponse($view);
     }
 }

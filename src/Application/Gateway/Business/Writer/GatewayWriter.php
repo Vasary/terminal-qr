@@ -26,7 +26,7 @@ final readonly class GatewayWriter
             $transfer->host(),
             $transfer->portal(),
             $transfer->currency(),
-            $transfer->key(),
+            $this->generateKey($transfer),
         );
     }
 
@@ -44,7 +44,6 @@ final readonly class GatewayWriter
             ->withHost($transfer->host())
             ->withPortal($transfer->portal())
             ->withCurrency($transfer->currency())
-            ->withKey($transfer->key())
         ;
 
         $this->repository->update($gateway);
@@ -61,6 +60,11 @@ final readonly class GatewayWriter
         $gateway = $this->getGateway($id);
 
         $this->repository->delete($gateway);
+    }
+
+    private function generateKey(GatewayCreate $transfer): string
+    {
+        return md5($transfer->title() . $transfer->host() . $transfer->currency() . $transfer->callback());
     }
 
     /**

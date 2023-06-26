@@ -9,16 +9,10 @@ final class StoreCreate
     use CreateFromTrait;
 
     public function __construct(
-        private readonly string $code,
         private readonly string $title,
         private readonly string $description,
 
     ) {
-    }
-
-    public function code(): string
-    {
-        return $this->code;
     }
 
     public function title(): string

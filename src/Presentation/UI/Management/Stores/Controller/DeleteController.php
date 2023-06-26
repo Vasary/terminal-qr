@@ -2,12 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace App\Presentation\UI\Management\Stores\StoresController;
+namespace App\Presentation\UI\Management\Stores\Controller;
 
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
-use App\Presentation\UI\Management\Stores\Controller\Response\StoresResponse;
+use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Presentation\UI\Management\Stores\Form\DeleteType;
 use App\Shared\Transfer\StoreDelete;
 use Symfony\Component\HttpFoundation\Request;
@@ -41,11 +41,11 @@ final class DeleteController extends AbstractController
             return $this->redirectToRoute('management_stores');
         }
 
-        $view = $this->renderTemplate('@stores/form-delete.html.twig', [
+        $view = $this->renderTemplate('@management/form-delete.html.twig', [
             'form' => $form,
             'title' => 'Delete store ' . $request->get('id'),
         ]);
 
-        return new StoresResponse($view);
+        return new HTMLResponse($view);
     }
 }

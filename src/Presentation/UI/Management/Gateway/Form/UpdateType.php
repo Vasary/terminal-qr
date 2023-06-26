@@ -2,20 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Presentation\UI\Management\Stores\Form;
+namespace App\Presentation\UI\Management\Gateway\Form;
 
-use App\Application\Gateway\Business\GatewayFacadeInterface;
-use App\Domain\Model\Gateway;
 use App\Infrastructure\Form\AbstractType;
-use App\Infrastructure\Form\ChoiceType;
 use App\Infrastructure\Form\SubmitType;
-use App\Infrastructure\Form\TextAreaType;
 use App\Infrastructure\Form\TextType;
 
 final class UpdateType extends AbstractType
 {
-    public function __construct(private readonly GatewayFacadeInterface $gatewayFacade) {}
-
     public function declareTypes(): array
     {
         return [
@@ -34,33 +28,58 @@ final class UpdateType extends AbstractType
                 ],
             ],
             [
-                'type' => 'gateways',
-                'class' => ChoiceType::class,
+                'type' => 'host',
+                'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Attached gateway',
-                    'multiple' => true,
-                    'expanded' => true,
-                    'row_attr' => [
-                        'class' => '',
+                    'label' => 'Host',
+                    'attr' => [
+                        'placeholder' => 'Host',
                     ],
-                    'choices' => $this->createChoiceList(),
+                    'row_attr' => [
+                        'class' => 'form-floating mb-3',
+                    ],
                 ],
             ],
             [
-                'type' => 'description',
-                'class' => TextAreaType::class,
+                'type' => 'portal',
+                'class' => TextType::class,
                 'options' => [
-                    'required' => false,
-                    'help' => 'Optional description for a new store',
-                    'label' => ' ',
+                    'required' => true,
+                    'label' => 'Portal',
                     'attr' => [
-                        'placeholder' => '',
-                        'rows' => 4,
-                        'cols' => 50,
+                        'placeholder' => 'Portal',
                     ],
                     'row_attr' => [
-                        'class' => 'mb-3',
+                        'class' => 'form-floating mb-3',
+                    ],
+                ],
+            ],
+            [
+                'type' => 'currency',
+                'class' => TextType::class,
+                'options' => [
+                    'required' => true,
+                    'label' => 'Currency',
+                    'attr' => [
+                        'placeholder' => 'Portal',
+                    ],
+                    'row_attr' => [
+                        'class' => 'form-floating mb-3',
+                    ],
+                ],
+            ],
+            [
+                'type' => 'callback',
+                'class' => TextType::class,
+                'options' => [
+                    'required' => true,
+                    'label' => 'Callback url',
+                    'attr' => [
+                        'placeholder' => 'Callback url',
+                    ],
+                    'row_attr' => [
+                        'class' => 'form-floating mb-3',
                     ],
                 ],
             ],
@@ -81,23 +100,12 @@ final class UpdateType extends AbstractType
     {
         return [
             'csrf_protection' => true,
-            'csrf_field_name' => 'store_update',
-            'csrf_token_id' => 'store_update',
+            'csrf_field_name' => 'gateway_update',
+            'csrf_token_id' => 'gateway_update',
             'attr' => [
                 'novalidate' => 'novalidate',
             ],
             'data_class' => Data::class,
         ];
-    }
-
-    private function createChoiceList(): array
-    {
-        $list = [];
-        foreach ($this->gatewayFacade->find() as $gateway) {
-            /** @var Gateway $gateway */
-            $list[(string) $gateway->title()] = (string) $gateway->id();
-        }
-
-        return $list;
     }
 }

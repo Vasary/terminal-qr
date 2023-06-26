@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace App\Presentation\UI\Management\Stores\StoresController;
+namespace App\Presentation\UI\Management\Stores\Controller;
 
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
-use App\Infrastructure\HTTP\HTMLResponse;
-use App\Presentation\UI\Management\Stores\Controller\Response\StoresResponse;
-use App\Presentation\UI\Management\Stores\StoresController\Request\StoresRequest;
+use App\Presentation\UI\Management\Response\HTMLResponse;
+use App\Presentation\UI\Management\Response\HTMLResponse as BaseResponse;
+use App\Presentation\UI\Management\Stores\Controller\Request\StoresRequest;
 use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchCriteria;
 use App\Shared\Transfer\SearchField;
@@ -46,7 +46,7 @@ final class StoresController extends AbstractController
         return [new OrderByField($orderByField, $orderByDirection)];
     }
 
-    public function __invoke(StoresRequest $request): HTMLResponse
+    public function __invoke(StoresRequest $request): BaseResponse
     {
         // TODO Full refactoring
         $this->isAccessGranted();
@@ -79,6 +79,6 @@ final class StoresController extends AbstractController
             'current' => $current,
         ]);
 
-        return new StoresResponse($view);
+        return new HTMLResponse($view);
     }
 }

@@ -43,7 +43,6 @@ final class StoreFacadeTest extends AbstractUnitTestCase
     public function testStoreFacadeShouldCreateStore(): void
     {
         $transfer = StoreCreate::fromArray([
-            'code' => $this->faker->word(),
             'title' => $this->faker->title(),
             'description' => $this->faker->text(),
         ]);
@@ -56,7 +55,6 @@ final class StoreFacadeTest extends AbstractUnitTestCase
 
         $store = $facade->create($transfer);
 
-        $this->assertEquals($transfer->code(), $store->code());
         $this->assertEquals($transfer->title(), $store->title());
         $this->assertEquals($transfer->description(), $store->description());
         $this->assertCount(1, iterator_to_array($repository->find()));
@@ -84,7 +82,6 @@ final class StoreFacadeTest extends AbstractUnitTestCase
 
         $transfer = StoreUpdate::fromArray([
             'id' => (string) $store->id(),
-            'code' => $this->faker->word(),
             'title' => $this->faker->title(),
             'description' => $this->faker->text(),
         ]);
@@ -99,14 +96,12 @@ final class StoreFacadeTest extends AbstractUnitTestCase
         $storeInDatabase = $repository->findOne(Id::fromString($transfer->id()));
 
         $this->assertEquals((string) $updatedStore->title(), $transfer->title());
-        $this->assertEquals((string) $updatedStore->code(), $transfer->code());
         $this->assertEquals((string) $updatedStore->description(), $transfer->description());
         $this->assertCount(1, iterator_to_array($facade->find()));
 
         $this->assertNotNull($storeInDatabase);
 
         $this->assertEquals((string) $storeInDatabase->title(), $transfer->title());
-        $this->assertEquals((string) $storeInDatabase->code(), $transfer->code());
         $this->assertEquals((string) $storeInDatabase->description(), $transfer->description());
     }
 

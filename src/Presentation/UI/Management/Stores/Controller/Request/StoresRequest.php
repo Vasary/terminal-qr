@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Presentation\UI\Management\Stores\StoresController\Request;
+namespace App\Presentation\UI\Management\Stores\Controller\Request;
 
 use App\Infrastructure\HTTP\AbstractRequest;
 

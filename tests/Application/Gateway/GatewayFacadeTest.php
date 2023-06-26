@@ -27,7 +27,6 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
             'host' => $this->faker->domainName(),
             'portal' => $this->faker->company(),
             'currency' => $this->faker->currencyCode(),
-            'key' => $this->faker->word(),
         ]);
 
         /** @var GatewayFacade $facade */
@@ -39,7 +38,6 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
         $this->assertEquals($transfer->host(), (string) $gateway->host());
         $this->assertEquals($transfer->portal(), (string) $gateway->portal());
         $this->assertEquals($transfer->currency(), (string) $gateway->currency());
-        $this->assertEquals($transfer->key(), (string) $gateway->key());
     }
 
     public function testGatewayFacadeShouldRetrieveGateways(): void
@@ -69,7 +67,6 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
             'host' => $this->faker->domainName(),
             'portal' => $this->faker->company(),
             'currency' => $this->faker->currencyCode(),
-            'key' => $this->faker->word(),
         ]);
 
         /** @var GatewayFacade $facade */
@@ -87,7 +84,6 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
         $this->assertEquals((string) $updatedGateway->host(), $transfer->host());
         $this->assertEquals((string) $updatedGateway->portal(), $transfer->portal());
         $this->assertEquals((string) $updatedGateway->currency(), $transfer->currency());
-        $this->assertEquals((string) $updatedGateway->key(), $transfer->key());
         $this->assertCount(1, iterator_to_array($facade->find()));
 
         $this->assertNotNull($gatewayInDatabase);
@@ -98,7 +94,6 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
         $this->assertEquals((string) $gatewayInDatabase->host(), $transfer->host());
         $this->assertEquals((string) $gatewayInDatabase->portal(), $transfer->portal());
         $this->assertEquals((string) $gatewayInDatabase->currency(), $transfer->currency());
-        $this->assertEquals((string) $gatewayInDatabase->key(), $transfer->key());
     }
 
     public function testShouldRetrieveGatewayWithPaginationData(): void
