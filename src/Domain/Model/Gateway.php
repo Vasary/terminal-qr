@@ -123,14 +123,6 @@ class Gateway
         return $this->key;
     }
 
-    public function withKey(string $key): self
-    {
-        $this->key = new Key($key);
-        $this->updatedAt = new DateTimeImmutable();
-
-        return $this;
-    }
-
     public function addStore(Store $store): void
     {
         $this->stores->add($store);

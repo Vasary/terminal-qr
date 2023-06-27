@@ -45,7 +45,8 @@ CRUD - Create, read, update, delete набор действия для упра�
 Сущность платежа
 
 - [ ] Facade: register
-- [ ] Facade: find
+- [X] Facade: find all
+- [X] Facade: find by role
 - [ ] Facade: update status
 - [ ] Facade: mark as successful
 - [ ] Facade: mark as failure
@@ -70,8 +71,8 @@ CRUD - Create, read, update, delete набор действия для упра�
 - [X] Gateway
 - [X] Store
 - [X] User
-- [ ] Payment
-- [ ] QR
+- [X] Payment
+- [X] QR
 - [ ] Callback
 - [ ] Logs
 

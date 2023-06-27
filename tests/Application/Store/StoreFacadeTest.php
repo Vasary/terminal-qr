@@ -7,6 +7,7 @@ namespace App\Tests\Application\Store;
 use App\Application\Store\Business\Reader\StoreReader;
 use App\Application\Store\Business\StoreFacade;
 use App\Application\Store\Business\Writer\StoreWriter;
+use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Store;
 use App\Domain\Repository\StoreRepositoryInterface;
 use App\Domain\ValueObject\Id;
@@ -103,6 +104,22 @@ final class StoreFacadeTest extends AbstractUnitTestCase
 
         $this->assertEquals((string) $storeInDatabase->title(), $transfer->title());
         $this->assertEquals((string) $storeInDatabase->description(), $transfer->description());
+    }
+
+    public function testShouldFailsOnUpdateNotExistingStore(): void
+    {
+        $this->expectException(NotFoundException::class);
+
+        $transfer = StoreUpdate::fromArray([
+            'id' => $this->faker->uuid(),
+            'title' => $this->faker->title(),
+            'description' => $this->faker->text(),
+        ]);
+
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
+
+        $facade->update($transfer);
     }
 
     public function testShouldRetrieveStoresWithPaginationData(): void

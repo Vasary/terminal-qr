@@ -191,8 +191,23 @@ final class UserFacadeTest extends AbstractUnitTestCase
             'id' => (string) $user->id(),
         ]);
 
-        $updatedUser = $facade->update($transfer);
+        $facade->update($transfer);
+    }
 
+    public function testUserCouldBeFoundById(): void
+    {
+        $user = UserContext::create()();
 
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        $entityManager->persist($user);
+        $entityManager->flush();
+
+        /** @var UserFacade $facade */
+        $facade = $this->getContainer()->get(UserFacade::class);
+        $dbUser = $facade->findById($user->id());
+
+        $this->assertEquals($user, $dbUser);
     }
 }

@@ -23,3 +23,9 @@ services:
     arguments:
       $writer: '@App\Application\User\Business\Writer\UserWriter'
       $reader: '@App\Application\User\Business\Reader\UserReader'
+
+  App\Application\Payment\Business\PaymentFacade:
+    public: true
+    arguments:
+      $writer: '@App\Application\Payment\Business\Writer\PaymentWriter'
+      $reader: '@App\Application\Payment\Business\Reader\PaymentReader'

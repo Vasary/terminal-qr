@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Tests\Application\Gateway;
 
 use App\Application\Gateway\Business\GatewayFacade;
+use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
 use App\Domain\ValueObject\Id;
@@ -94,6 +95,26 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
         $this->assertEquals((string) $gatewayInDatabase->host(), $transfer->host());
         $this->assertEquals((string) $gatewayInDatabase->portal(), $transfer->portal());
         $this->assertEquals((string) $gatewayInDatabase->currency(), $transfer->currency());
+    }
+
+
+    public function testShouldFailsWithNotExistingGatewayId(): void
+    {
+        $this->expectException(NotFoundException::class);
+
+        $transfer = GatewayUpdate::fromArray([
+            'id' => $this->faker->uuid(),
+            'title' => $this->faker->title(),
+            'callback' => $this->faker->url(),
+            'host' => $this->faker->domainName(),
+            'portal' => $this->faker->company(),
+            'currency' => $this->faker->currencyCode(),
+        ]);
+
+        /** @var GatewayFacade $facade */
+        $facade = $this->getContainer()->get(GatewayFacade::class);
+
+        $facade->update($transfer);
     }
 
     public function testShouldRetrieveGatewayWithPaginationData(): void
