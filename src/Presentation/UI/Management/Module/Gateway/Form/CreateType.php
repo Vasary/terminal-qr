@@ -81,7 +81,7 @@ final class CreateType extends AbstractType
                     'label' => 'Callback url',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Callback url'
+                        'placeholder' => 'Callback url',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',

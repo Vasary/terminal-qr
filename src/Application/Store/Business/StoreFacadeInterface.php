@@ -29,7 +29,5 @@ interface StoreFacadeInterface
 
     public function addGateway(Id $storeId, Id $gatewayId): Store;
 
-//    public function addUser(Id $storeId, Id $userId): Store;
-
     public function removeGateway(Id $storeId, Id $gatewayId): Store;
 }

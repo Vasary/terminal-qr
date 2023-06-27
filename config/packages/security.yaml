@@ -33,4 +33,5 @@ security:
         enable_csrf: true
 
   access_control:
-    - { path: '^/management', roles: ROLE_USER }
+    - { path: '^/management', roles: ROLE_ADMIN }
+    - { path: '^/payments', roles: ROLE_MANAGER }

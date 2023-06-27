@@ -11,6 +11,7 @@ use App\Infrastructure\Test\Context\ModelContextInterface;
 use App\Infrastructure\Test\Context\ModelContextTrait;
 use App\Infrastructure\Test\Context\StandaloneTrait;
 use App\Infrastructure\Test\Context\TimestampTrait;
+use Doctrine\Common\Collections\ArrayCollection;
 
 final class UserContext implements ModelContextInterface
 {
@@ -28,6 +29,9 @@ final class UserContext implements ModelContextInterface
 
         $this
             ->setProperty($model, 'id', Id::fromString($this->id))
+            ->setProperty($model, 'password', '')
+            ->setProperty($model, 'roles', ['ROLE_ADMIN', 'ROLE_MANAGER'])
+            ->setProperty($model, 'stores', new ArrayCollection())
             ->setTimestamps($model);
 
         return $singleton ? $this->obtainInstance($model) : $model;

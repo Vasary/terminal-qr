@@ -57,7 +57,7 @@ final class EditController extends AbstractController
 
         $view = $this->renderTemplate('@management/form.html.twig', [
             'form' => $form,
-            'title' => sprintf(self::PAGE_TITLE, $gateway->title())
+            'title' => sprintf(self::PAGE_TITLE, $gateway->title()),
         ]);
 
         return new HTMLResponse($view);

@@ -125,4 +125,9 @@ class Store
         $this->users->removeElement($user);
         $user->removeStore($this);
     }
+
+    public function users(): Collection
+    {
+        return $this->users;
+    }
 }

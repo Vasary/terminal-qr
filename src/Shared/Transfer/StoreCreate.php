@@ -8,11 +8,7 @@ final class StoreCreate
 {
     use CreateFromTrait;
 
-    public function __construct(
-        private readonly string $title,
-        private readonly string $description,
-
-    ) {
+    public function __construct(private readonly string $title, private readonly string $description, ) {
     }
 
     public function title(): string

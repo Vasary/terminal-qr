@@ -39,6 +39,7 @@ final class StoreContext implements ModelContextInterface
             ->setProperty($model, 'code', new Code($this->code))
             ->setProperty($model, 'description', new Description($this->description))
             ->setProperty($model, 'gateways', new ArrayCollection())
+            ->setProperty($model, 'users', new ArrayCollection())
             ->setTimestamps($model);
 
         return $singleton ? $this->obtainInstance($model) : $model;

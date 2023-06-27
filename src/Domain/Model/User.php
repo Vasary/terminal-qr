@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Domain\Model;
 
@@ -19,10 +19,7 @@ class User
     private string $password;
     private Collection $stores;
 
-    public function __construct(
-        private Email $email,
-        private array $roles = []
-    )
+    public function __construct(private Email $email, private array $roles = [])
     {
         $this->id = Id::create();
         $this->createdAt = new DateTimeImmutable();

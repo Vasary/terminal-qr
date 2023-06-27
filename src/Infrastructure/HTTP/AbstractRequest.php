@@ -66,7 +66,9 @@ abstract class AbstractRequest
             }
 
             if (isset($data[$property->getName()])) {
-                $value = empty($data[$property->getName()]) ? null : $data[$property->getName()];
+                $value = empty($data[$property->getName()])
+                    ? null
+                    : $data[$property->getName()];
                 $this->{$property->getName()} = $value;
             } else {
                 if (!$property->isInitialized($this)) {

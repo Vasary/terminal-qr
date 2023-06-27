@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace App\Application\Security\Provider;
 
 use App\Application\User\User;

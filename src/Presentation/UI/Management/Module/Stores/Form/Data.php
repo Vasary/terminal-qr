@@ -8,12 +8,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 final class Data
 {
-    #[Assert\NotBlank]
     #[Assert\Length(min: 1, max: 50)]
+    #[Assert\NotBlank]
     public string $title;
 
     #[Assert\Collection([
-        new Assert\Uuid()
+        new Assert\Uuid(),
     ])]
     #[Assert\NotBlank]
     public array $gateways;

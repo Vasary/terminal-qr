@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Application\Store\Business\Writer;
 
@@ -89,20 +89,6 @@ final readonly class StoreWriter
 
         return $store;
     }
-
-    /**
-     * @throws NotFoundException
-     */
-//    public function addUser(Id $storeId, Id $userId): Store
-//    {
-////        $user = $this->userFacade->findById($userId);
-//        $store = $this->getStore($storeId);
-//
-////        $store->addUser($user);
-////        $this->repository->update($store);
-//
-//        return $store;
-//    }
 
     /**
      * @throws NotFoundException
