@@ -71,4 +71,10 @@ final class PaymentRepository implements PaymentRepositoryInterface
                 ->getQuery()
                 ->getOneOrNullResult();
     }
+
+    public function update(Payment $payment): void
+    {
+        $this->entityManager->persist($payment);
+        $this->entityManager->flush();
+    }
 }

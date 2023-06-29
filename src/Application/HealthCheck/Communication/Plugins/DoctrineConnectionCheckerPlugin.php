@@ -21,7 +21,7 @@ final class DoctrineConnectionCheckerPlugin implements HealthCheckerPluginInterf
     public function check(): Response
     {
         if (false === $this->container->has('doctrine.orm.entity_manager')) {
-            return new Response(self::CHECK_RESULT_NAME, false, 'Entity Manager Not Found.');
+            return new Response(self::CHECK_RESULT_NAME, false, 'Entity Manager not found');
         }
 
         $entityManager = $this->container->get('doctrine.orm.entity_manager');

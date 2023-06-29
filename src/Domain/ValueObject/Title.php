@@ -12,11 +12,6 @@ final readonly class Title implements Stringable
     {
     }
 
-    public function title(): string
-    {
-        return $this->code;
-    }
-
     public function __toString(): string
     {
         return $this->title;

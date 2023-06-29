@@ -6,10 +6,10 @@
         <id name="id" type="id"/>
         <field name="amount" type="integer"/>
         <field name="commission" length="integer"/>
-        <field name="status" type="integer"/>
+        <field name="status" enum-type="App\Domain\Enum\PaymentStatusEnum::class"/>
         <field name="callbackUrl"/>
-        <field name="gateway" type="id"/>
-        <field name="store" type="id"/>
+        <field name="currency" type="string"/>
+        <field name="logs" type="log"/>
         <field name="createdAt" type="datetimetz_immutable"/>
         <field name="updatedAt" type="datetimetz_immutable"/>
 
@@ -19,5 +19,8 @@
             </cascade>
             <join-column name="qr_id"/>
         </one-to-one>
+
+        <many-to-one field="store" target-entity="App\Domain\Model\Store" />
+        <many-to-one field="gateway" target-entity="App\Domain\Model\Gateway" />
     </entity>
 </doctrine-mapping>

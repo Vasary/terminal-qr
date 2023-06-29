@@ -40,16 +40,6 @@ final class Id implements Stringable
         return self::$factory;
     }
 
-    public static function setFactory(?IdFactoryInterface $factory): void
-    {
-        self::$factory = $factory;
-    }
-
-    public function equalTo(Id $id): bool
-    {
-        return (string) $this->id === (string) $id;
-    }
-
     public function __toString(): string
     {
         return (string) $this->id;

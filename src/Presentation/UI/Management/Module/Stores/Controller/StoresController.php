@@ -22,29 +22,6 @@ final class StoresController extends AbstractController
     {
     }
 
-    private function getSearchRequest(StoresRequest $request): array
-    {
-        if (null === $request->searchValue) {
-            return [];
-        }
-
-        return array_map(
-            fn (string $field) => new SearchField($field, $request->searchValue),
-            $request->searchFields
-        );
-    }
-
-    private function getSortRequest(StoresRequest $request): array
-    {
-        if (null === $request->orderBy) {
-            return [];
-        }
-
-        [$orderByField, $orderByDirection] = explode(':', $request->orderBy);
-
-        return [new OrderByField($orderByField, $orderByDirection)];
-    }
-
     public function __invoke(StoresRequest $request): HTMLResponse
     {
         // TODO Full refactoring

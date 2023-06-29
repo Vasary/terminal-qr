@@ -22,4 +22,9 @@ final class UUIDNormalizer implements NormalizerInterface, NormalizerAwareInterf
     {
         return $data instanceof Id;
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [Id::class];
+    }
 }

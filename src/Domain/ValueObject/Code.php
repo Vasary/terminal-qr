@@ -12,11 +12,6 @@ final readonly class Code implements Stringable
     {
     }
 
-    public function code(): string
-    {
-        return $this->code;
-    }
-
     public function __toString(): string
     {
         return $this->code;

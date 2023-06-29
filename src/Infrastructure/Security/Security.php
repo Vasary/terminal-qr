@@ -6,7 +6,7 @@ namespace App\Infrastructure\Security;
 
 use App\Application\Security\SecurityInterface;
 use App\Domain\Model\User;
-use Symfony\Component\Security\Core\Security as SymfonySecurity;
+use Symfony\Bundle\SecurityBundle\Security as SymfonySecurity;
 
 final readonly class Security implements SecurityInterface
 {

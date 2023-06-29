@@ -31,7 +31,7 @@ final class PaymentReader
         return new Pagination($items, $pages, $paginator);
     }
 
-    public function findOneById(Id $id): Payment
+    public function findOneById(Id $id): ?Payment
     {
         return $this->repository->findOne($id);
     }

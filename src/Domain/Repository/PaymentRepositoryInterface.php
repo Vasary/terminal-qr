@@ -13,4 +13,6 @@ interface PaymentRepositoryInterface
     public function findByCriteria(array $fields, array $orderBy, int $page, int $limit): Paginator;
 
     public function findOne(Id $id): ?Payment;
+
+    public function update(Payment $payment): void;
 }

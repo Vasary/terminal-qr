@@ -1,0 +1,78 @@
+{% extends '@management/layout.html.twig' %}
+
+{% block content %}
+    <header class="py-3 mb-4 border-bottom">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <div href="/"
+                 class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis">
+                <span class="fs-4">Payment: {{ payment.id }}</span>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <h3>Payment details</h3>
+        <div class="mt-5">
+            <table class="table table-striped">
+                <tr>
+                    <td>Amount</td>
+                    <td>{{ payment.amount }}</td>
+                    <td rowspan="6" class="align-middle">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% if payment.qr is not null %}
+                                    <h6 class="card-title">QR Code</h6>
+                                    <p class="card-text">
+                                        <img style="max-width: 300px" src="{{ payment.qr.image }}">
+                                    </p>
+                                {% else %}
+                                    <h6 class="card-title">Created QR code</h6>
+                                    <p class="card-text">
+                                        <img style="max-width: 300px" src="{{ asset('assets/placeholder/qr.svg') }}">
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Commission</td>
+                    <td>{{ payment.commission }}</td>
+                </tr>
+                <tr>
+                    <td>Status</td>
+                    <td>{{ payment.status.status }}</td>
+                </tr>
+                <tr>
+                    <td>Callback url</td>
+                    <td>{{ payment.callback }}</td>
+                </tr>
+                <tr>
+                    <td>Gateway</td>
+                    <td>{{ payment.gateway.title }}</td>
+                </tr>
+                <tr>
+                    <td>Store</td>
+                    <td>{{ payment.store.title }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="mt-5">
+            <h3 class="mb-5">Payment logs</h3>
+            <table class="table table-striped">
+                {% if payment.logs is empty %}
+                    <tr>
+                        <td>There are no logs are related to this payment</td>
+                    </tr>
+                {% else %}
+                    {% for log in payment.logs %}
+                        <tr>
+                            <td>{{ log.time | date('d.m.Y H:i') }}</td>
+                            <td>{{ log.value }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

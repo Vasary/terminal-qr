@@ -28,4 +28,9 @@ final class HealthCheckResponseNormalizer implements NormalizerInterface, Normal
     {
         return $data instanceof Response;
     }
+
+    public function getSupportedTypes(?string $format): array
+    {
+        return [Response::class];
+    }
 }

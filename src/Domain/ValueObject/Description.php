@@ -12,11 +12,6 @@ final readonly class Description implements Stringable
     {
     }
 
-    public function description(): string
-    {
-        return $this->description;
-    }
-
     public function __toString(): string
     {
         return $this->description;
