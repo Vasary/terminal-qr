@@ -19,7 +19,7 @@ use ErrorException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-#[Route(path: '/{code}', name: 'terminal')]
+#[Route(path: '/terminal/{code}', name: 'terminal')]
 final class TerminalController extends AbstractController
 {
     public function __construct(

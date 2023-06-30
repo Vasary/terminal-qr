@@ -13,7 +13,6 @@ use App\Infrastructure\Serializer\Normalizer\ProductNormalizer;
 use App\Infrastructure\Serializer\Normalizer\UnitNormalizer;
 use App\Infrastructure\Serializer\Normalizer\UUIDNormalizer;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
-use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;

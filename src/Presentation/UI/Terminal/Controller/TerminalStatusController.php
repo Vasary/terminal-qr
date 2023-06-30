@@ -11,12 +11,10 @@ use App\Infrastructure\Controller\AbstractController;
 use App\Presentation\UI\Terminal\Response\TerminalResponse;
 use Symfony\Component\HttpFoundation\Request;
 
-#[Route(path: '/status/{paymentId}', name: 'terminal_status')]
+#[Route(path: '/terminal/status/{paymentId}', name: 'terminal_status')]
 final class TerminalStatusController extends AbstractController
 {
-    public function __construct(
-        private readonly PaymentFacadeInterface $paymentFacade,
-    )
+    public function __construct(private readonly PaymentFacadeInterface $paymentFacade,)
     {
     }
 
@@ -29,7 +27,7 @@ final class TerminalStatusController extends AbstractController
         $view = $this->renderTemplate('@terminal/status.html.twig', [
             'errors' => $errors,
             'payment' => $payment,
-            'terminal' => $terminal
+            'terminal' => $terminal,
         ]);
 
         return new TerminalResponse($view);

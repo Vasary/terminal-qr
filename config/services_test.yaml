@@ -29,3 +29,4 @@ services:
     arguments:
       $writer: '@App\Application\Payment\Business\Writer\PaymentWriter'
       $reader: '@App\Application\Payment\Business\Reader\PaymentReader'
+      $processor: '@App\Application\Payment\Business\PaymentProcessor\PaymentProcessor'

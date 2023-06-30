@@ -45,11 +45,15 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
 
     public function testShouldFindOnePaymentWithQR(): void
     {
-        $payment = PaymentContext::create()();
-        $payment->withQR(new QR('http://localhost/payload.jpg', 'http://localhost/qr.jpg'));
-
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        $payment = PaymentContext::create()();
+
+        $entityManager->persist($payment->store());
+        $entityManager->persist($payment->gateway());
+
+        $payment->withQR(new QR('http://localhost/payload.jpg', 'http://localhost/qr.jpg'));
 
         $entityManager->persist($payment);
         $entityManager->flush();
@@ -71,11 +75,14 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
 
     public function testPaymentShouldSuccessfullyChangeStatus(): void
     {
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
         $payment = PaymentContext::create()();
         $payment->withQR(new QR('http://localhost/payload.jpg', 'http://localhost/qr.jpg'));
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+        $entityManager->persist($payment->store());
+        $entityManager->persist($payment->gateway());
 
         $entityManager->persist($payment);
         $entityManager->flush();
@@ -90,12 +97,15 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
 
     public function testPaymentShouldGetNewLogs(): void
     {
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
         $payment = PaymentContext::create()();
         $payment->withQR(new QR('http://localhost/payload.jpg', 'http://localhost/qr.jpg'));
         $payment->addLog('Hello world');
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+        $entityManager->persist($payment->store());
+        $entityManager->persist($payment->gateway());
 
         $entityManager->persist($payment);
         $entityManager->flush();

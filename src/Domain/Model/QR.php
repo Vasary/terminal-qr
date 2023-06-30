@@ -25,7 +25,7 @@ class QR
 
     public function createdAt(): DateTimeImmutable
     {
-        return $this->createdAt();
+        return $this->createdAt;
     }
 
     public function payload(): string

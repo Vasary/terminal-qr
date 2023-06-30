@@ -62,8 +62,6 @@ final class HealthCheckControllerTest extends AbstractUnitTestCase
 
         $healthCheckResponse = $content[0];
 
-        dd($healthCheckResponse);
-
         $this->assertIsArray($content);
         $this->assertArrayHasKey('service', $healthCheckResponse);
         $this->assertArrayHasKey('result', $healthCheckResponse);

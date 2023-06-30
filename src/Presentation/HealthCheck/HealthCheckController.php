@@ -10,7 +10,7 @@ use App\Infrastructure\Controller\AbstractController;
 use App\Infrastructure\HTTP\JsonResponse;
 use App\Presentation\HealthCheck\Response\HealthCheckResponse;
 
-#[Route('/check', methods: 'GET')]
+#[Route('/check', name: 'health', methods: 'GET')]
 final class HealthCheckController extends AbstractController
 {
     public function __construct(private readonly HealthCheckFacadeInterface $facade)

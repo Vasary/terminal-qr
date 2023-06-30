@@ -37,6 +37,17 @@ final class PaymentContext implements ModelContextInterface
         /** @var Payment $model */
         $model = $this->getInstance(Payment::class);
 
+        $storeContext = StoreContext::create();
+        $storeContext->id = $this->idStore;
+
+        $gatewayContext = GatewayContext::create();
+        $gatewayContext->id = $this->idGateway;
+
+        $store = $storeContext();
+        $gateway = $gatewayContext();
+
+        $store->addGateway($gateway);
+
         $this
             ->setProperty($model, 'id', Id::fromString($this->id))
             ->setProperty($model, 'amount', $this->amount)
@@ -44,8 +55,8 @@ final class PaymentContext implements ModelContextInterface
             ->setProperty($model, 'status', $this->status)
             ->setProperty($model, 'currency', new Currency($this->currency))
             ->setProperty($model, 'callback', new Callback($this->callbackUrl))
-            ->setProperty($model, 'gateway', GatewayContext::create()())
-            ->setProperty($model, 'store', StoreContext::create()())
+            ->setProperty($model, 'gateway', $gateway)
+            ->setProperty($model, 'store', $store)
             ->setProperty($model, 'logs', [])
             ->setTimestamps($model);
 

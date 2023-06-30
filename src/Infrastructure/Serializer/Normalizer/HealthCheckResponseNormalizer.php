@@ -31,6 +31,6 @@ final class HealthCheckResponseNormalizer implements NormalizerInterface, Normal
 
     public function getSupportedTypes(?string $format): array
     {
-        return [Response::class];
+        return [Response::class => true];
     }
 }

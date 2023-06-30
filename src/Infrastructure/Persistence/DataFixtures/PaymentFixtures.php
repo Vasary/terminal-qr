@@ -9,10 +9,13 @@ use App\Domain\Model\Gateway;
 use App\Domain\Model\Payment;
 use App\Domain\Model\QR;
 use App\Domain\Model\Store;
+use App\Domain\ValueObject\Callback;
+use App\Domain\ValueObject\Currency;
 use App\Infrastructure\Test\Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use Grpc\Call;
 
 final class PaymentFixtures extends Fixture implements DependentFixtureInterface
 {
@@ -42,8 +45,8 @@ final class PaymentFixtures extends Fixture implements DependentFixtureInterface
                     $faker->randomDigitNotZero() * 100,
                     $faker->randomDigitNotZero() * 100,
                     PaymentStatusEnum::Init,
-                    $faker->url(),
-                    $faker->currencyCode(),
+                    new Callback($faker->url()),
+                    new Currency($faker->currencyCode()),
                     $gateway,
                     $store,
                 );
