@@ -49,7 +49,6 @@ final class EditController extends AbstractController
             $data->stores[] = (string) $store->id();
         }
 
-
         $form = $this->createForm(UpdateType::class, $data);
 
         $form->handleRequest($request);

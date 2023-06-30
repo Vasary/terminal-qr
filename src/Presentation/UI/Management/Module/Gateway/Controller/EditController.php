@@ -42,15 +42,9 @@ final class EditController extends AbstractController
         $form = $this->createForm(UpdateType::class, $data);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->gatewayFacade->update(GatewayUpdate::fromArray([
-                'title' => $form->get('title')->getData(),
-                'callback' => $form->get('callback')->getData(),
-                'host' => $form->get('host')->getData(),
-                'portal' => $form->get('portal')->getData(),
-                'currency' => $form->get('currency')->getData(),
-                'key' => $form->get('key')->getData(),
-                'id' => $id,
-            ]));
+            $this->gatewayFacade->update(GatewayUpdate::fromArray(
+                array_merge($data->toArray(), ['id' => $id])
+            ));
 
             return $this->redirectToRoute('management_gateways');
         }

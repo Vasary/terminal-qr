@@ -1,0 +1,28 @@
+{% extends '@main/layout.html.twig' %}
+
+{% block title %}
+    {{ 'errors.common' | trans }}
+{% endblock %}
+
+{% block content %}
+    <div class="h-75 d-flex align-items-center justify-content-center">
+        <div class="my-auto">
+            <div class="card">
+                <div class="card-header">{{ 'errors.common' | trans }}</div>
+                <div class="card-body text-center p-5">
+                    <p>
+                        <img style="max-width: 150px" src="{{ asset('assets/placeholder/stop.svg') }}" alt="QRCode"/>
+                    <p>
+
+                        {% if message and app.debug %}
+                    <p>
+                        {{ message }}
+                    </p>
+                    {% else %}
+                        {{ 'errors.ask.admin' | trans }}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

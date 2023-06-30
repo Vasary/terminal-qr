@@ -83,9 +83,9 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
         /** @var PaymentFacade $facade */
         $facade = $this->getContainer()->get(PaymentFacade::class);
 
-        $payment = $facade->changeStatus($payment, PaymentStatusEnum::FAILURE);
+        $payment = $facade->changeStatus($payment, PaymentStatusEnum::Failure);
 
-        $this->assertEquals(PaymentStatusEnum::FAILURE, $payment->status());
+        $this->assertEquals(PaymentStatusEnum::Failure, $payment->status());
     }
 
     public function testPaymentShouldGetNewLogs(): void

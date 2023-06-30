@@ -9,6 +9,7 @@ use App\Application\Gateway\Business\Writer\GatewayWriter;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Gateway;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Key;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\GatewayCreate;
 use App\Shared\Transfer\GatewayDelete;
@@ -56,5 +57,10 @@ final readonly class GatewayFacade implements GatewayFacadeInterface
     public function delete(GatewayDelete $transfer): void
     {
         $this->writer->delete($transfer);
+    }
+
+    public function findByKey(Key $key): ?Gateway
+    {
+        return $this->reader->findByKey($key);
     }
 }

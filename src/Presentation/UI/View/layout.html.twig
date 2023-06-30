@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     {% block style %}{% endblock %}
     <link href="{{ asset('assets/css/bootstrap.min.css') }}" rel="stylesheet"/>
-
+    <title>{% block title %}{% endblock %}</title>
+    {% block meta %}{% endblock %}
 </head>
 <body>
 <main>

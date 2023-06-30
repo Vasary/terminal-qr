@@ -7,8 +7,8 @@
         <field name="amount" type="integer"/>
         <field name="commission" length="integer"/>
         <field name="status" enum-type="App\Domain\Enum\PaymentStatusEnum::class"/>
-        <field name="callbackUrl"/>
-        <field name="currency" type="string"/>
+        <field name="callback" type="callback"/>
+        <field name="currency" type="currency"/>
         <field name="logs" type="log"/>
         <field name="createdAt" type="datetimetz_immutable"/>
         <field name="updatedAt" type="datetimetz_immutable"/>

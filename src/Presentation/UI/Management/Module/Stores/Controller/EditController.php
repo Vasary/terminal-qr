@@ -42,30 +42,28 @@ final class EditController extends AbstractController
     {
         $this->isAccessGranted();
 
+        $store = $this->storeFacade->findById(Id::fromString($request->get('id')));
+
         $data = new Data();
-        $form = $this->createForm(UpdateType::class, $data);
-        $id = $request->get('id');
-
-        $store = $this->storeFacade->findById(Id::fromString($id));
-
-        $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $this->updateStore($data, $store);
-
-            return $this->redirectToRoute('management_stores');
-        }
-
         $data->title = (string) $store->title();
-        $data->code = (string) $store->code();
         $data->description = (string) $store->description();
 
         foreach ($store->gateway() as $gateway) {
             $data->gateways[] = (string) $gateway->id();
         }
 
+        $form = $this->createForm(UpdateType::class, $data);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->updateStore($data, $store);
+
+            return $this->redirectToRoute('management_stores');
+        }
+
         $view = $this->renderTemplate('@management/form.html.twig', [
             'form' => $form,
-            'title' => 'Update store: ' . $store->title(),
+            'title' => 'Update store: ' . $store->title() . 'with code: ' . $store->code(),
         ]);
 
         return new HTMLResponse($view);

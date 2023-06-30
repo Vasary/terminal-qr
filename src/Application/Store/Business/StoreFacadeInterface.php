@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Application\Store\Business;
 
 use App\Domain\Model\Store;
+use App\Domain\ValueObject\Code;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
@@ -20,6 +21,8 @@ interface StoreFacadeInterface
     public function find(): Generator;
 
     public function findById(Id $id): ?Store;
+
+    public function findByCode(Code $code): ?Store;
 
     public function findByCriteria(SearchCriteria $criteria): Pagination;
 

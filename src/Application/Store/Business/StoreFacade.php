@@ -8,6 +8,7 @@ use App\Application\Store\Business\Reader\StoreReader;
 use App\Application\Store\Business\Writer\StoreWriter;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Store;
+use App\Domain\ValueObject\Code;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
@@ -72,5 +73,10 @@ final readonly class StoreFacade implements StoreFacadeInterface
     public function removeGateway(Id $storeId, Id $gatewayId): Store
     {
         return $this->writer->removeGateway($storeId, $gatewayId);
+    }
+
+    public function findByCode(Code $code): ?Store
+    {
+        return $this->reader->findByCode($code);
     }
 }

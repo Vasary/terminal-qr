@@ -29,7 +29,7 @@ class Gateway
         private Host $host,
         private Portal $portal,
         private Currency $currency,
-        private Key $key,
+        private readonly Key $key,
 
     ) {
         $this->id = Id::create();

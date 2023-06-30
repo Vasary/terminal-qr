@@ -5,6 +5,8 @@ declare(strict_types = 1);
 namespace App\Domain\Model;
 
 use App\Domain\Enum\PaymentStatusEnum;
+use App\Domain\ValueObject\Callback;
+use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Log;
 use DateTimeImmutable;
@@ -24,8 +26,8 @@ class Payment
         private readonly int $amount,
         private readonly int $commission,
         private PaymentStatusEnum $status,
-        private readonly string $callbackUrl,
-        private readonly string $currency,
+        private readonly Callback $callback,
+        private readonly Currency $currency,
         private readonly Gateway $gateway,
         private readonly Store $store,
     )
@@ -57,9 +59,9 @@ class Payment
         return $this->status;
     }
 
-    public function callback(): string
+    public function callback(): Callback
     {
-        return $this->callbackUrl;
+        return $this->callback;
     }
 
     public function gateway(): Gateway
@@ -110,7 +112,7 @@ class Payment
         return $this->logs;
     }
 
-    public function currency(): string
+    public function currency(): Currency
     {
         return $this->currency;
     }

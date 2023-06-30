@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Presentation\UI\Login\Terminal\Response;
+namespace App\Presentation\UI\Terminal\Response;
 
 use App\Infrastructure\HTTP\HTMLResponse;
 

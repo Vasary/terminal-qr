@@ -41,9 +41,6 @@ final class UpdateType extends AbstractType
                     'label' => 'Attached gateway',
                     'multiple' => true,
                     'expanded' => true,
-                    'row_attr' => [
-                        'class' => '',
-                    ],
                     'choices' => $this->createChoiceList(),
                 ],
             ],

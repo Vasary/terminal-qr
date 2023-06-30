@@ -26,12 +26,14 @@ final class HealthCheckControllerTest extends AbstractUnitTestCase
         $client->request('GET', '/health/check');
 
         $response = $client->getResponse();
+
         $decodedContent = json_decode($response->getContent(), true);
 
         $this->assertEquals(200, $response->getStatusCode());
         $this->assertJson($response->getContent());
 
         $healthCheckResponse = $decodedContent[0];
+
         $this->assertIsArray($decodedContent);
         $this->assertArrayHasKey('service', $healthCheckResponse);
         $this->assertArrayHasKey('result', $healthCheckResponse);
@@ -59,6 +61,9 @@ final class HealthCheckControllerTest extends AbstractUnitTestCase
         $this->assertJson($response->getContent());
 
         $healthCheckResponse = $content[0];
+
+        dd($healthCheckResponse);
+
         $this->assertIsArray($content);
         $this->assertArrayHasKey('service', $healthCheckResponse);
         $this->assertArrayHasKey('result', $healthCheckResponse);

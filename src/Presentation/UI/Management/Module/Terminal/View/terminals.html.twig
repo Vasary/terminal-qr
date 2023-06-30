@@ -1,0 +1,45 @@
+{% extends '@management/layout.html.twig' %}
+
+
+{% block content %}
+    <header class="py-3 mb-4 border-bottom">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <div href="/"
+                 class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis">
+                <span class="fs-4">List of payments terminals</span>
+            </div>
+        </div>
+    </header>
+
+    <div class="py-3 mb-4 container d-flex flex-wrap justify-content-center">
+        <div class="container">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Store</th>
+                    <th>Gateway</th>
+                    <th>Link</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% set id = 1 %}
+                {% for store in stores %}
+                    {% for gateway in store.gateway %}
+                        {% set code = [store.code, ':', gateway.key] | join %}
+                        <tr>
+                            <td>{{ id }}</td>
+                            <td>{{ store.title }}</td>
+                            <td>{{ gateway.title }}</td>
+                            <td>
+                                <a href="{{ url('terminal', {'code': code}) }}" target="_blank">{{ url('terminal', {'code': code}) }}</a>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% set id = id + 1 %}
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

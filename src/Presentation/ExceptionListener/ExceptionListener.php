@@ -4,38 +4,22 @@ declare(strict_types = 1);
 
 namespace App\Presentation\ExceptionListener;
 
-use App\Infrastructure\HTTP\ErrorResponse;
-use App\Presentation\ExceptionListener\ExceptionHandler\ChainRunner;
-use RuntimeException;
+use App\Presentation\UI\Management\Response\HTMLResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
-use Throwable;
+use Twig\Environment;
 
-final class ExceptionListener
+final readonly class ExceptionListener
 {
-    public function __construct(private readonly ChainRunner $chainRunner)
+    public function __construct(protected Environment $environment)
     {
     }
 
     public function onKernelException(ExceptionEvent $event): void
     {
-        $exception = $event->getThrowable();
+        $response = new HTMLResponse($this->environment->render('@exception/error.html.twig', [
+            'message' => $event->getThrowable()->getMessage(),
+        ]));
 
-        try {
-            $event->setResponse($this->chainRunner->run($exception));
-        } catch (RuntimeException $exception) {
-            $event->setResponse($this->createDefaultErrorResponse($exception));
-        }
-    }
-
-    private function createDefaultErrorResponse(Throwable $exception): ErrorResponse
-    {
-        return
-            new ErrorResponse(
-                [
-                    'code' => $exception->getCode(),
-                    'message' => $exception->getMessage(),
-                ],
-                500
-            );
+        $event->setResponse($response);
     }
 }

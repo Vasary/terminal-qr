@@ -7,6 +7,7 @@ namespace App\Application\Gateway\Business\Reader;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Key;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
 use Generator;
@@ -42,5 +43,10 @@ final readonly class GatewayReader
         $pages = (int) ceil($items / $criteria->limit());
 
         return new Pagination($items, $pages, $paginator);
+    }
+
+    public function findByKey(Key $key): ?Gateway
+    {
+        return $this->repository->findByKey($key);
     }
 }

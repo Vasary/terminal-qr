@@ -1,0 +1,18 @@
+{% extends '@main/layout.html.twig' %}
+
+{% block title %}
+    {{ 'terminal.error.not.existing' | trans }}
+{% endblock %}
+
+{% block content %}
+    <div class="h-75 d-flex align-items-center justify-content-center">
+        <div class="my-auto">
+            <div class="card">
+                <div class="card-header">{{ 'terminal.error.not.existing' | trans }}</div>
+                <div class="card-body text-center p-5">
+                    <img style="max-width: 150px" src="{{ asset('assets/placeholder/stop.svg') }}" alt="QRCode"/>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

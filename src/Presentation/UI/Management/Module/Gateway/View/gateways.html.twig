@@ -33,6 +33,7 @@
                 <thead>
                 <tr>
                     <th>#</th>
+                    <th>Key</th>
                     <th>
                         <a class="text-decoration-none"
                            href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Title</a>
@@ -67,6 +68,7 @@
                 {% for item in items.aggregate %}
                     <tr>
                         <td>{{ id }}</td>
+                        <td>{{ item.key }}</td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.host }}</td>
                         <td>{{ item.portal }}</td>

@@ -33,11 +33,11 @@
                     <th>#</th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Title</a>
+                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('code', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Code</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('code', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Code</a>
+                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Title</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
@@ -57,8 +57,8 @@
                 {% for store in stores.aggregate %}
                     <tr>
                         <td>{{ id }}</td>
-                        <td>{{ store.title }}</td>
                         <td>{{ store.code }}</td>
+                        <td>{{ store.title }}</td>
                         <td>{{ store.createdAt | date('d/m/Y H:i') }}</td>
                         <td>{{ store.updatedAt | date('d/m/Y H:i') }}</td>
                         <td>

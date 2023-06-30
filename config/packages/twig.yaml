@@ -1,11 +1,14 @@
 twig:
   paths:
     '%kernel.project_dir%/src/Presentation/UI/Login/View': login
+    '%kernel.project_dir%/src/Presentation/ExceptionListener/View': exception
+    '%kernel.project_dir%/src/Presentation/UI/Index/View': index
     '%kernel.project_dir%/src/Presentation/UI/Terminal/View': terminal
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/Stores/View': stores
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/Gateway/View': gateway
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/User/View': user
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/Payment/View': payment
+    '%kernel.project_dir%/src/Presentation/UI/Management/Module/Terminal/View': terminals
     '%kernel.project_dir%/src/Presentation/UI/Management/View': management
     '%kernel.project_dir%/src/Presentation/UI/View': main
 

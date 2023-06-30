@@ -4,7 +4,10 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Repository;
 
+use App\Domain\Enum\PaymentStatusEnum;
+use App\Domain\Model\Gateway;
 use App\Domain\Model\Payment;
+use App\Domain\Model\Store;
 use App\Domain\Repository\PaymentRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Shared\Transfer\OrderByField;
@@ -76,5 +79,23 @@ final class PaymentRepository implements PaymentRepositoryInterface
     {
         $this->entityManager->persist($payment);
         $this->entityManager->flush();
+    }
+
+    public function create(int $amount, Store $store, Gateway $gateway): Payment
+    {
+        $payment = new Payment(
+            $amount,
+            0,
+            PaymentStatusEnum::Init,
+            $gateway->callback(),
+            $gateway->currency(),
+            $gateway,
+            $store,
+        );
+
+        $this->entityManager->persist($payment);
+        $this->entityManager->flush();
+
+        return $payment;
     }
 }

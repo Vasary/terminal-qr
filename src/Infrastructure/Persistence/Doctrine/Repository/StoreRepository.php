@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Repository;
 
@@ -57,7 +57,7 @@ final class StoreRepository implements StoreRepositoryInterface
             $this->objectRepository->createQueryBuilder('s')
                 ->select('s')
                 ->where('s.id = :id')
-                ->setParameter('id', (string) $id)
+                ->setParameter('id', (string)$id)
                 ->getQuery()
                 ->getOneOrNullResult();
     }
@@ -111,5 +111,16 @@ final class StoreRepository implements StoreRepositoryInterface
     {
         $this->entityManager->remove($store);
         $this->entityManager->flush();
+    }
+
+    public function findByCode(Code $code): ?Store
+    {
+        return
+            $this->objectRepository->createQueryBuilder('s')
+                ->select('s')
+                ->where('s.code = :code')
+                ->setParameter('code', (string) $code)
+                ->getQuery()
+                ->getOneOrNullResult();
     }
 }

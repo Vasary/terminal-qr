@@ -22,9 +22,6 @@
         <testsuite name="HealthCheck">
             <directory>tests/Presentation/HealthCheck</directory>
         </testsuite>
-        <testsuite name="ExceptionListener">
-            <directory>tests/Presentation/ExceptionListener</directory>
-        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

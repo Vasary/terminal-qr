@@ -6,6 +6,7 @@ namespace App\Domain\Repository;
 
 use App\Domain\Model\Gateway;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Key;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Generator;
 
@@ -29,4 +30,6 @@ interface GatewayRepositoryInterface
     public function findByCriteria(array $fields, array $orderBy, int $page, int $limit): Paginator;
 
     public function delete(Gateway $gateway): void;
+
+    public function findByKey(Key $key): ?Gateway;
 }

@@ -1,5 +1,25 @@
 {% extends '@main/layout.html.twig' %}
 
+{% block title %}
+    {{ 'terminal.title' | trans }}
+{% endblock %}
+
 {% block content %}
-Terminal form
+    <div class="h-75 d-flex align-items-center justify-content-center">
+        <div class="my-auto">
+            <div>
+                <h1 class="display-3">{{ 'terminal.amount.title' | trans }}</h1>
+            </div>
+            {% if errors is not empty %}
+            <div class="mt-5">
+                {% for error in errors %}
+                    <div class="alert alert-danger">{{ error | trans }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
+            <div class="mt-5">
+                {{ form(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}

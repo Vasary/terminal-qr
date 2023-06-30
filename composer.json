@@ -28,6 +28,7 @@
     "symfony/runtime": "6.3.0",
     "symfony/security-bundle": "6.3.0",
     "symfony/serializer": "6.3.0",
+    "symfony/translation": "6.3.*",
     "symfony/twig-bundle": "6.3.0",
     "symfony/validator": "6.3.0",
     "symfony/web-profiler-bundle": "6.3.0",
@@ -74,8 +75,8 @@
     "docs": "vendor/bin/openapi src -o var/openapi.yaml",
     "cs": "vendor/bin/phpcs",
     "csf": "vendor/bin/phpcbf",
-    "bscss": "ln -sf vendor/twbs/bootstrap/dist/css/bootstrap.min.css public/assets/css/bootstrap.min.css",
-    "bsjs": "ln -sf vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js public/assets/js/bootstrap.bundle.min.js",
+    "bscss": "cp vendor/twbs/bootstrap/dist/css/bootstrap.min.css public/assets/css/bootstrap.min.css",
+    "bsjs": "cp vendor/twbs/bootstrap/dist/js/bootstrap.bundle.min.js public/assets/js/bootstrap.bundle.min.js",
     "auto-scripts": {
       "cache:clear": "symfony-cmd",
       "assets:install %PUBLIC_DIR%": "symfony-cmd"

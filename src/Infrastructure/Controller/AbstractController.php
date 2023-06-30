@@ -9,6 +9,8 @@ use App\Presentation\UI\Management\Module\Gateway\Controller\Request\GatewaysReq
 use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchField;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyController;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class AbstractController extends SymfonyController
 {

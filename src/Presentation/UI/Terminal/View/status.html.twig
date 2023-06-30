@@ -1,0 +1,66 @@
+{% extends '@main/layout.html.twig' %}
+
+{% block title %}
+    {{ 'terminal.title' | trans }}
+{% endblock %}
+
+{% block meta %}
+    <meta http-equiv="refresh" content="10"/>
+{% endblock %}
+
+{% block content %}
+    {% set paymentStatus = enum('\\App\\Domain\\Enum\\PaymentStatusEnum') %}
+
+    {% set waitingStatus = [ paymentStatus.Init, paymentStatus.Token ] %}
+
+    <div class="h-75 d-flex align-items-center justify-content-center">
+        <div class="my-auto">
+            <div class="card">
+                {% if payment.status == paymentStatus.Registered %}
+                    <div class="card-header">{{ 'terminal.status.steps.registered' | trans }}</div>
+                    <div class="card-body text-center p-5">
+                        <img style="max-width: 150px" src="{{ asset('assets/placeholder/qr.svg') }}" alt="QRCode"/>
+                    </div>
+                {% endif %}
+
+                {% if payment.status in waitingStatus %}
+                    <div class="card-header">{{ 'terminal.status.steps.waiting' | trans }}</div>
+
+                <div class="card-body text-center p-5">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-border"></div>
+                    </div>
+                </div>
+
+                {% endif %}
+
+                {% if payment.status == paymentStatus.Successfully %}
+                    <div class="card-header">{{ 'terminal.status.steps.successfully' | trans }}</div>
+                    <div class="card-body text-center p-5">
+                        <img style="max-width: 200px" src="{{ asset('assets/placeholder/check.svg') }}"
+                             alt="QRCode"/>
+                    </div>
+                {% endif %}
+
+                {% if payment.status == paymentStatus.Failure %}
+                    <div class="card-header">{{ 'terminal.status.steps.failure.title' | trans }}</div>
+                    <div class="card-body text-center p-5">
+
+                        <p>
+                            <img style="max-width: 150px" src="{{ asset('assets/placeholder/failure.svg') }}"
+                                 alt="QRCode"/>
+                        </p>
+                        <p>
+                        <div class="alert alert-danger mt-5">{{ 'terminal.status.steps.failure.hint' | trans }}</div>
+                        </p>
+                        <p class="mt-5">
+                            <a href="{{ path('terminal', {'code': terminal}) }}"
+                               class="w-100 button btn btn-success">{{ 'terminal.button.new' | trans }}</a>
+                        </p>
+
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

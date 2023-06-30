@@ -6,6 +6,8 @@ namespace App\Infrastructure\Test\Context\Model;
 
 use App\Domain\Enum\PaymentStatusEnum;
 use App\Domain\Model\Payment;
+use App\Domain\ValueObject\Callback;
+use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Test\Context\ContextTrait;
 use App\Infrastructure\Test\Context\ModelContextInterface;
@@ -40,10 +42,10 @@ final class PaymentContext implements ModelContextInterface
             ->setProperty($model, 'amount', $this->amount)
             ->setProperty($model, 'commission', $this->commission)
             ->setProperty($model, 'status', $this->status)
-            ->setProperty($model, 'currency', $this->currency)
-            ->setProperty($model, 'callbackUrl', $this->callbackUrl)
-            ->setProperty($model, 'gateway', Id::fromString($this->idGateway))
-            ->setProperty($model, 'store', Id::fromString($this->idStore))
+            ->setProperty($model, 'currency', new Currency($this->currency))
+            ->setProperty($model, 'callback', new Callback($this->callbackUrl))
+            ->setProperty($model, 'gateway', GatewayContext::create()())
+            ->setProperty($model, 'store', StoreContext::create()())
             ->setProperty($model, 'logs', [])
             ->setTimestamps($model);
 

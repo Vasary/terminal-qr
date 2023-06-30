@@ -6,6 +6,7 @@ namespace App\Application\Gateway\Business;
 
 use App\Domain\Model\Gateway;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Key;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\GatewayCreate;
 use App\Shared\Transfer\GatewayDelete;
@@ -26,4 +27,6 @@ interface GatewayFacadeInterface
     public function findByCriteria(SearchCriteria $searchCriteria): Pagination;
 
     public function delete(GatewayDelete $param): void;
+
+    public function findByKey(Key $param): ?Gateway;
 }

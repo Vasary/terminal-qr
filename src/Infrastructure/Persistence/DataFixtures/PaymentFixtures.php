@@ -48,6 +48,10 @@ final class PaymentFixtures extends Fixture implements DependentFixtureInterface
                     $store,
                 );
 
+                for ($j = 0; $j <= rand(1, 10); $j++) {
+                    $payment->addLog($faker->realText());
+                }
+
                 $payment->withQR(new QR($faker->imageUrl(), $faker->imageUrl()));
                 $manager->persist($payment);
         }

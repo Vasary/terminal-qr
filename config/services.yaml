@@ -31,6 +31,10 @@ services:
         arguments:
             - '@service_container'
 
+    App\Presentation\ExceptionListener\ExceptionListener:
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception }
+
     App\Domain\Repository\StoreRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\StoreRepository'
     App\Domain\Repository\GatewayRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\GatewayRepository'
     App\Domain\Repository\UserRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\UserRepository'

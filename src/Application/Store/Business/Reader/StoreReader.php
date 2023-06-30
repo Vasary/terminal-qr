@@ -6,6 +6,7 @@ namespace App\Application\Store\Business\Reader;
 
 use App\Domain\Model\Store;
 use App\Domain\Repository\StoreRepositoryInterface;
+use App\Domain\ValueObject\Code;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
@@ -42,5 +43,10 @@ final readonly class StoreReader
     public function findById(Id $id): ?Store
     {
         return $this->repository->findOne($id);
+    }
+
+    public function findByCode(Code $code): ?Store
+    {
+        return $this->repository->findByCode($code);
     }
 }

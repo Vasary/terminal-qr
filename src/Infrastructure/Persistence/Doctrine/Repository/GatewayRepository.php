@@ -116,4 +116,15 @@ final class GatewayRepository implements GatewayRepositoryInterface
         $this->entityManager->remove($gateway);
         $this->entityManager->flush();
     }
+
+    public function findByKey(Key $key): ?Gateway
+    {
+        return
+            $this->objectRepository->createQueryBuilder('g')
+                ->select('g')
+                ->where('g.key = :jey')
+                ->setParameter('jey', (string) $key)
+                ->getQuery()
+                ->getOneOrNullResult();
+    }
 }
