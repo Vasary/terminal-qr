@@ -68,3 +68,10 @@ payment:
     awaiting: ожидает оплаты
     successfully: успешный
     failure: ошибка
+login:
+  message:
+    as: 'Вы вошли как '
+    title: 'Вы успешно авторизиованы'
+  dashboard: 'Панель управления'
+  logout: 'Выйти'
+  payments: 'Все платежи'

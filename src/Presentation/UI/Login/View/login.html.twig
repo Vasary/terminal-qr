@@ -6,20 +6,20 @@
             {% if app.user %}
                 <div class="card p-0">
                     <div class="card-header">
-                        Attention
+                        {{ 'login.message.title' | trans }}
                     </div>
                     <div class="card-body">
-                        <p class="card-text">You are logged in as {{ app.user.domainUser.email }}.</p>
+                        <p class="card-text">{{ 'login.message.as' | trans }} {{ app.user.domainUser.email }}.</p>
 
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('management_stores') }}" class="btn btn-primary">Dashboard</a>
+                            <a href="{{ path('management_stores') }}" class="btn btn-primary">{{ 'login.dashboard' | trans }}</a>
                         {% endif %}
 
                         {% if is_granted('ROLE_MANAGER') %}
-                            <a href="{{ path('payments') }}" class="btn btn-primary">Payments</a>
+                            <a href="{{ path('payments') }}" class="btn btn-primary">{{ 'login.payments' | trans }}</a>
                         {% endif %}
 
-                        <a href="{{ path('logout') }}" class="btn btn-primary float-end">Logout</a>
+                        <a href="{{ path('logout') }}" class="btn btn-primary float-end">{{ 'login.logout' | trans }}</a>
                     </div>
                 </div>
             {% else %}
