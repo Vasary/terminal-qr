@@ -9,10 +9,11 @@ use App\Domain\Model\Payment;
 use App\Domain\Model\Store;
 use App\Domain\ValueObject\Id;
 use Doctrine\ORM\Tools\Pagination\Paginator;
+use Generator;
 
 interface PaymentRepositoryInterface
 {
-    public function findByCriteria(array $fields, array $orderBy, int $page, int $limit): Paginator;
+    public function findByCriteria(array $fields, array $orderBy, int $page, int $limit, array $stores): Paginator;
 
     public function findOne(Id $id): ?Payment;
 

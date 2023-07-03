@@ -25,7 +25,7 @@ security:
       form_login:
         login_path: login
         check_path: login
-        default_target_path: management_stores
+        default_target_path: login
         username_parameter: login[email]
         password_parameter: login[password]
         csrf_parameter: login[token]

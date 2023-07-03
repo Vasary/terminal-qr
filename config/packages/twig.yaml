@@ -8,6 +8,7 @@ twig:
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/Gateway/View': gateway
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/User/View': user
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/Payment/View': payment
+    '%kernel.project_dir%/src/Presentation/UI/Payments/View': payments
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/Terminal/View': terminals
     '%kernel.project_dir%/src/Presentation/UI/Management/View': management
     '%kernel.project_dir%/src/Presentation/UI/View': main

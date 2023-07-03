@@ -10,8 +10,16 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">You are logged in as {{ app.user.domainUser.email }}.</p>
-                        <a href="{{ path('management_stores') }}" class="btn btn-primary">Dashboard</a>
-                        <a href="{{ path('logout') }}" class="btn btn-primary">Logout</a>
+
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <a href="{{ path('management_stores') }}" class="btn btn-primary">Dashboard</a>
+                        {% endif %}
+
+                        {% if is_granted('ROLE_MANAGER') %}
+                            <a href="{{ path('payments') }}" class="btn btn-primary">Payments</a>
+                        {% endif %}
+
+                        <a href="{{ path('logout') }}" class="btn btn-primary float-end">Logout</a>
                     </div>
                 </div>
             {% else %}

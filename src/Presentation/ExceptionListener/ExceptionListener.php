@@ -16,10 +16,10 @@ final readonly class ExceptionListener
 
     public function onKernelException(ExceptionEvent $event): void
     {
-        $response = new HTMLResponse($this->environment->render('@exception/error.html.twig', [
-            'message' => $event->getThrowable()->getMessage(),
-        ]));
-
-        $event->setResponse($response);
+//        $response = new HTMLResponse($this->environment->render('@exception/error.html.twig', [
+//            'message' => $event->getThrowable()->getMessage(),
+//        ]));
+//
+//        $event->setResponse($response);
     }
 }

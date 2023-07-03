@@ -16,6 +16,8 @@ final class SearchCriteria
         private readonly array $orderBy,
         private readonly int $page,
         private readonly int $limit,
+        /** @var string[] */
+        private readonly array $stores = [],
     )
     {
     }
@@ -38,5 +40,10 @@ final class SearchCriteria
     public function limit(): int
     {
         return $this->limit;
+    }
+
+    public function stores(): array
+    {
+        return $this->stores;
     }
 }

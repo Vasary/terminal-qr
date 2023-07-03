@@ -54,7 +54,14 @@ trait CreateFromTrait
         \ReflectionProperty $property,
         object $instance,
     ): void {
-        $property->setValue($instance, $data[$property->name]);
+
+        if (!isset($data[$property->name]) && $property->isDefault()) {
+            if ('stores' === $property->name) {
+                $property->setValue($instance, []);
+            }
+        } else {
+            $property->setValue($instance, $data[$property->name]);
+        }
     }
 
     final public static function setClassObject(

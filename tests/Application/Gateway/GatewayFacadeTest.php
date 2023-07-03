@@ -147,6 +147,7 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
                 ],
                 'page' => 1,
                 'limit' => 4,
+                'stores' => [],
             ]
         );
 
@@ -176,6 +177,7 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
                 'orderBy' => [],
                 'page' => 1,
                 'limit' => 4,
+                'stores' => [],
             ]
         );
 
@@ -205,6 +207,7 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
                 ],
                 'page' => 1,
                 'limit' => 10,
+                'stores' => [],
             ]
         );
 
@@ -245,6 +248,7 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
                 ],
                 'page' => 1,
                 'limit' => 10,
+                'stores' => [],
             ]
         );
 

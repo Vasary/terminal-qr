@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Repository;
 
@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
+use Generator;
 
 final class PaymentRepository implements PaymentRepositoryInterface
 {
@@ -26,7 +27,7 @@ final class PaymentRepository implements PaymentRepositoryInterface
         $this->objectRepository = $entityManager->getRepository(Payment::class);
     }
 
-    public function findByCriteria(array $searchFields, array $orderBy, int $page, int $size): Paginator
+    public function findByCriteria(array $searchFields, array $orderBy, int $page, int $size, array $stores): Paginator
     {
         $queryBuilder = $this->objectRepository->createQueryBuilder('p');
 
@@ -54,6 +55,10 @@ final class PaymentRepository implements PaymentRepositoryInterface
             }
         }
 
+
+        $queryBuilder->andWhere('p.store IN (:stores)');
+        $queryBuilder->setParameter(':stores', $stores);
+
         $paginator = new Paginator($queryBuilder->getQuery());
 
         $paginator
@@ -70,7 +75,7 @@ final class PaymentRepository implements PaymentRepositoryInterface
             $this->objectRepository->createQueryBuilder('p')
                 ->select('p')
                 ->where('p.id = :id')
-                ->setParameter('id', (string) $id)
+                ->setParameter('id', (string)$id)
                 ->getQuery()
                 ->getOneOrNullResult();
     }

@@ -1,0 +1,79 @@
+{% extends '@payments/layout.html.twig' %}
+
+{% block content %}
+    <header class="py-3 mb-4 border-bottom">
+        <div class="container d-flex flex-wrap justify-content-center">
+            <div href="/"
+                 class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis">
+                <span class="fs-4">{{ 'payment.title.id' | trans }}: {{ payment.id }}</span>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <h3>{{ 'payment.details.title' | trans }}</h3>
+        <div class="mt-5">
+            <table class="table table-striped">
+                <tr>
+                    <td>{{ 'payment.attribute.amount' | trans }}</td>
+                    <td>{{ payment.amount }}</td>
+                    <td rowspan="6" class="align-middle">
+                        <div class="card text-center">
+                            <div class="card-body">
+                                {% if payment.qr is not null %}
+                                    <h6 class="card-title">{{ 'payment.attribute.qr.title' | trans }}</h6>
+                                    <p class="card-text">
+                                        <img style="max-width: 300px" src="{{ payment.qr.image }}">
+                                    </p>
+                                {% else %}
+                                    <h6 class="card-title">{{ 'payment.attribute.qr.status.created' | trans }}</h6>
+                                    <p class="card-text">
+                                        <img style="max-width: 300px" src="{{ asset('assets/placeholder/qr.svg') }}">
+                                    </p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ 'payment.attribute.commission' | trans }}</td>
+                    <td>{{ payment.commission }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'payment.attribute.status' | trans }}</td>
+                    <td>{{ payment.status.status }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'payment.attribute.callback' | trans }}</td>
+                    <td>{{ payment.callback }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'payment.attribute.gateway' | trans }}</td>
+                    <td>{{ payment.gateway.title }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'payment.attribute.store' | trans }}</td>
+                    <td>{{ payment.store.title }}</td>
+                </tr>
+            </table>
+        </div>
+
+        <div class="mt-5">
+            <h3 class="mb-5">{{ 'payment.logs.title' | trans }}</h3>
+            <table class="table table-striped">
+                {% if payment.logs is empty %}
+                    <tr>
+                        <td>{{ 'payment.logs.empty' | trans }}</td>
+                    </tr>
+                {% else %}
+                    {% for log in payment.logs %}
+                        <tr>
+                            <td>{{ log.time | date('d.m.Y') }}</td>
+                            <td>{{ log.time | date('H:i') }}</td>
+                            <td>{{ log.value }}</td>
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+            </table>
+        </div>
+    </div>
+{% endblock %}

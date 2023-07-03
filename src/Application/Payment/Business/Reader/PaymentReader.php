@@ -9,6 +9,7 @@ use App\Domain\Repository\PaymentRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
+use Generator;
 
 final class PaymentReader
 {
@@ -22,7 +23,8 @@ final class PaymentReader
             $criteria->fields(),
             $criteria->orderBy(),
             $criteria->page(),
-            $criteria->limit()
+            $criteria->limit(),
+            $criteria->stores(),
         );
 
         $items = count($paginator);

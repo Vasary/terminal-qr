@@ -26,3 +26,45 @@ errors:
   common: Произошла непредвиденная ошибка
   ask:
     admin: Обратитеть к администратору сайта
+
+button:
+  go:
+    profile: Вернуться в меню профиля
+
+payment:
+  title:
+    id: Обзор платежа
+  details:
+    title: Детали
+  attribute:
+    amount: Сумма
+    commission: Коммиссия
+    status: Статус
+    callback: URL для получения Callback
+    gateway: Платежный шлюз
+    store: Точка оплаты
+    qr:
+      title: QR-код
+      status:
+        created: QR-код предоставленный клиенту для оплаты
+        registered: Создан
+        absents: Отсутствует
+    currency: Валюта
+    createdAt: Создан в
+  logs:
+    title: Журнал событий и проблем платежа
+    empty: Журнал событий пуст
+  navigation:
+    payment: Платежи
+    logout: Выйти
+  list:
+    title: Список всех платежей
+  button:
+    search: Поиск
+  status:
+    init: Инициализирован
+    token: Получение ключа платежа
+    registered: зарегистрирован
+    awaiting: ожидает оплаты
+    successfully: успешный
+    failure: ошибка

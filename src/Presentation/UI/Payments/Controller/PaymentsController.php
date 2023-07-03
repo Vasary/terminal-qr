@@ -2,23 +2,24 @@
 
 declare(strict_types = 1);
 
-namespace App\Presentation\UI\Management\Module\Payment\Controller;
+namespace App\Presentation\UI\Payments\Controller;
 
 use App\Application\Payment\Business\PaymentFacadeInterface;
-use App\Application\Store\Business\StoreFacadeInterface;
+use App\Application\User\Business\UserFacadeInterface;
 use App\Domain\Model\Store;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
-use App\Presentation\UI\Management\Module\Payment\Controller\Request\PaymentsRequest;
-use App\Presentation\UI\Management\Response\HTMLResponse;
+use App\Infrastructure\Security\Security;
+use App\Presentation\UI\Payments\Controller\Request\PaymentsRequest;
+use App\Presentation\UI\Payments\Response\HTMLResponse;
 use App\Shared\Transfer\SearchCriteria;
 
-#[Route(path: '/management/payments', name: 'management_payments', methods: ['GET'])]
+#[Route(path: '/payments', name: 'payments', methods: ['GET'])]
 final class PaymentsController extends AbstractController
 {
     private const PAGE_LIMIT = 25;
 
-    public function __construct(private readonly PaymentFacadeInterface $facade, private readonly StoreFacadeInterface $storeFacade)
+    public function __construct(private readonly PaymentFacadeInterface $facade, private readonly Security $security, private readonly UserFacadeInterface $userFacade)
     {
     }
 
@@ -43,12 +44,14 @@ final class PaymentsController extends AbstractController
             'direction' => '',
         ];
 
-        $stores = array_map(
-            fn (Store $store) => (string) $store->id(),
-            iterator_to_array($this->storeFacade->find())
-        );
+        $stores = [];
+        $userStores = $this->userFacade->findById($this->security->getDomainUser()->id())->stores();
+        foreach ($userStores as $store) {
+            /** @var Store $store */
+            $stores[] = (string) $store->id();
+        }
 
-        $view = $this->renderTemplate('@payment/payments.html.twig', [
+        $view = $this->renderTemplate('@payments/payments.html.twig', [
             'items' => $this->facade->findByCriteria(
                 new SearchCriteria($search, $orderBy, $page, self::PAGE_LIMIT, $stores)
             ),
@@ -60,6 +63,7 @@ final class PaymentsController extends AbstractController
             'config' => [
                 'searchFields' => ['amount', 'createdAt', 'updatedAt', 'status'],
             ],
+            'userStores' => $userStores
         ]);
 
         return new HTMLResponse($view);

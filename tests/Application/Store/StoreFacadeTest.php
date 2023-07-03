@@ -152,6 +152,7 @@ final class StoreFacadeTest extends AbstractUnitTestCase
                 ],
                 'page' => 1,
                 'limit' => 4,
+                'stores' => [(string) $store->id()]
             ]
         );
 
@@ -181,6 +182,7 @@ final class StoreFacadeTest extends AbstractUnitTestCase
                 'orderBy' => [],
                 'page' => 1,
                 'limit' => 4,
+                'stores' => [],
             ]
         );
 
@@ -198,6 +200,10 @@ final class StoreFacadeTest extends AbstractUnitTestCase
 
         /** @var StoreFacade $facade */
         $facade = $this->getContainer()->get(StoreFacade::class);
+        $stores = array_map(
+            fn (Store $store) => (string) $store->id(),
+            iterator_to_array($facade->find())
+        );
 
         $searchCriteria = SearchCriteria::fromArray(
             [
@@ -210,6 +216,7 @@ final class StoreFacadeTest extends AbstractUnitTestCase
                 ],
                 'page' => 1,
                 'limit' => 10,
+                'stores' => $stores,
             ]
         );
 

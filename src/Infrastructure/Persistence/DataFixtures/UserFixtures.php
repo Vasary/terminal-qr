@@ -20,7 +20,7 @@ final class UserFixtures extends Fixture
     public function load(ObjectManager $manager): void
     {
         $administrator = $this->createUser('admin@vasary.com', 'admin', true);
-        $storeManager = $this->createUser('manager@vasary.com', 'manager', true);
+        $storeManager = $this->createUser('manager@vasary.com', 'manager', false);
 
         $manager->persist($administrator->getDomainUser());
         $manager->persist($storeManager->getDomainUser());

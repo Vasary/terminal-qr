@@ -11,8 +11,10 @@ enum PaymentStatusEnum: int
     case Init = 0;
     case Token = 1;
     case Registered = 2;
-    case Successfully = 3;
-    case Failure = 4;
+    case Awaiting = 3;
+    case Successfully = 4;
+    case Failure = 5;
+
 
     public function status(): string
     {

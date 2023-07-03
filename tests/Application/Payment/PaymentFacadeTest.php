@@ -5,8 +5,10 @@ declare(strict_types = 1);
 namespace App\Tests\Application\Payment;
 
 use App\Application\Payment\Business\PaymentFacade;
+use App\Application\Store\Business\StoreFacade;
 use App\Domain\Enum\PaymentStatusEnum;
 use App\Domain\Model\QR;
+use App\Domain\Model\Store;
 use App\Infrastructure\Persistence\DataFixtures\PaymentFixtures;
 use App\Infrastructure\Test\AbstractUnitTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
@@ -22,6 +24,11 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
         /** @var PaymentFacade $facade */
         $facade = $this->getContainer()->get(PaymentFacade::class);
 
+        $stores = array_map(
+            fn (Store $store) => (string) $store->id(),
+            iterator_to_array($this->getContainer()->get(StoreFacade::class)->find())
+        );
+
         $searchCriteria = SearchCriteria::fromArray(
             [
                 'fields' => [],
@@ -33,6 +40,7 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
                 ],
                 'page' => 1,
                 'limit' => 5,
+                'stores' => $stores,
             ]
         );
 

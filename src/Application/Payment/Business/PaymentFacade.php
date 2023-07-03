@@ -12,6 +12,7 @@ use App\Domain\Model\Payment;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
+use Generator;
 
 final readonly class PaymentFacade implements PaymentFacadeInterface
 {

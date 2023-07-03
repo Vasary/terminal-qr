@@ -8,6 +8,7 @@ namespace App\Application\Payment\Business;
 use App\Domain\Model\Payment;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
+use Generator;
 use App\Shared\Transfer\SearchCriteria;
 
 interface PaymentFacadeInterface
