@@ -5,14 +5,11 @@ declare(strict_types = 1);
 namespace App\Application\Security\Provider;
 
 use App\Application\User\User;
+use App\Domain\Exception\UserNotFoundException;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\Security\AbstractUserProvider;
 use RuntimeException;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 final class UserProvider extends AbstractUserProvider
 {
@@ -20,6 +17,9 @@ final class UserProvider extends AbstractUserProvider
     {
     }
 
+    /**
+     * @throws UserNotFoundException
+     */
     public function loadUserByIdentifier(string $identifier): User
     {
         if ($user = $this->repository->findByEmail(new Email($identifier))) {
@@ -29,10 +29,10 @@ final class UserProvider extends AbstractUserProvider
         throw new UserNotFoundException();
     }
 
-    public function refreshUser(UserInterface $user): User
+    public function refreshUser(mixed $user): User
     {
         if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Invalid user class "%s".', $user::class));
+            throw new RuntimeException(sprintf('Invalid user class "%s".', $user::class));
         }
 
         return $user;
@@ -43,7 +43,7 @@ final class UserProvider extends AbstractUserProvider
         return User::class === $class;
     }
 
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
+    public function upgradePassword(mixed $user, string $newHashedPassword): void
     {
         throw new RuntimeException('Not implemented');
     }
