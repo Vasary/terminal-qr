@@ -20,9 +20,9 @@ final class LoginType extends AbstractType
                 'class' => EmailType::class,
                 'options' => [
                     'required' => false,
-                    'label' => 'Email',
+                    'label' => 'login.form.email',
                     'attr' => [
-                        'placeholder' => 'Email',
+                        'placeholder' => 'login.form.email',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating',
@@ -34,9 +34,9 @@ final class LoginType extends AbstractType
                 'class' => PasswordType::class,
                 'options' => [
                     'required' => false,
-                    'label' => 'Password',
+                    'label' => 'login.form.password',
                     'attr' => [
-                        'placeholder' => 'Password',
+                        'placeholder' => 'login.input.password',
 
                     ],
                     'row_attr' => [
@@ -48,14 +48,14 @@ final class LoginType extends AbstractType
                 'type' => 'remember',
                 'class' => CheckboxType::class,
                 'options' => [
-                    'label' => 'Remember me',
+                    'label' => 'login.form.remember',
                 ],
             ],
             [
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Sign in',
+                    'label' => 'login.form.submit',
                     'row_attr' => [
                         'class' => 'mb-4',
                     ],

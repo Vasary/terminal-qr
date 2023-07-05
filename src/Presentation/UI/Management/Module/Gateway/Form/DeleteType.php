@@ -22,7 +22,7 @@ final class DeleteType extends AbstractType
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Confirm',
+                    'label' => 'gateways.button.confirm',
                     'attr' => [
                         'class' => 'btn btn-danger',
                     ],
@@ -33,7 +33,7 @@ final class DeleteType extends AbstractType
                 'type' => 'cancel',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Cancel',
+                    'label' => 'gateways.button.cancel',
                     'attr' => [
                         'class' => 'btn btn-warning',
                     ],

@@ -6,7 +6,7 @@
         <div class="container d-flex flex-wrap justify-content-center">
             <div href="/"
                  class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis">
-                <span class="fs-4">List of payments</span>
+                <span class="fs-4">{{ 'payment.list.title' | trans }}</span>
             </div>
         </div>
     </header>
@@ -14,9 +14,9 @@
     <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
         <form action="{{ path('management_payments') }}" method="get" class="container">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" name="searchValue" placeholder="Search"
+                <input type="text" class="form-control" name="searchValue" placeholder="{{ 'payment.button.search' | trans }}"
                        value="{{ searchValue }}"/>
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <button class="btn btn-outline-secondary" type="submit">{{ 'payment.button.search' | trans }}</button>
                 <input type="hidden" name="orderBy" value="{{ order }}">
                 <input type="hidden" name="page" value="1">
                 {% for field in config.searchFields %}
@@ -32,15 +32,17 @@
                     <th>#</th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_payments', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Created at</a>
+                           href="{{ path('management_payments', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">
+                            {{ 'payment.attribute.createdAt' | trans }}
+                        </a>
                     </th>
-                    <th>Amount</th>
-                    <th>Commission</th>
+                    <th>{{ 'payment.attribute.amount' | trans }}</th>
+                    <th>{{ 'payment.attribute.commission' | trans }}</th>
                     <th>Status</th>
-                    <th>Gateway</th>
-                    <th>Store</th>
-                    <th>Currency</th>
-                    <th>QR code</th>
+                    <th>{{ 'payment.attribute.gateway' | trans }}</th>
+                    <th>{{ 'payment.attribute.store' | trans }}</th>
+                    <th>{{ 'payment.attribute.currency' | trans }}</th>
+                    <th>{{ 'payment.attribute.qr.title' | trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -53,19 +55,18 @@
                         <td>{{ item.createdAt | date('d.m.Y H:i') }}</td>
                         <td>{{ item.amount | number_format(2, '.', ',') }}</td>
                         <td>{{ item.commission | number_format(2, '.', ',') }}</td>
-                        <td><span class="badge rounded-pill bg-primary">{{ item.status.status }}</span></td>
+                        <td>{{ paymentStatus(item) | raw }}</td>
                         <td>{{ item.gateway.title }}</td>
                         <td>{{ item.store.title }}</td>
                         <td>{{ item.currency }}</td>
                         <td>
                             {% if item.qr is not null %}
-                                <span class="badge text-bg-success">Created</span>
+                                <span class="badge text-bg-success">{{ 'payment.attribute.qr.status.registered' | trans }}</span>
                             {% else %}
-                                <span class="badge text-bg-dark">Not presents</span>
+                                <span class="badge text-bg-dark">{{ 'payment.attribute.qr.status.absents' | trans }}</span>
                             {% endif %}
                         </td>
                     </tr>
-
                     {% set id = id + 1 %}
                 {% endfor %}
                 </tbody>

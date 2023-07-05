@@ -11,7 +11,12 @@
                 <div class="card-header">{{ 'terminal.error.not.existing' | trans }}</div>
                 <div class="card-body text-center p-5">
                     <img style="max-width: 150px" src="{{ asset('assets/placeholder/stop.svg') }}" alt="QRCode"/>
+
+                    <div class="mt-5">
+                        <a href="{{ path('login') }}" class="btn btn-primary">{{ 'login.go.dashboard' | trans }}</a>
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

@@ -12,11 +12,12 @@ use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\GatewayDelete;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/management/gateway/delete/{id}', name: 'management_gateway_delete', methods: ['GET', 'POST'])]
 final class DeleteController extends AbstractController
 {
-    public function __construct(private readonly GatewayFacadeInterface $gatewayFacade)
+    public function __construct(private readonly GatewayFacadeInterface $gatewayFacade, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -43,7 +44,7 @@ final class DeleteController extends AbstractController
 
         $view = $this->renderTemplate('@management/form-delete.html.twig', [
             'form' => $form,
-            'title' => 'Delete gateway ' . $request->get('id'),
+            'title' => $this->translator->trans('gateways.title.delete') . ': ' . $request->get('id'),
         ]);
 
         return new HTMLResponse($view);

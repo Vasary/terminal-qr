@@ -7,6 +7,7 @@ namespace App\Presentation\UI\Management\Module\Gateway\Form;
 use App\Infrastructure\Form\AbstractType;
 use App\Infrastructure\Form\SubmitType;
 use App\Infrastructure\Form\TextType;
+use App\Infrastructure\Form\ChoiceType;
 
 final class CreateType extends AbstractType
 {
@@ -18,10 +19,10 @@ final class CreateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Title',
+                    'label' => 'gateways.attribute.title',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Title',
+                        'placeholder' => 'gateways.attribute.title',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -33,10 +34,10 @@ final class CreateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Host',
+                    'label' => 'gateways.attribute.host',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Host',
+                        'placeholder' => 'gateways.attribute.host',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -48,10 +49,10 @@ final class CreateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Portal',
+                    'label' => 'gateways.attribute.portal',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Portal',
+                        'placeholder' => 'gateways.attribute.portal',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -60,17 +61,14 @@ final class CreateType extends AbstractType
             ],
             [
                 'type' => 'currency',
-                'class' => TextType::class,
+                'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Currency',
+                    'label' => 'gateways.attribute.currency',
                     'trim' => true,
-                    'attr' => [
-                        'placeholder' => 'Portal',
-                    ],
-                    'row_attr' => [
-                        'class' => 'form-floating mb-3',
-                    ],
+                    'multiple' => false,
+                    'expanded' => false,
+                    'choices' => ['RUB' => 'RUB'],
                 ],
             ],
             [
@@ -78,10 +76,10 @@ final class CreateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Callback url',
+                    'label' => 'gateways.attribute.callback.url',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Callback url',
+                        'placeholder' => 'gateways.attribute.callback.url',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -92,7 +90,7 @@ final class CreateType extends AbstractType
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Create',
+                    'label' => 'gateways.button.create',
                     'attr' => [
                         'class' => 'btn btn-primary w-100',
                     ],

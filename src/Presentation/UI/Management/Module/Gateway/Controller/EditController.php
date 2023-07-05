@@ -14,13 +14,14 @@ use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\GatewayUpdate;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/management/gateway/edit/{id}', name: 'management_gateway_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController
 {
-    private const PAGE_TITLE = 'Update gateway: %s';
+    private const PAGE_TITLE = 'gateways.title.update';
 
-    public function __construct(private readonly GatewayFacadeInterface $gatewayFacade)
+    public function __construct(private readonly GatewayFacadeInterface $gatewayFacade, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -51,7 +52,7 @@ final class EditController extends AbstractController
 
         $view = $this->renderTemplate('@management/form.html.twig', [
             'form' => $form,
-            'title' => sprintf(self::PAGE_TITLE, $gateway->title()),
+            'title' => $this->translator->trans(self::PAGE_TITLE) . ': ' . $gateway->title(),
         ]);
 
         return new HTMLResponse($view);

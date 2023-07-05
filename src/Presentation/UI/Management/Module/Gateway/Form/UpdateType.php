@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Presentation\UI\Management\Module\Gateway\Form;
 
 use App\Infrastructure\Form\AbstractType;
+use App\Infrastructure\Form\ChoiceType;
 use App\Infrastructure\Form\SubmitType;
 use App\Infrastructure\Form\TextType;
 
@@ -18,9 +19,9 @@ final class UpdateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Title',
+                    'label' => 'gateways.attribute.title',
                     'attr' => [
-                        'placeholder' => 'Title',
+                        'placeholder' => 'gateways.attribute.title',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -32,9 +33,9 @@ final class UpdateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Host',
+                    'label' => 'gateways.attribute.host',
                     'attr' => [
-                        'placeholder' => 'Host',
+                        'placeholder' => 'gateways.attribute.host',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -46,9 +47,9 @@ final class UpdateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Portal',
+                    'label' => 'gateways.attribute.portal',
                     'attr' => [
-                        'placeholder' => 'Portal',
+                        'placeholder' => 'gateways.attribute.portal',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -57,16 +58,14 @@ final class UpdateType extends AbstractType
             ],
             [
                 'type' => 'currency',
-                'class' => TextType::class,
+                'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Currency',
-                    'attr' => [
-                        'placeholder' => 'Portal',
-                    ],
-                    'row_attr' => [
-                        'class' => 'form-floating mb-3',
-                    ],
+                    'label' => 'gateways.attribute.currency',
+                    'trim' => true,
+                    'multiple' => false,
+                    'expanded' => false,
+                    'choices' => ['RUB' => 'RUB'],
                 ],
             ],
             [
@@ -74,9 +73,9 @@ final class UpdateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Callback url',
+                    'label' => 'gateways.attribute.callback.url',
                     'attr' => [
-                        'placeholder' => 'Callback url',
+                        'placeholder' => 'gateways.attribute.callback.url',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -87,7 +86,7 @@ final class UpdateType extends AbstractType
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Update',
+                    'label' => 'gateways.button.update',
                     'attr' => [
                         'class' => 'btn btn-primary w-100',
                     ],

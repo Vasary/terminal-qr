@@ -9,7 +9,7 @@
                 <span class="fs-4">List of gateways</span>
             </div>
             <div class="d-flex justify-content-center mb-4 align-items-center mb-3 mb-lg-0 ">
-                <a href="{{ path('management_getaway_create') }}" type="button" class="btn btn-primary">New gateway</a>
+                <a href="{{ path('management_getaway_create') }}" type="button" class="btn btn-primary">{{ 'gateways.button.new' | trans }}</a>
             </div>
         </div>
     </header>
@@ -17,9 +17,9 @@
     <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
         <form action="{{ path('management_gateways') }}" method="get" class="container">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" name="searchValue" placeholder="Search"
+                <input type="text" class="form-control" name="searchValue" placeholder="{{ 'gateways.button.search' | trans }}"
                        value="{{ searchValue }}"/>
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <button class="btn btn-outline-secondary" type="submit">{{ 'gateways.button.search' | trans }}</button>
                 <input type="hidden" name="orderBy" value="{{ order }}">
                 <input type="hidden" name="page" value="1">
                 {% for field in config.searchFields %}
@@ -33,32 +33,30 @@
                 <thead>
                 <tr>
                     <th>#</th>
-                    <th>Key</th>
+                    <th>{{ 'gateways.attribute.key' | trans }}</th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Title</a>
+                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.title' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('host', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Host</a>
+                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('host', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.host' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('portal', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Portal</a>
+                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('portal', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.portal' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('currency', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Currency</a>
+                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('currency', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.currency' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Created
-                            at</a>
+                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.createdAt' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('updatedAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Updated
-                            at</a>
+                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('updatedAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.updatedAt' | trans }}</a>
                     </th>
                     <th colspan="2"></th>
                 </tr>

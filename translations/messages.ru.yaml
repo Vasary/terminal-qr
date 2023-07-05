@@ -70,8 +70,50 @@ payment:
     failure: ошибка
 login:
   message:
-    as: 'Вы вошли как '
-    title: 'Вы успешно авторизиованы'
-  dashboard: 'Панель управления'
-  logout: 'Выйти'
-  payments: 'Все платежи'
+    as: Вы вошли как
+    title: Вы успешно авторизиованы
+  dashboard: Панель управления
+  logout: Выйти
+  payments: Все платежи
+  go:
+    dashboard: В панель управления
+  form:
+    submit: Войти
+    email: Email
+    password: Пароль
+    remember: Войти
+dashboard:
+  payments: Платежи
+  terminals: Терминалы оплаты
+  gateways: Шлюзы
+  stores: Точки оплаты
+  users: Пользователи
+  logout: Выйти
+terminals:
+  title: Список платежных терминалов
+  store: Точка оплаты
+  gateway: Платежный шлюз
+  link: Ссылка для открытия терминала оплаты
+gateways:
+  button:
+    new: Создать новый платежный шлюз
+    search: Поиск
+    create: Создать новый платежный шлюз
+    update: Применить изменения
+    confirm: Подтвердить
+    cancel: Отмена
+  attribute:
+    key: Уникальный ключ
+    title: Название
+    host: Хост (host)
+    portal: Портал (portal)
+    currency: Валюта
+    updatedAt: Обновлен в
+    createdAt: Создан в
+    callback:
+      url: Ссылка на маршрут для получения сообщения об изменении статуса платежа
+  form:
+    title: Новый шлюз
+  title:
+    update: Обновить шлюз
+    delete: Удалить шлюз

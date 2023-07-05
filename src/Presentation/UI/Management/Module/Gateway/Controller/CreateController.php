@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[Route(path: '/management/gateway', name: 'management_getaway_create', methods: ['GET', 'POST'])]
 final class CreateController extends AbstractController
 {
-    private const PAGE_TITLE = 'Create new gateway';
+    private const PAGE_TITLE = 'gateways.form.title';
 
     public function __construct(private readonly GatewayFacadeInterface $gatewayFacade)
     {
