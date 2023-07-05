@@ -24,9 +24,9 @@ final class UpdateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Title',
+                    'label' => 'stores.form.title',
                     'attr' => [
-                        'placeholder' => 'Title',
+                        'placeholder' => 'stores.form.title',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -38,7 +38,7 @@ final class UpdateType extends AbstractType
                 'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Attached gateway',
+                    'label' => 'stores.form.gateways',
                     'multiple' => true,
                     'expanded' => true,
                     'choices' => $this->createChoiceList(),
@@ -49,10 +49,10 @@ final class UpdateType extends AbstractType
                 'class' => TextAreaType::class,
                 'options' => [
                     'required' => false,
-                    'help' => 'Optional description for a new store',
+                    'help' => 'stores.form.description.help',
                     'label' => ' ',
                     'attr' => [
-                        'placeholder' => '',
+                        'placeholder' => 'stores.form.description.placeholder',
                         'rows' => 4,
                         'cols' => 50,
                     ],
@@ -65,7 +65,7 @@ final class UpdateType extends AbstractType
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Update',
+                    'label' => 'stores.form.update',
                     'attr' => [
                         'class' => 'btn btn-primary w-100',
                     ],

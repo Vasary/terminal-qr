@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Stores\Controller;
 
+use App\Application\Contract\TranslatorInterface;
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
@@ -16,7 +17,7 @@ use App\Shared\Transfer\StoreDelete;
 #[Route(path: '/management/store/delete/{id}', name: 'management_store_delete', methods: ['GET', 'POST'])]
 final class DeleteController extends AbstractController
 {
-    public function __construct(private readonly StoreFacadeInterface $storeFacade)
+    public function __construct(private readonly StoreFacadeInterface $storeFacade, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -24,6 +25,7 @@ final class DeleteController extends AbstractController
     {
         $this->isAccessGranted();
 
+        $request = $requestStack->getRequest();
         $form = $this->createForm(DeleteType::class);
 
         $form->get('id')->setData($request->get('id'));
@@ -43,7 +45,7 @@ final class DeleteController extends AbstractController
 
         $view = $this->renderTemplate('@management/form-delete.html.twig', [
             'form' => $form,
-            'title' => 'Delete store ' . $request->get('id'),
+            'title' => sprintf('%s: %s', $this->translator->trans('stores.page.title.delete'), $request->get('id')),
         ]);
 
         return new HTMLResponse($view);

@@ -24,9 +24,9 @@ final class CreateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Title',
+                    'label' => 'stores.form.title',
                     'attr' => [
-                        'placeholder' => 'Title',
+                        'placeholder' => 'stores.form.title',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -38,7 +38,7 @@ final class CreateType extends AbstractType
                 'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Attached gateway',
+                    'label' => 'stores.form.gateways',
                     'multiple' => true,
                     'expanded' => true,
                     'row_attr' => [
@@ -52,10 +52,10 @@ final class CreateType extends AbstractType
                 'class' => TextAreaType::class,
                 'options' => [
                     'required' => false,
-                    'help' => 'Optional description for a new store',
+                    'help' => 'stores.form.description.help',
                     'label' => ' ',
                     'attr' => [
-                        'placeholder' => '',
+                        'placeholder' => 'stores.form.description.placeholder',
                         'rows' => 4,
                         'cols' => 50,
                     ],
@@ -68,7 +68,7 @@ final class CreateType extends AbstractType
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Create',
+                    'label' => 'stores.form.submit',
                     'attr' => [
                         'class' => 'btn btn-primary w-100',
                     ],

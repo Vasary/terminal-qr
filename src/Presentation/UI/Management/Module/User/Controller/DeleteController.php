@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\User\Controller;
 
+use App\Application\Contract\TranslatorInterface;
 use App\Application\User\Business\UserFacadeInterface;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
@@ -18,9 +19,9 @@ use App\Shared\Transfer\UserDelete;
 #[Route(path: '/management/users/delete/{id}', name: 'management_user_delete', methods: ['GET', 'POST'])]
 final class DeleteController extends AbstractController
 {
-    private const PAGE_TITLE = 'Delete user: %s';
+    private const PAGE_TITLE = 'users.page.title.delete';
 
-    public function __construct(private readonly UserFacadeInterface $facade)
+    public function __construct(private readonly UserFacadeInterface $facade, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -54,7 +55,7 @@ final class DeleteController extends AbstractController
         return new HTMLResponse(
             $this->renderTemplate('@management/form-delete.html.twig', [
                 'form' => $form,
-                'title' => sprintf(self::PAGE_TITLE, $user->email()),
+                'title' => sprintf('%s: %s', $this->translator->trans(self::PAGE_TITLE), $user->email()),
             ])
         );
     }

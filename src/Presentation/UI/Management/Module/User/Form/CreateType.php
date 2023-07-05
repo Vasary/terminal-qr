@@ -23,10 +23,10 @@ final class CreateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Email',
+                    'label' => 'users.attribute.email',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Email',
+                        'placeholder' => 'users.attribute.email',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -38,10 +38,10 @@ final class CreateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Password',
+                    'label' => 'users.attribute.password',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Password',
+                        'placeholder' => 'users.attribute.password',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -53,7 +53,7 @@ final class CreateType extends AbstractType
                 'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Assigned roles',
+                    'label' => 'users.attribute.roles',
                     'multiple' => false,
                     'expanded' => false,
                     'row_attr' => [
@@ -67,7 +67,7 @@ final class CreateType extends AbstractType
                 'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Assigned stores',
+                    'label' => 'users.attribute.assigned_stores',
                     'multiple' => true,
                     'expanded' => true,
                     'row_attr' => [
@@ -80,7 +80,7 @@ final class CreateType extends AbstractType
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Create',
+                    'label' => 'users.button.create',
                     'attr' => [
                         'class' => 'btn btn-primary w-100',
                     ],

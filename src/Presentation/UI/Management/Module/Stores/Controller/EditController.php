@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Stores\Controller;
 
+use App\Application\Contract\TranslatorInterface;
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Domain\Model\Store;
 use App\Domain\ValueObject\Id;
@@ -19,7 +20,7 @@ use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 #[Route(path: '/management/store/edit/{id}', name: 'management_store_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController
 {
-    public function __construct(private readonly StoreFacadeInterface $storeFacade)
+    public function __construct(private readonly StoreFacadeInterface $storeFacade, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -55,7 +56,6 @@ final class EditController extends AbstractController
 
         $form = $this->createForm(UpdateType::class, $data);
         $form->handleRequest($request);
-
         if ($form->isSubmitted() && $form->isValid()) {
             $this->updateStore($data, $store);
 
@@ -64,7 +64,7 @@ final class EditController extends AbstractController
 
         $view = $this->renderTemplate('@management/form.html.twig', [
             'form' => $form,
-            'title' => 'Update store: ' . $store->title() . 'with code: ' . $store->code(),
+            'title' => $this->translator->trans('stores.page.title.edit') . ': ' . $store->code(),
         ]);
 
         return new HTMLResponse($view);

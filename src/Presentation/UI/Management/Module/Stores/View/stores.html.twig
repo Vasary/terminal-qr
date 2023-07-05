@@ -1,15 +1,14 @@
 {% extends '@management/layout.html.twig' %}
 
-
 {% block content %}
     <header class="py-3 mb-4 border-bottom">
         <div class="container d-flex flex-wrap justify-content-center">
             <div href="/"
                  class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis">
-                <span class="fs-4">List of stores</span>
+                <span class="fs-4">{{ 'stores.page.title.list' | trans }}</span>
             </div>
             <div class="d-flex justify-content-center mb-4 align-items-center mb-3 mb-lg-0 ">
-                <a href="{{ path('management_store_create') }}" type="button" class="btn btn-primary">New store</a>
+                <a href="{{ path('management_store_create') }}" type="button" class="btn btn-primary">{{ 'stores.button.new' | trans }}</a>
             </div>
         </div>
     </header>
@@ -17,8 +16,8 @@
     <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
         <form action="{{ path('management_stores') }}" method="get" class="container">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" name="searchValue" placeholder="Search" value="{{ searchValue }}"/>
-                <button class="btn btn-outline-secondary" type="submit">Search</button>
+                <input type="text" class="form-control" name="searchValue" placeholder="{{ 'stores.button.search' | trans }}" value="{{ searchValue }}"/>
+                <button class="btn btn-outline-secondary" type="submit">{{ 'stores.button.search' | trans }}</button>
                 <input type="hidden" name="orderBy" value="{{ order }}">
                 <input type="hidden" name="page" value="1">
                 <input type="hidden" name="searchFields[]" value="title">
@@ -33,21 +32,19 @@
                     <th>#</th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('code', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Code</a>
+                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('code', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'stores.attribute.code' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Title</a>
+                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'stores.attribute.title' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Created
-                            at</a>
+                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'stores.attribute.createdAt' | trans }}</a>
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('updatedAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">Updated
-                            at</a>
+                           href="{{ path('management_stores', {'page': page,'orderBy': orderBy('updatedAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'stores.attribute.updatedAt' | trans }}</a>
                     </th>
                     <th colspan="2"></th>
                 </tr>

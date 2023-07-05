@@ -23,10 +23,10 @@ final class UpdateType extends AbstractType
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Email',
+                    'label' => 'users.attribute.email',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Email',
+                        'placeholder' => 'users.attribute.email',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -37,12 +37,12 @@ final class UpdateType extends AbstractType
                 'type' => 'password',
                 'class' => TextType::class,
                 'options' => [
-                    'required' => true,
-                    'label' => 'Password',
+                    'required' => false,
+                    'label' => 'users.attribute.password',
                     'empty_data' => '',
                     'trim' => true,
                     'attr' => [
-                        'placeholder' => 'Password',
+                        'placeholder' => 'users.attribute.password',
                     ],
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
@@ -54,7 +54,7 @@ final class UpdateType extends AbstractType
                 'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Assigned roles',
+                    'label' => 'users.attribute.roles',
                     'multiple' => false,
                     'expanded' => false,
                     'row_attr' => [
@@ -68,7 +68,7 @@ final class UpdateType extends AbstractType
                 'class' => ChoiceType::class,
                 'options' => [
                     'required' => true,
-                    'label' => 'Assigned stores',
+                    'label' => 'users.attribute.assigned_stores',
                     'multiple' => true,
                     'expanded' => true,
                     'row_attr' => [
@@ -81,7 +81,7 @@ final class UpdateType extends AbstractType
                 'type' => 'submit',
                 'class' => SubmitType::class,
                 'options' => [
-                    'label' => 'Update',
+                    'label' => 'users.button.update',
                     'attr' => [
                         'class' => 'btn btn-primary w-100',
                     ],

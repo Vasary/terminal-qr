@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\User\Controller;
 
+use App\Application\Contract\TranslatorInterface;
 use App\Application\User\Business\UserFacadeInterface;
 use App\Domain\Model\Store;
 use App\Domain\Model\User;
@@ -20,9 +21,9 @@ use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 #[Route(path: '/management/users/edit/{id}', name: 'management_users_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController
 {
-    private const PAGE_TITLE = 'Update user: %s';
+    private const PAGE_TITLE = 'users.page.title.edit';
 
-    public function __construct(private readonly UserFacadeInterface $userFacade)
+    public function __construct(private readonly UserFacadeInterface $userFacade, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -66,7 +67,7 @@ final class EditController extends AbstractController
 
         $view = $this->renderTemplate('@management/form.html.twig', [
             'form' => $form,
-            'title' => sprintf(self::PAGE_TITLE, $user->email()),
+            'title' => sprintf('%s: %s', $this->translator->trans(self::PAGE_TITLE), $user->email()),
         ]);
 
         return new HTMLResponse($view);

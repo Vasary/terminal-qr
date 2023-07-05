@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\User\Controller;
 
+use App\Application\Contract\TranslatorInterface;
 use App\Application\User\Business\UserFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
@@ -17,9 +18,9 @@ use App\Shared\Transfer\UserCreate;
 #[Route(path: '/management/user', name: 'management_user_create', methods: ['GET', 'POST'])]
 final class CreateController extends AbstractController
 {
-    private const PAGE_TITLE = 'Create new user';
+    private const PAGE_TITLE = 'users.page.title.create';
 
-    public function __construct(private readonly UserFacadeInterface $userFacade)
+    public function __construct(private readonly UserFacadeInterface $userFacade, private readonly TranslatorInterface $translator)
     {
     }
 

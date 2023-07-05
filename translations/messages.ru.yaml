@@ -117,3 +117,48 @@ gateways:
   title:
     update: Обновить шлюз
     delete: Удалить шлюз
+  page:
+    title: Платежные шлюзы
+stores:
+  button:
+    new: Новая точка оплат
+    search: Поиск
+  page:
+    title:
+      list: Точки оплат
+      create: Создать новую точку оплат
+      edit: Редактировать точку оплат
+      delete: Удалить точку оплат
+  attribute:
+    code: Код
+    title: Название
+    createdAt: Создано в
+    updatedAt: Обновлено в
+  form:
+    title: Название
+    gateways: Подключенные платежные шлюзы
+    description:
+      help: Вы можете указать описание для вашей точки приема платежей. Данное поле является необязательным.
+      placeholder: Мое кафе на береуг океана
+    submit: Создать
+    update: Обновить
+  buttons:
+    confirm: Подтвердить
+    cancel: Отмена
+users:
+  page:
+    title:
+      list: Все пользователи
+      create: Создать нового пользователя
+      edit: Обновить данные пользователя
+      delete: Удалить пользователя
+  button:
+    create: Создать нового пользователя
+    update: Обновить пользователя
+  attribute:
+    email: Email
+    assigned_stores: Доступные магазины
+    createdAt: Создан в
+    updatedAt: Обновлен в
+    password: Пароль
+    roles: Уровень допуска
