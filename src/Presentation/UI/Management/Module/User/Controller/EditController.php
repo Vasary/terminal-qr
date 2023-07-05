@@ -10,12 +10,12 @@ use App\Domain\Model\User;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\User\Form\Data;
 use App\Presentation\UI\Management\Module\User\Form\UpdateType;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\UserUpdate;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 
 #[Route(path: '/management/users/edit/{id}', name: 'management_users_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController
@@ -33,16 +33,22 @@ final class EditController extends AbstractController
         ));
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(HttpRequest $requestStack): BaseResponse
     {
         $this->isAccessGranted();
 
+        $request = $requestStack->getRequest();
         $user = $this->userFacade->findById(Id::fromString($request->get('id')));
+
+        $roles = $user->roles();
+        if (false !== ($key = array_search('ROLE_USER', $roles))) {
+            unset($roles[$key]);
+        }
 
         $data = new Data();
         $data->email = (string) $user->email();
         $data->password = '';
-        $data->roles = $user->roles()[0];
+        $data->roles = current($roles);
 
         foreach ($user->stores() as $store) {
             /** @var Store $store */
@@ -55,7 +61,7 @@ final class EditController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->updateUser($data, $user);
 
-            return $this->redirectToRoute('management_users');
+            return $this->redirectTo('management_users');
         }
 
         $view = $this->renderTemplate('@management/form.html.twig', [

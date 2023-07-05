@@ -9,12 +9,12 @@ use App\Domain\Model\Store;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\Stores\Form\Data;
 use App\Presentation\UI\Management\Module\Stores\Form\UpdateType;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\StoreUpdate;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 
 #[Route(path: '/management/store/edit/{id}', name: 'management_store_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController
@@ -38,10 +38,11 @@ final class EditController extends AbstractController
         }
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(HttpRequest $requestStack): BaseResponse
     {
         $this->isAccessGranted();
 
+        $request = $requestStack->getRequest();
         $store = $this->storeFacade->findById(Id::fromString($request->get('id')));
 
         $data = new Data();
@@ -58,7 +59,7 @@ final class EditController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->updateStore($data, $store);
 
-            return $this->redirectToRoute('management_stores');
+            return $this->redirectTo('management_stores');
         }
 
         $view = $this->renderTemplate('@management/form.html.twig', [

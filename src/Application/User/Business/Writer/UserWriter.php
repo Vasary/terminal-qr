@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Application\User\Business\Writer;
 
+use App\Application\Contract\UserPasswordHasherInterface;
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Application\User\User as ApplicationUser;
 use App\Domain\Exception\NotFoundException;
@@ -14,7 +15,6 @@ use App\Domain\ValueObject\Id;
 use App\Shared\Transfer\UserCreate;
 use App\Shared\Transfer\UserDelete;
 use App\Shared\Transfer\UserUpdate;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 final readonly class UserWriter
 {

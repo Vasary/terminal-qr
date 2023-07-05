@@ -4,17 +4,17 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Gateway\Controller;
 
+use App\Application\Contract\TranslatorInterface;
 use App\Application\Gateway\Business\GatewayFacadeInterface;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\Gateway\Form\Data;
 use App\Presentation\UI\Management\Module\Gateway\Form\UpdateType;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\GatewayUpdate;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 
 #[Route(path: '/management/gateway/edit/{id}', name: 'management_gateway_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController
@@ -25,9 +25,10 @@ final class EditController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(HttpRequest $request): BaseResponse
     {
         $this->isAccessGranted();
+        $request = $request->getRequest();
 
         $id = $request->get('id');
 
@@ -47,7 +48,7 @@ final class EditController extends AbstractController
                 array_merge($data->toArray(), ['id' => $id])
             ));
 
-            return $this->redirectToRoute('management_gateways');
+            return $this->redirectTo('management_gateways');
         }
 
         $view = $this->renderTemplate('@management/form.html.twig', [

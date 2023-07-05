@@ -19,8 +19,8 @@ final class UserFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $administrator = $this->createUser('admin@vasary.com', 'admin', true);
-        $storeManager = $this->createUser('manager@vasary.com', 'manager', false);
+        $administrator = $this->createUser('admin@vasary.com', 'admin', 'ROLE_ADMIN');
+        $storeManager = $this->createUser('manager@vasary.com', 'manager', 'ROLE_MANAGER');
 
         $manager->persist($administrator->getDomainUser());
         $manager->persist($storeManager->getDomainUser());
@@ -28,7 +28,7 @@ final class UserFixtures extends Fixture
         $manager->flush();
     }
 
-    private function createUser(string $email, string $password, bool $isAdmin): User
+    private function createUser(string $email, string $password, string $additionalRole): User
     {
         $user = new User(new DomainUser(new Email($email)));
 
@@ -37,10 +37,7 @@ final class UserFixtures extends Fixture
         $domainUser = $user->getDomainUser();
         $domainUser->withPassword($hashedPassword);
         $domainUser->addRole('ROLE_USER');
-
-        if ($isAdmin) {
-            $domainUser->addRole('ROLE_ADMIN');
-        }
+        $domainUser->addRole($additionalRole);
 
         return $user;
     }

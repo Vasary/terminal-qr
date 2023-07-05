@@ -4,28 +4,32 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Gateway\Form;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Infrastructure\Assert\Currency;
+use App\Infrastructure\Assert\Hostname;
+use App\Infrastructure\Assert\Length;
+use App\Infrastructure\Assert\NotBlank;
+use App\Infrastructure\Assert\Url;
 
 final class Data
 {
-    #[Assert\NotBlank]
-    #[Assert\Url]
+    #[NotBlank]
+    #[Url]
     public string $callback;
 
-    #[Assert\Currency]
-    #[Assert\NotBlank]
+    #[Currency]
+    #[NotBlank]
     public string $currency;
 
-    #[Assert\Length(min: 1, max: 255)]
-    #[Assert\NotBlank]
+    #[Length(min: 1, max: 255)]
+    #[NotBlank]
     public string $portal;
 
-    #[Assert\Domain]
-    #[Assert\NotBlank]
+    #[Hostname]
+    #[NotBlank]
     public string $host;
 
-    #[Assert\Length(min: 1, max: 255)]
-    #[Assert\NotBlank]
+    #[Length(min: 1, max: 255)]
+    #[NotBlank]
     public string $title;
 
     public function toArray(): array

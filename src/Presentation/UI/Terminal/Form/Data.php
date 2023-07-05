@@ -4,18 +4,19 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Terminal\Form;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Infrastructure\Assert\GreaterThan;
+use App\Infrastructure\Assert\NotBlank;
 
 final class Data
 {
-    #[Assert\GreaterThan(0)]
-    #[Assert\NotBlank]
+    #[GreaterThan(0)]
+    #[NotBlank]
     public int $amount;
 
-    #[Assert\NotBlank]
+    #[NotBlank]
     public string $gateway;
 
-    #[Assert\NotBlank]
+    #[NotBlank]
     public string $store;
 
     public function toArray(): array

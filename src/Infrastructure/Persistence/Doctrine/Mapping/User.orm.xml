@@ -4,7 +4,7 @@
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
     <entity name="App\Domain\Model\User" table="users">
         <id name="id" type="id"/>
-        <field name="email" type="email"/>
+        <field name="email" type="email" unique="true"/>
         <field name="password" length="64"/>
         <field name="roles" type="simple_array"/>
         <field name="createdAt" type="datetimetz_immutable"/>

@@ -4,18 +4,21 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\User\Form;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Infrastructure\Assert\Email;
+use App\Infrastructure\Assert\Length;
+use App\Infrastructure\Assert\NotBlank;
 
 final class Data
 {
-    #[Assert\Email]
-    #[Assert\NotBlank]
+    #[Email]
+    #[NotBlank]
     public string $email;
 
-    #[Assert\Length(min: 0, max: 25)]
+    #[Length(min: 0, max: 25)]
+    #[NotBlank]
     public string $password;
 
-    #[Assert\NotBlank]
+    #[NotBlank]
     public string $roles;
 
     public array $stores;

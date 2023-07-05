@@ -5,9 +5,9 @@ declare(strict_types = 1);
 namespace App\Presentation\UI\Management\Module\Gateway\Form;
 
 use App\Infrastructure\Form\AbstractType;
+use App\Infrastructure\Form\ChoiceType;
 use App\Infrastructure\Form\SubmitType;
 use App\Infrastructure\Form\TextType;
-use App\Infrastructure\Form\ChoiceType;
 
 final class CreateType extends AbstractType
 {

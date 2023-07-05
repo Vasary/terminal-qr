@@ -7,13 +7,12 @@ namespace App\Presentation\UI\Management\Module\Gateway\Controller;
 use App\Application\Gateway\Business\GatewayFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
-use App\Presentation\UI\Management\Gateway\Form\CreateData;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\Gateway\Form\CreateType;
 use App\Presentation\UI\Management\Module\Gateway\Form\Data;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\GatewayCreate;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 #[Route(path: '/management/gateway', name: 'management_getaway_create', methods: ['GET', 'POST'])]
 final class CreateController extends AbstractController
@@ -24,18 +23,18 @@ final class CreateController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(HttpRequest $request): BaseResponse
     {
         $this->isAccessGranted();
 
         $data = new Data();
         $form = $this->createForm(CreateType::class, $data);
 
-        $form->handleRequest($request);
+        $form->handleRequest($request->getRequest());
         if ($form->isSubmitted() && $form->isValid()) {
             $this->gatewayFacade->create(GatewayCreate::fromArray($data->toArray()));
 
-            return $this->redirectToRoute('management_gateways');
+            return $this->redirectTo('management_gateways');
         }
 
         $view = $this->renderTemplate('@management/form.html.twig', [

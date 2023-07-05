@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace App\Application\User;
 
 use App\Domain\Model\User as DomainUser;
+use App\Infrastructure\Security\User\PasswordAuthenticatedUserInterface;
 use App\Infrastructure\Security\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 
 final readonly class User implements UserInterface, PasswordAuthenticatedUserInterface
 {

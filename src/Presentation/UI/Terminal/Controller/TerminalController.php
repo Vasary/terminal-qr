@@ -12,12 +12,12 @@ use App\Domain\ValueObject\Code;
 use App\Domain\ValueObject\Key;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Terminal\Form\CreateType;
 use App\Presentation\UI\Terminal\Form\Data;
 use App\Presentation\UI\Terminal\Response\TerminalResponse;
 use ErrorException;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 #[Route(path: '/terminal/{code}', name: 'terminal')]
 final class TerminalController extends AbstractController
@@ -33,8 +33,9 @@ final class TerminalController extends AbstractController
     /**
      * @throws TerminalGeneratingException
      */
-    public function __invoke(Request $request): Response
+    public function __invoke(HttpRequest $requestStack): BaseResponse
     {
+        $request = $requestStack->getRequest();
         $code = $request->get('code');
 
         try {
@@ -61,7 +62,7 @@ final class TerminalController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $payment = $this->paymentFacade->create($data->amount, $store->id(), $gateway->id());
             if (null !== $payment->qr()) {
-                return $this->redirectToRoute('terminal_status', [
+                return $this->redirectTo('terminal_status', [
                     'paymentId' => (string) $payment->id(),
                 ]);
             }

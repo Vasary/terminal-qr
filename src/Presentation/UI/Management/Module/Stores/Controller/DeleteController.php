@@ -7,11 +7,11 @@ namespace App\Presentation\UI\Management\Module\Stores\Controller;
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\Stores\Form\DeleteType;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\StoreDelete;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 #[Route(path: '/management/store/delete/{id}', name: 'management_store_delete', methods: ['GET', 'POST'])]
 final class DeleteController extends AbstractController
@@ -20,7 +20,7 @@ final class DeleteController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(HttpRequest $requestStack): BaseResponse
     {
         $this->isAccessGranted();
 
@@ -31,14 +31,14 @@ final class DeleteController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('cancel')->isClicked()) {
-                return $this->redirectToRoute('management_stores');
+                return $this->redirectTo('management_stores');
             }
 
             $this->storeFacade->delete(StoreDelete::fromArray([
                 'id' => $form->get('id')->getData(),
             ]));
 
-            return $this->redirectToRoute('management_stores');
+            return $this->redirectTo('management_stores');
         }
 
         $view = $this->renderTemplate('@management/form-delete.html.twig', [

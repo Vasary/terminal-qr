@@ -8,8 +8,8 @@ use App\Application\Payment\Business\PaymentFacadeInterface;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Terminal\Response\TerminalResponse;
-use Symfony\Component\HttpFoundation\Request;
 
 #[Route(path: '/terminal/status/{paymentId}', name: 'terminal_status')]
 final class TerminalStatusController extends AbstractController
@@ -18,10 +18,10 @@ final class TerminalStatusController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request): TerminalResponse
+    public function __invoke(HttpRequest $requestStack): TerminalResponse
     {
         $errors = [];
-        $payment = $this->paymentFacade->findById(Id::fromString($request->get('paymentId')));
+        $payment = $this->paymentFacade->findById(Id::fromString($requestStack->getRequest()->get('paymentId')));
         $terminal = $payment->store()->code() . ':' . $payment->gateway()->key();
 
         $view = $this->renderTemplate('@terminal/status.html.twig', [

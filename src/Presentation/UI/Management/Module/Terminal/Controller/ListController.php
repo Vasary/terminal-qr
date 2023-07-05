@@ -7,9 +7,8 @@ namespace App\Presentation\UI\Management\Module\Terminal\Controller;
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 use App\Presentation\UI\Management\Response\HTMLResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 #[Route(path: '/management/terminals', name: 'management_terminals', methods: ['GET'])]
 final class ListController extends AbstractController
@@ -18,7 +17,7 @@ final class ListController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(): BaseResponse
     {
         $this->isAccessGranted();
 

@@ -4,21 +4,22 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Stores\Form;
 
-use Symfony\Component\Validator\Constraints as Assert;
+use App\Infrastructure\Assert\Collection;
+use App\Infrastructure\Assert\Length;
+use App\Infrastructure\Assert\NotBlank;
+use App\Infrastructure\Assert\Uuid;
 
 final class Data
 {
-    #[Assert\Length(min: 1, max: 50)]
-    #[Assert\NotBlank]
+    #[Length(min: 1, max: 50)]
+    #[NotBlank]
     public string $title;
 
-    #[Assert\Collection([
-        new Assert\Uuid(),
-    ])]
-    #[Assert\NotBlank]
+    #[Collection([new Uuid()])]
+    #[NotBlank]
     public array $gateways;
 
-    #[Assert\NotBlank]
+    #[NotBlank]
     public string $description;
 
     public function toArray(): array

@@ -9,9 +9,7 @@ use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
 use App\Presentation\UI\Management\Module\Gateway\Controller\Request\GatewaysRequest;
 use App\Presentation\UI\Management\Response\HTMLResponse;
-use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchCriteria;
-use App\Shared\Transfer\SearchField;
 
 #[Route(path: '/management/gateways', name: 'management_gateways', methods: ['GET'])]
 final class GatewaysController extends AbstractController
@@ -24,7 +22,6 @@ final class GatewaysController extends AbstractController
 
     public function __invoke(GatewaysRequest $request): HTMLResponse
     {
-        // TODO Full refactoring
         $this->isAccessGranted();
 
         $search = $this->getSearchRequest($request);

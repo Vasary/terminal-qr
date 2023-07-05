@@ -4,15 +4,15 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Gateway\Controller;
 
+use App\Application\Contract\TranslatorInterface;
 use App\Application\Gateway\Business\GatewayFacadeInterface;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
+use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\Gateway\Form\DeleteType;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\GatewayDelete;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route(path: '/management/gateway/delete/{id}', name: 'management_gateway_delete', methods: ['GET', 'POST'])]
 final class DeleteController extends AbstractController
@@ -21,9 +21,10 @@ final class DeleteController extends AbstractController
     {
     }
 
-    public function __invoke(Request $request): Response
+    public function __invoke(HttpRequest $requestStack): BaseResponse
     {
         $this->isAccessGranted();
+        $request = $requestStack->getRequest();
 
         $form = $this->createForm(DeleteType::class);
 
@@ -32,14 +33,14 @@ final class DeleteController extends AbstractController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('cancel')->isClicked()) {
-                return $this->redirectToRoute('management_gateways');
+                return $this->redirectTo('management_gateways');
             }
 
             $this->gatewayFacade->delete(GatewayDelete::fromArray([
                 'id' => $form->get('id')->getData(),
             ]));
 
-            return $this->redirectToRoute('management_gateways');
+            return $this->redirectTo('management_gateways');
         }
 
         $view = $this->renderTemplate('@management/form-delete.html.twig', [

@@ -9,9 +9,7 @@ use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
 use App\Presentation\UI\Management\Module\Stores\Controller\Request\StoresRequest;
 use App\Presentation\UI\Management\Response\HTMLResponse;
-use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchCriteria;
-use App\Shared\Transfer\SearchField;
 
 #[Route(path: '/management/stores', name: 'management_stores', methods: ['GET'])]
 final class StoresController extends AbstractController

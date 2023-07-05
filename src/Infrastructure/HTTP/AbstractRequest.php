@@ -7,8 +7,7 @@ namespace App\Infrastructure\HTTP;
 use App\Infrastructure\HTTP\Exception\ValidationException;
 use ReflectionClass;
 use RuntimeException;
-use Symfony\Component\HttpFoundation\Request as SymfonyRequest;
-use Symfony\Component\HttpFoundation\RequestStack as SymfonyRequestStack;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 abstract class AbstractRequest
@@ -19,7 +18,7 @@ abstract class AbstractRequest
         'translator',
     ];
 
-    public function __construct(protected ValidatorInterface $validator, private readonly SymfonyRequestStack $request) {
+    public function __construct(protected ValidatorInterface $validator, private readonly HttpRequest $request) {
         $this->populate();
 
         if ($this->autoValidateRequest()) {
@@ -36,9 +35,9 @@ abstract class AbstractRequest
         }
     }
 
-    public function getRequest(): SymfonyRequest
+    public function getRequest(): Request
     {
-        return $this->request->getCurrentRequest();
+        return $this->request->getRequest();
     }
 
     public function toArray(): array

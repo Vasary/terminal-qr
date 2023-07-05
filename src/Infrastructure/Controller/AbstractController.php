@@ -5,12 +5,10 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Controller;
 
 use App\Infrastructure\HTTP\AbstractRequest;
-use App\Presentation\UI\Management\Module\Gateway\Controller\Request\GatewaysRequest;
+use App\Infrastructure\HTTP\RedirectResponse;
 use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchField;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyController;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\RequestStack;
 
 abstract class AbstractController extends SymfonyController
 {
@@ -47,5 +45,10 @@ abstract class AbstractController extends SymfonyController
         [$orderByField, $orderByDirection] = explode(':', $request->orderBy);
 
         return [new OrderByField($orderByField, $orderByDirection)];
+    }
+
+    protected function redirectTo(string $route, array $parameters = []): RedirectResponse
+    {
+        return new RedirectResponse($this->generateUrl($route, $parameters), 302);
     }
 }
