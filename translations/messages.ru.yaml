@@ -162,3 +162,6 @@ users:
     updatedAt: Обновлен в
     password: Пароль
     roles: Уровень допуска
+validation:
+  errors:
+    not_blank: Полне не должно быть пустым

@@ -10,4 +10,5 @@ use Symfony\Component\Validator\Constraints\Uuid as Base;
 #[\Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Uuid extends Base
 {
+    public $message = 'UUID имеет некорректный формат';
 }

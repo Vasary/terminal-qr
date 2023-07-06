@@ -23,6 +23,15 @@ final class CreateController extends AbstractController
     {
     }
 
+    public function createStore(Data $data): void
+    {
+        $store = $this->storeFacade->create(StoreCreate::fromArray($data->toArray()));
+
+        foreach ($data->gateways as $gateway) {
+            $this->storeFacade->addGateway($store->id(), Id::fromString($gateway));
+        }
+    }
+
     public function __invoke(HttpRequest $requestStack): BaseResponse
     {
         $this->isAccessGranted();
@@ -31,12 +40,9 @@ final class CreateController extends AbstractController
 
         $form = $this->createForm(CreateType::class, $data);
         $form->handleRequest($requestStack->getRequest());
-        if ($form->isSubmitted() && $form->isValid()) {
-            $store = $this->storeFacade->create(StoreCreate::fromArray($data->toArray()));
 
-            foreach ($data->gateways as $gateway) {
-                $this->storeFacade->addGateway($store->id(), Id::fromString($gateway));
-            }
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->createStore($data);
 
             return $this->redirectTo('management_stores');
         }

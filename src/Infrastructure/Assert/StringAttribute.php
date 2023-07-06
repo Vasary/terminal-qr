@@ -10,8 +10,8 @@ use Symfony\Component\Validator\Constraint;
 #[Attribute]
 final class StringAttribute extends Constraint
 {
-    public string $requiredMessage = 'Attribute {name} is required';
-    public string $stringLength = 'Attribute {name} should be more then {min} and less then {max} symbols';
+    public string $requiredMessage = 'Поля является обязательным.';
+    public string $stringLength = 'Аттрибут {name} должен быть больше чем {min} и меньше чем {max}.';
 
     public function __construct(
         public readonly bool $required,
