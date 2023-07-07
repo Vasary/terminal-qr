@@ -1,4 +1,4 @@
-FROM php:8.2.3-fpm-alpine as builder
+FROM php:8.2-fpm-alpine as builder
 
 COPY --from=composer:latest /usr/bin/composer /usr/local/bin/composer
 
@@ -10,14 +10,13 @@ RUN set -ex && \
     apk add --no-cache --virtual .php-deps make && \
     apk add --no-cache --virtual .build-deps $PHPIZE_DEPS zlib-dev icu-dev g++ && \
     apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers && \
-    pecl install redis xdebug uopz pcov && \
     docker-php-ext-configure intl && \
     docker-php-ext-install pdo pdo_sqlite sockets intl && \
-    docker-php-ext-enable redis xdebug uopz intl pcov
+    docker-php-ext-enable intl
 
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader --prefer-dist
 
-FROM php:8.2.3-fpm-alpine
+FROM php:8.2-fpm-alpine
 
 WORKDIR /app
 
@@ -27,20 +26,25 @@ COPY --from=builder /app/.env /app/.env
 COPY --from=builder /app/public /app/public
 COPY --from=builder /app/src /app/src
 COPY --from=builder /app/vendor /app/vendor
+COPY --from=builder /app/translations /app/translations
 COPY --from=builder /app/composer.json /app/composer.json
 COPY --from=builder /app/build/entrypoint.sh /entrypoint.sh
 
 RUN set -ex && \
-    apk add --no-cache --virtual .php-deps make && \
     apk add --no-cache --virtual .build-deps $PHPIZE_DEPS zlib-dev icu-dev g++ && \
-    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers && \
-    pecl install redis && \
+    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers nginx ca-certificates && \
     docker-php-ext-configure intl && \
-    docker-php-ext-install pdo pdo_sqlite sockets intl && \
-    docker-php-ext-enable redis intl && \
-    chown www-data:www-data -R /app
+    docker-php-ext-install pdo pdo_sqlite intl && \
+    docker-php-ext-enable intl && \
+    mkdir /app/resource && \
+    chown www-data:www-data -R /app && \
+    ln -sf /dev/stdout /var/log/nginx/access.log && \
+    ln -sf /dev/stderr /var/log/nginx/error.log
 
-CMD ["php-fpm"]
+COPY build/nginx/http.d/default.conf /etc/nginx/http.d/default.conf
+CMD ["nginx", "-g", "daemon off;"]
+
 ENTRYPOINT ["/entrypoint.sh"]
 
-EXPOSE 9000
+STOPSIGNAL SIGQUIT
+EXPOSE 80
