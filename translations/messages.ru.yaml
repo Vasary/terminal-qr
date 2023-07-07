@@ -67,7 +67,10 @@ payment:
     registered: зарегистрирован
     awaiting: ожидает оплаты
     successfully: успешный
-    failure: ошибка
+    failure: не успешно
+    timeout: не успешный, платеж просрочился
+    unknown: неизвестный
+
 login:
   message:
     as: Вы вошли как

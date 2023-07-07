@@ -12,12 +12,6 @@ use Twig\TwigFunction;
 
 final class PaymentStatus extends AbstractExtension
 {
-    public function __construct(
-        private readonly TranslatorInterface $translator
-    )
-    {
-    }
-
     private const statusMap = [
         PaymentStatusEnum::Init->value => 'dark',
         PaymentStatusEnum::Token->value => 'info',
@@ -25,7 +19,13 @@ final class PaymentStatus extends AbstractExtension
         PaymentStatusEnum::Awaiting->value => 'warning',
         PaymentStatusEnum::Successfully->value => 'success',
         PaymentStatusEnum::Failure->value => 'danger',
+        PaymentStatusEnum::Timeout->value => 'danger',
+        PaymentStatusEnum::Unknown->value => 'danger',
     ];
+
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
 
     public function getFunctions(): array
     {
@@ -43,6 +43,8 @@ final class PaymentStatus extends AbstractExtension
 
     private function getTemplate(string $bootstrapClass, string $value): string
     {
-        return '<span class="badge rounded-pill bg-' . $bootstrapClass . '">' . $this->translator->trans($value) . '</span>';
+        return '<span class="badge rounded-pill bg-' . $bootstrapClass . '">' . $this->translator->trans(
+            $value
+        ) . '</span>';
     }
 }
