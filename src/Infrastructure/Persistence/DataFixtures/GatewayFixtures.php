@@ -13,11 +13,17 @@ use App\Domain\ValueObject\Portal;
 use App\Domain\ValueObject\Title;
 use App\Infrastructure\Test\Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class GatewayFixtures extends Fixture
+final class GatewayFixtures extends Fixture implements FixtureGroupInterface
 {
     public function __construct(private readonly int $limit = 10) {}
+
+    public static function getGroups(): array
+    {
+        return ['demo'];
+    }
 
     public function load(ObjectManager $manager): void
     {

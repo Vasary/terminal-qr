@@ -22,7 +22,7 @@ fi
 if [ ! -f "/app/resource/production.db" ]; then
     /app/bin/console do:da:cr > /dev/null 2>&1 && stat "Creating empty database" "OK" || stat "Failed to create database" "FAIL"
     /app/bin/console do:sc:up --force --complete > /dev/null 2>&1 && stat "Update database schema" "OK" || stat "Failed to update database schema" "FAIL"
-    /app/bin/console do:fi:lo --no-interaction > /dev/null 2>&1 && stat "Load default fixtures" "OK" || stat "Failed to load default fixtures" "FAIL"
+    /app/bin/console do:fi:lo --group=users --no-interaction > /dev/null 2>&1 && stat "Load default fixtures" "OK" || stat "Failed to load default fixtures" "FAIL"
 else
     stat "Database existing" "OK"
     /app/bin/console do:sc:up --force > /dev/null 2>&1 && stat "Update database schema" "OK" || stat "Failed to update database schema" "FAIL"

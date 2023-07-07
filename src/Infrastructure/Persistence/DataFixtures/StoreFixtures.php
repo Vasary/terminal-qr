@@ -10,11 +10,17 @@ use App\Domain\ValueObject\Description;
 use App\Domain\ValueObject\Title;
 use App\Infrastructure\Test\Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 
-final class StoreFixtures extends Fixture
+final class StoreFixtures extends Fixture implements FixtureGroupInterface
 {
     public function __construct(private readonly int $limit = 10) {}
+
+    public static function getGroups(): array
+    {
+        return ['demo'];
+    }
 
     public function load(ObjectManager $manager): void
     {

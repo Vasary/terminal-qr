@@ -13,14 +13,20 @@ use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Currency;
 use App\Infrastructure\Test\Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
+use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Grpc\Call;
 
-final class PaymentFixtures extends Fixture implements DependentFixtureInterface
+final class PaymentFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function __construct(private readonly int $limit = 10)
     {
+    }
+
+    public static function getGroups(): array
+    {
+        return ['demo'];
     }
 
     public function load(ObjectManager $manager): void
