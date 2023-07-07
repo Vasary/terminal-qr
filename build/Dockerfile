@@ -43,7 +43,7 @@ RUN set -ex && \
 
 COPY build/nginx/http.d/default.conf /etc/nginx/http.d/default.conf
 
-HEALTHCHECK CMD curl --fail http://localhost/health/check || exit 1
+HEALTHCHECK --interval=30s --timeout=5s CMD curl --fail http://localhost/health/check || exit 1
 
 CMD ["nginx", "-g", "daemon off;"]
 
