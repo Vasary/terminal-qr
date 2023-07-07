@@ -32,7 +32,7 @@ COPY --from=builder /app/build/entrypoint.sh /entrypoint.sh
 
 RUN set -ex && \
     apk add --no-cache --virtual .build-deps $PHPIZE_DEPS zlib-dev icu-dev g++ && \
-    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers nginx ca-certificates && \
+    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers nginx curl ca-certificates && \
     docker-php-ext-configure intl && \
     docker-php-ext-install pdo pdo_sqlite intl && \
     docker-php-ext-enable intl && \
@@ -42,6 +42,9 @@ RUN set -ex && \
     ln -sf /dev/stderr /var/log/nginx/error.log
 
 COPY build/nginx/http.d/default.conf /etc/nginx/http.d/default.conf
+
+HEALTHCHECK CMD curl --fail http://localhost/health/check || exit 1
+
 CMD ["nginx", "-g", "daemon off;"]
 
 ENTRYPOINT ["/entrypoint.sh"]

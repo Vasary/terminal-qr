@@ -8,4 +8,4 @@ prod:
 	docker build . --file build/Dockerfile --tag vasary/qr_terminal:production
 
 run_prod:
-	docker run -it -p 81:80 -e APP_SECRET=c4ca4238a0b923820dcc509a6f75849b vasary/qr_terminal:production
+	docker run -p 81:80 -e APP_SECRET=c4ca4238a0b923820dcc509a6f75849b vasary/qr_terminal:production
