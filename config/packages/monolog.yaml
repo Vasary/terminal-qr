@@ -50,4 +50,4 @@ when@production:
             deprecation:
                 type: stream
                 channels: [deprecation]
-                path: php://stderr
+                path: "%kernel.logs_dir%/%kernel.environment%.deprecation.log"

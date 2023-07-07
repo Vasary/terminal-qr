@@ -14,5 +14,4 @@
 /resource/clover.xml
 /.phpcs-cache
 .DS_Store
-/public/assets/css/*.css
-/public/assets/js/*.js
+
