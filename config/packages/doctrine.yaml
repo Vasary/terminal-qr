@@ -37,7 +37,7 @@ doctrine_migrations:
 when@production:
     doctrine:
         dbal:
-            url: 'sqlite:///%env(APP_RESOURCE_PATH)%/production.db'
+            url: 'sqlite:///var/lib/data/production.db'
         orm:
             auto_generate_proxy_classes: false
             query_cache_driver:
