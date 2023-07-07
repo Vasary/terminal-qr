@@ -40,8 +40,6 @@ services:
     App\Domain\Repository\UserRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\UserRepository'
     App\Domain\Repository\PaymentRepositoryInterface: '@App\Infrastructure\Persistence\Doctrine\Repository\PaymentRepository'
 
-    App\Infrastructure\Translation\TranslatorInterface: '@Symfony\Contracts\Translation\TranslatorInterface'
-
     App\Application\Security\Provider\UserProvider:
         arguments:
             $repository: '@App\Infrastructure\Persistence\Doctrine\Repository\UserRepository'

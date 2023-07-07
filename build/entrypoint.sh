@@ -18,7 +18,6 @@ if [ ! -d /app/var ]; then
 fi
 
 /app/bin/console cache:warmup > /dev/null 2>&1 && stat "Warmup cache" "OK" || stat "Failed to warmup cache" "FAIL"
-chown www-data:www-data -R /app/var > /dev/null 2>&1 && stat "Fix var chown" "OK" || stat "Failed to change var directory owner" "FAIL"
 
 if [ ! -f "/app/resource/production.db" ]; then
     /app/bin/console do:da:cr > /dev/null 2>&1 && stat "Creating empty database" "OK" || stat "Failed to create database" "FAIL"
@@ -30,6 +29,7 @@ else
 fi
 
 chown www-data:www-data /app/resource/production.db && stat "Update database permissions" "OK" || stat "Failed to update database permissions" "FAIL"
+chown www-data:www-data -R /app/var > /dev/null 2>&1 && stat "Fix var chown" "OK" || stat "Failed to change var directory owner" "FAIL"
 
 php-fpm -D > /dev/null 2>&1 && stat "Running PHP-FPM" "OK" || stat "Failed to run PHP-FPM" "FAIL"
 
