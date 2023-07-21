@@ -7,13 +7,17 @@ namespace App\Tests\Application\Payment;
 use App\Application\Payment\Business\PaymentFacade;
 use App\Application\Store\Business\StoreFacade;
 use App\Domain\Enum\PaymentStatusEnum;
+use App\Domain\Enum\WorkflowTransitionEnum;
 use App\Domain\Model\QR;
 use App\Domain\Model\Store;
+use App\Infrastructure\HTTP\Response\Mock\TokenResponseMock;
 use App\Infrastructure\Persistence\DataFixtures\PaymentFixtures;
 use App\Infrastructure\Test\AbstractUnitTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 use App\Shared\Transfer\SearchCriteria;
 use Doctrine\ORM\EntityManagerInterface;
+use GuzzleHttp\Client;
+use GuzzleHttp\Handler\MockHandler;
 
 final class PaymentFacadeTest extends AbstractUnitTestCase
 {
@@ -86,6 +90,12 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
         /** @var EntityManagerInterface $entityManager */
         $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
 
+        $guzzleClientMock = new Client(['handler' => new MockHandler([
+            new TokenResponseMock(),
+        ])]);
+
+        $this->getContainer()->set(Client::class, $guzzleClientMock);
+
         $payment = PaymentContext::create()();
         $payment->withQR(new QR('http://localhost/payload.jpg', 'http://localhost/qr.jpg'));
 
@@ -98,9 +108,9 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
         /** @var PaymentFacade $facade */
         $facade = $this->getContainer()->get(PaymentFacade::class);
 
-        $payment = $facade->changeStatus($payment, PaymentStatusEnum::Failure);
+        $payment = $facade->handle($payment->id());
 
-        $this->assertEquals(PaymentStatusEnum::Failure, $payment->status());
+        $this->assertEquals(PaymentStatusEnum::token, $payment->status());
     }
 
     public function testPaymentShouldGetNewLogs(): void

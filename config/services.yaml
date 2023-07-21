@@ -43,3 +43,47 @@ services:
     App\Application\Security\Provider\UserProvider:
         arguments:
             $repository: '@App\Infrastructure\Persistence\Doctrine\Repository\UserRepository'
+
+    fms.marker:
+        class: App\Application\Payment\Business\StateMachine\Marker
+
+    app.serializer:
+        factory: [null, 'create']
+        class: App\Infrastructure\Serializer\Serializer
+
+    App\Infrastructure\Serializer\SerializerInterface: '@app.serializer'
+
+    guzzle.handlers:
+        class: GuzzleHttp\Handler\MockHandler
+        arguments:
+            $queue: [
+                '@App\Infrastructure\HTTP\Response\Mock\TokenResponseMock',
+                '@App\Infrastructure\HTTP\Response\Mock\RegisterPaymentResponseMock'
+            ]
+
+    GuzzleHttp\Client:
+        arguments:
+            - {
+                    base_uri: https://google.com/,
+                    timeout: 30,
+                    handler: '@guzzle.handlers'
+              }
+
+    App\Infrastructure\HTTP\HttpClient:
+        arguments: ['@GuzzleHttp\Client', '@app.serializer']
+
+    App\Application\Payment\Business\PaymentProcessor\Step\Start:
+        calls:
+            - setNext: ['@App\Application\Payment\Business\PaymentProcessor\Step\Tokenize']
+
+    App\Application\Payment\Business\PaymentProcessor\Step\Tokenize:
+        calls:
+            - setNext: ['@App\Application\Payment\Business\PaymentProcessor\Step\CreateTransaction']
+
+    App\Application\Payment\Business\PaymentProcessor\Step\CreateTransaction:
+        calls:
+            - setNext: ['@App\Application\Payment\Business\PaymentProcessor\Step\CheckAwaitingCondition']
+
+    App\Application\Payment\Business\PaymentProcessor\Step\CheckAwaitingCondition:
+        calls:
+            - setNext: ['@App\Application\Payment\Business\PaymentProcessor\Step\CheckPaymentStatus']

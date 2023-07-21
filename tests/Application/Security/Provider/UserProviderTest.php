@@ -1,22 +1,21 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 
 namespace App\Tests\Application\Security\Provider;
 
 use App\Application\Security\Provider\UserProvider;
 use App\Application\User\User;
+use App\Domain\Exception\UserNotFoundException;
 use App\Domain\Repository\UserRepositoryInterface;
+use App\Infrastructure\Security\User\PasswordAuthenticatedUserInterface;
+use App\Infrastructure\Security\User\UserInterface;
 use App\Infrastructure\Test\AbstractUnitTestCase;
 use App\Infrastructure\Test\Context\Model\UserContext;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use RuntimeException;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\Exception\UserNotFoundException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 final class UserProviderTest extends AbstractUnitTestCase
 {
@@ -70,7 +69,7 @@ final class UserProviderTest extends AbstractUnitTestCase
 
     public function testFailsOnRefreshUser(): void
     {
-        $this->expectException(UnsupportedUserException::class);
+        $this->expectException(RuntimeException::class);
 
         /** @var UserRepositoryInterface $repository */
         $repository = $this->getContainer()->get(UserRepositoryInterface::class);

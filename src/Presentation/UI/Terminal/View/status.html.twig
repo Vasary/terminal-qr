@@ -19,7 +19,7 @@
                 {% if payment.status == paymentStatus.Registered %}
                     <div class="card-header">{{ 'terminal.status.steps.registered' | trans }}</div>
                     <div class="card-body text-center p-5">
-                        <img style="max-width: 150px" src="{{ asset('assets/placeholder/qr.svg') }}" alt="QRCode"/>
+                        <img style="max-width: 150px" src="{{ asset('build/images/qr.svg') }}" alt="QRCode"/>
                     </div>
                 {% endif %}
 
@@ -37,7 +37,7 @@
                 {% if payment.status == paymentStatus.Successfully %}
                     <div class="card-header">{{ 'terminal.status.steps.successfully' | trans }}</div>
                     <div class="card-body text-center p-5">
-                        <img style="max-width: 200px" src="{{ asset('assets/placeholder/check.svg') }}"
+                        <img style="max-width: 200px" src="{{ asset('build/images/check.svg') }}"
                              alt="QRCode"/>
                     </div>
                 {% endif %}
@@ -47,7 +47,7 @@
                     <div class="card-body text-center p-5">
 
                         <p>
-                            <img style="max-width: 150px" src="{{ asset('assets/placeholder/failure.svg') }}"
+                            <img style="max-width: 150px" src="{{ asset('build/images/failure.svg') }}"
                                  alt="QRCode"/>
                         </p>
                         <p>

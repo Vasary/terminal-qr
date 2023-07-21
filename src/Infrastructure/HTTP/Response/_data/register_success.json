@@ -1,0 +1,25 @@
+{
+  "token": "YARZRT2A2ZR6KTEC",
+  "startedAt": 1677857041288,
+  "finishedAt": 1677857043875,
+  "state": "result",
+  "paymentId": "***",
+  "src": {
+    "type": "sbp"
+  },
+  "amount": 10000,
+  "commission": 0,
+  "currency": "RUB",
+  "result": {
+    "status": "INTERIM_SUCCESS",
+    "extendedCode": "CREATED",
+    "message": "Счет создан",
+    "trxId": "YARZRT2A2Z",
+    "qr": {
+      "payload": "https://qr.nspk.ru/BS*******",
+      "imageUrl": "https://api.qrserver.com/v1/create-qr-code/?size=450x450&data=https://qr.nspk.ru/BS1**********************"
+    }
+  },
+  "portalType": "WEB",
+  "type": "PAYMENT"
+}

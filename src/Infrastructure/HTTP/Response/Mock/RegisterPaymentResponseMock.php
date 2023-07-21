@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types = 1);
+
+namespace App\Infrastructure\HTTP\Response\Mock;
+
+use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Psr7\Stream;
+
+final class RegisterPaymentResponseMock extends Response
+{
+    private const HEADERS = [
+        'Content-Type' => 'application/json',
+    ];
+
+    public function __construct()
+    {
+        parent::__construct(200, self::HEADERS, new Stream(fopen(__DIR__ . '/../_data/register_success.json', 'r')));
+    }
+}

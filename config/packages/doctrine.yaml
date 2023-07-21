@@ -16,6 +16,7 @@ doctrine:
             portal: App\Infrastructure\Persistence\Doctrine\Type\PortalType
             email: App\Infrastructure\Persistence\Doctrine\Type\EmailType
             log: App\Infrastructure\Persistence\Doctrine\Type\LogType
+            token: App\Infrastructure\Persistence\Doctrine\Type\TokenType
     orm:
         auto_generate_proxy_classes: true
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware

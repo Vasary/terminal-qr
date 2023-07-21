@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Type;
 
-use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Log;
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;

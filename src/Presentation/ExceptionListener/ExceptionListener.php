@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Presentation\ExceptionListener;
 
-use App\Infrastructure\HTTP\ErrorResponse;
 use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Twig\Environment;
 

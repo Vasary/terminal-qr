@@ -63,7 +63,7 @@ final class PaymentsController extends AbstractController
             'config' => [
                 'searchFields' => ['amount', 'createdAt', 'updatedAt', 'status'],
             ],
-            'userStores' => $userStores
+            'userStores' => $userStores,
         ]);
 
         return new HTMLResponse($view);

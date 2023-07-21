@@ -4,16 +4,19 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Serializer;
 
-use App\Infrastructure\Serializer\Normalizer\AttributeNormalizer;
-use App\Infrastructure\Serializer\Normalizer\AttributeValueNormalizer;
-use App\Infrastructure\Serializer\Normalizer\CategoryNormalizer;
-use App\Infrastructure\Serializer\Normalizer\GlossaryNormalizer;
 use App\Infrastructure\Serializer\Normalizer\HealthCheckResponseNormalizer;
-use App\Infrastructure\Serializer\Normalizer\ProductNormalizer;
-use App\Infrastructure\Serializer\Normalizer\UnitNormalizer;
 use App\Infrastructure\Serializer\Normalizer\UUIDNormalizer;
+use Doctrine\Common\Annotations\AnnotationReader;
+use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
+use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
+use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
+use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
+use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
 use Symfony\Component\Serializer\SerializerInterface as SymfonySerializerInterface;
 
@@ -33,7 +36,7 @@ final class Serializer implements SerializerInterface
 
     private function __construct()
     {
-        $this->serializer = new SymfonySerializer($this->getNormalizers());
+        $this->serializer = new SymfonySerializer($this->getNormalizers(), [new JsonEncoder()]);
     }
 
     /**
@@ -52,11 +55,25 @@ final class Serializer implements SerializerInterface
         return json_encode($this->serializer->normalize($object));
     }
 
+    public function deserialize(string $data, string $type): object
+    {
+        return $this->serializer->deserialize($data, $type, JsonEncoder::FORMAT);
+    }
+
     private function getNormalizers(): array
     {
+        $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+        $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
+        $propertyNormalizer = new PropertyNormalizer(
+            null,
+            new MetadataAwareNameConverter($classMetadataFactory),
+            $extractor,
+        );
+
         return [
             new UUIDNormalizer(),
             new HealthCheckResponseNormalizer(),
+            $propertyNormalizer,
             new ObjectNormalizer(),
         ];
     }

@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace App\Application\Store\Business\Writer;
 
 use App\Application\Gateway\Business\GatewayFacadeInterface;
-use App\Application\User\Business\UserFacadeInterface;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Store;
 use App\Domain\Repository\StoreRepositoryInterface;

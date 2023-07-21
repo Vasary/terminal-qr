@@ -14,5 +14,4 @@ final class Length extends Base
     public $minMessage = 'Это значение слишком короткое. Оно должно содержать {{ limit }} символов или больше.';
     public $exactMessage = 'Это значение должно содержать ровно {{ limit }} символов.';
     public $charsetMessage = 'Это значение не соответствует ожидаемой {{ charset }} кодировке.';
-
 }

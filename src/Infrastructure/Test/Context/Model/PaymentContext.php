@@ -9,6 +9,7 @@ use App\Domain\Model\Payment;
 use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Token;
 use App\Infrastructure\Test\Context\ContextTrait;
 use App\Infrastructure\Test\Context\ModelContextInterface;
 use App\Infrastructure\Test\Context\ModelContextTrait;
@@ -25,11 +26,10 @@ final class PaymentContext implements ModelContextInterface
     public string $id = 'abba44b6-e3e5-477c-a3a1-b78dce149d4d';
     public int $amount = 100;
     public int $commission = 0;
-    public PaymentStatusEnum $status = PaymentStatusEnum::Init;
+    public PaymentStatusEnum $status = PaymentStatusEnum::init;
     public string $callbackUrl = 'http://localhost/callback';
     public string $idGateway = 'e96f2520-2ce2-488e-879b-d11f3796f7cd';
     public string $idStore = '2cdb88ac-71af-4b3d-b8df-51fbbca74a6b';
-
     public string $currency = 'RUB';
 
     public function __invoke(bool $singleton = true): Payment
@@ -57,6 +57,7 @@ final class PaymentContext implements ModelContextInterface
             ->setProperty($model, 'callback', new Callback($this->callbackUrl))
             ->setProperty($model, 'gateway', $gateway)
             ->setProperty($model, 'store', $store)
+            ->setProperty($model, 'token', new Token('token'))
             ->setProperty($model, 'logs', [])
             ->setTimestamps($model);
 

@@ -9,6 +9,7 @@ use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Log;
+use App\Domain\ValueObject\Token;
 use DateTimeImmutable;
 
 class Payment
@@ -21,6 +22,8 @@ class Payment
 
     /** @var Log[] */
     private array $logs;
+
+    private ?Token $token;
 
     public function __construct(
         private readonly int $amount,
@@ -37,6 +40,7 @@ class Payment
         $this->logs = [];
         $this->createdAt = new DateTimeImmutable();
         $this->updatedAt = new DateTimeImmutable();
+        $this->token = null;
     }
 
     public function id(): Id
@@ -115,5 +119,16 @@ class Payment
     public function currency(): Currency
     {
         return $this->currency;
+    }
+
+    public function token(): ?Token
+    {
+        return $this->token;
+    }
+
+    public function withToken(string $token): void
+    {
+        $this->token = new Token($token);
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

@@ -11,12 +11,12 @@ use App\Domain\Model\User;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\User\Form\Data;
 use App\Presentation\UI\Management\Module\User\Form\UpdateType;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\UserUpdate;
-use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 
 #[Route(path: '/management/users/edit/{id}', name: 'management_users_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController

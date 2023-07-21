@@ -13,14 +13,14 @@ use Twig\TwigFunction;
 final class PaymentStatus extends AbstractExtension
 {
     private const statusMap = [
-        PaymentStatusEnum::Init->value => 'dark',
-        PaymentStatusEnum::Token->value => 'info',
-        PaymentStatusEnum::Registered->value => 'secondary',
-        PaymentStatusEnum::Awaiting->value => 'warning',
-        PaymentStatusEnum::Successfully->value => 'success',
-        PaymentStatusEnum::Failure->value => 'danger',
-        PaymentStatusEnum::Timeout->value => 'danger',
-        PaymentStatusEnum::Unknown->value => 'danger',
+        PaymentStatusEnum::init->value => 'dark',
+        PaymentStatusEnum::token->value => 'info',
+        PaymentStatusEnum::registered->value => 'secondary',
+        PaymentStatusEnum::awaiting->value => 'warning',
+        PaymentStatusEnum::successfully->value => 'success',
+        PaymentStatusEnum::failure->value => 'danger',
+        PaymentStatusEnum::timeout->value => 'danger',
+        PaymentStatusEnum::unknown->value => 'danger',
     ];
 
     public function __construct(private readonly TranslatorInterface $translator)

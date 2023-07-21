@@ -7,7 +7,6 @@ namespace App\Infrastructure\HTTP;
 use App\Application\Shared\Contract\TransactionServiceInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
-use Symfony\Component\HttpKernel\KernelEvents;
 
 final class RequestTransactionSubscriber implements EventSubscriberInterface
 {

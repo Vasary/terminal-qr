@@ -1,0 +1,21 @@
+{
+  "token": "YARZRT2A2ZR6KTEC",
+  "startedAt": 1677857041288,
+  "finishedAt": 1677857043875,
+  "state": "result",
+  "paymentId": "****",
+  "src": {
+    "type": "sbp"
+  },
+  "amount": 10000,
+  "commission": 0,
+  "currency": "RUB",
+  "result": {
+    "status": "FAILED",
+    "extendedCode": "BANK_SYSTEM_ERROR",
+    "message": "Операция отклонена. Обратитесь в службу поддержки.",
+    "trxId": "****"
+  },
+  "portalType": "WEB",
+  "type": "PAYMENT"
+}

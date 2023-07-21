@@ -9,12 +9,13 @@ COPY . .
 RUN set -ex && \
     apk add --no-cache --virtual .php-deps make && \
     apk add --no-cache --virtual .build-deps $PHPIZE_DEPS zlib-dev icu-dev g++ && \
-    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers && \
+    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers nodejs npm && \
     docker-php-ext-configure intl && \
     docker-php-ext-install pdo pdo_sqlite sockets intl && \
     docker-php-ext-enable intl
 
 RUN composer install --no-ansi --no-dev --no-interaction --no-progress --optimize-autoloader --prefer-dist
+RUN cd assets && npm install
 
 FROM php:8.2-fpm-alpine
 

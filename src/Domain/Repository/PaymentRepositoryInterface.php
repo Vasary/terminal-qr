@@ -9,7 +9,6 @@ use App\Domain\Model\Payment;
 use App\Domain\Model\Store;
 use App\Domain\ValueObject\Id;
 use Doctrine\ORM\Tools\Pagination\Paginator;
-use Generator;
 
 interface PaymentRepositoryInterface
 {

@@ -27,6 +27,14 @@ services:
   App\Application\Payment\Business\PaymentFacade:
     public: true
     arguments:
-      $writer: '@App\Application\Payment\Business\Writer\PaymentWriter'
       $reader: '@App\Application\Payment\Business\Reader\PaymentReader'
       $processor: '@App\Application\Payment\Business\PaymentProcessor\PaymentProcessor'
+
+  guzzle.handlers:
+    class: GuzzleHttp\Handler\MockHandler
+    arguments:
+      $queue: []
+
+  GuzzleHttp\Client:
+    arguments:
+      - { handler: '@guzzle.handlers' }

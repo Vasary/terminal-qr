@@ -6,21 +6,14 @@ namespace App\Application\Payment\Business;
 
 use App\Application\Payment\Business\PaymentProcessor\PaymentProcessor;
 use App\Application\Payment\Business\Reader\PaymentReader;
-use App\Application\Payment\Business\Writer\PaymentWriter;
-use App\Domain\Enum\PaymentStatusEnum;
 use App\Domain\Model\Payment;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
-use Generator;
 
 final readonly class PaymentFacade implements PaymentFacadeInterface
 {
-    public function __construct(
-        private PaymentReader $reader,
-        private PaymentWriter $writer,
-        private PaymentProcessor $processor,
-    )
+    public function __construct(private PaymentReader $reader, private PaymentProcessor $processor,)
     {
     }
 
@@ -34,9 +27,9 @@ final readonly class PaymentFacade implements PaymentFacadeInterface
         return $this->reader->findOneById($id);
     }
 
-    public function changeStatus(Payment $payment, PaymentStatusEnum $status): Payment
+    public function handle(Id $id): Payment
     {
-        return $this->writer->changeStatus($payment, $status);
+        return $this->processor->handle($id);
     }
 
     public function create(int $amount, Id $storeId, Id $gatewayId): Payment

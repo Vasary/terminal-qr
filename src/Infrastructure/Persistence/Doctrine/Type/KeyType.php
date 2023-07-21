@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Type;
 
-use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Key;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 

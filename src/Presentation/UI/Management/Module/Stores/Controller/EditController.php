@@ -10,12 +10,12 @@ use App\Domain\Model\Store;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
+use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 use App\Infrastructure\HTTP\HttpRequest;
 use App\Presentation\UI\Management\Module\Stores\Form\Data;
 use App\Presentation\UI\Management\Module\Stores\Form\UpdateType;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\StoreUpdate;
-use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 
 #[Route(path: '/management/store/edit/{id}', name: 'management_store_edit', methods: ['GET', 'POST'])]
 final class EditController extends AbstractController

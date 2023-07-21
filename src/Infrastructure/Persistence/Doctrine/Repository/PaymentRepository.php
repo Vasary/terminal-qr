@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Repository;
 
@@ -16,7 +16,6 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
-use Generator;
 
 final class PaymentRepository implements PaymentRepositoryInterface
 {
@@ -75,7 +74,7 @@ final class PaymentRepository implements PaymentRepositoryInterface
             $this->objectRepository->createQueryBuilder('p')
                 ->select('p')
                 ->where('p.id = :id')
-                ->setParameter('id', (string)$id)
+                ->setParameter('id', (string) $id)
                 ->getQuery()
                 ->getOneOrNullResult();
     }
@@ -91,7 +90,7 @@ final class PaymentRepository implements PaymentRepositoryInterface
         $payment = new Payment(
             $amount,
             0,
-            PaymentStatusEnum::Init,
+            PaymentStatusEnum::init,
             $gateway->callback(),
             $gateway->currency(),
             $gateway,

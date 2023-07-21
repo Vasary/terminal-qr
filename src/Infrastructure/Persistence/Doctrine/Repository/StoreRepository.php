@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Repository;
 
@@ -14,10 +14,9 @@ use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchField;
 use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Query;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
 use Generator;
-use Doctrine\ORM\Tools\Pagination\Paginator;
 
 final class StoreRepository implements StoreRepositoryInterface
 {
@@ -57,7 +56,7 @@ final class StoreRepository implements StoreRepositoryInterface
             $this->objectRepository->createQueryBuilder('s')
                 ->select('s')
                 ->where('s.id = :id')
-                ->setParameter('id', (string)$id)
+                ->setParameter('id', (string) $id)
                 ->getQuery()
                 ->getOneOrNullResult();
     }

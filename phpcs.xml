@@ -21,7 +21,9 @@
     <rule ref="SlevomatCodingStandard.Classes.RequireAbstractOrFinal">
         <exclude-pattern>src/Domain/Model/*</exclude-pattern>
     </rule>
-    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
+    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators">
+        <exclude-pattern>src/Domain/Enum/*Enum.php</exclude-pattern>
+    </rule>
     <rule ref="SlevomatCodingStandard.Classes.ClassStructure">
         <properties>
             <property name="groups" type="array">

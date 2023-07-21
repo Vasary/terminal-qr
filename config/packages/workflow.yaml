@@ -1,0 +1,45 @@
+framework:
+  workflows:
+    payment:
+      type: 'state_machine'
+      marking_store:
+        service: 'fms.marker'
+      supports:
+        - App\Domain\Model\Payment
+      places:
+        - init
+        - token
+        - registered
+        - awaiting
+        - successfully
+        - failure
+        - timeout
+        - unknown
+      transitions:
+        tokenized:
+          from: init
+          to: token
+        register:
+          from: token
+          to: registered
+        wait:
+          from: registered
+          to: awaiting
+        complete:
+          from: awaiting
+          to: successfully
+        failure:
+          from: ['init', 'token', 'registered', 'awaiting']
+          to: failure
+        timeout:
+          from: awaiting
+          to: timeout
+        unexpected:
+          from: awaiting
+          to: unknown
+        expire:
+          from: timeout
+          to: failure
+        alert:
+          from: unknown
+          to: failure

@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Domain\Repository;
 
-use App\Domain\Model\Gateway;
 use App\Domain\Model\User;
 use App\Domain\ValueObject\Email;
 use App\Domain\ValueObject\Id;

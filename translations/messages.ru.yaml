@@ -34,6 +34,9 @@ button:
 payment:
   title:
     id: Обзор платежа
+    logs: Журнал событий
+    details: Обзор платежа
+    name: Платеж
   details:
     title: Детали
   attribute:
@@ -51,6 +54,9 @@ payment:
         absents: Отсутствует
     currency: Валюта
     createdAt: Создан в
+    token:
+      name: Токен
+      absents: Отсутствует
   logs:
     title: Журнал событий и проблем платежа
     empty: Журнал событий пуст
@@ -61,6 +67,8 @@ payment:
     title: Список всех платежей
   button:
     search: Поиск
+    status:
+      update: Принудительно запросить статус платежа
   status:
     init: Инициализирован
     token: Получение ключа платежа
@@ -70,6 +78,7 @@ payment:
     failure: не успешно
     timeout: не успешный, платеж просрочился
     unknown: неизвестный
+  actions: Доступные действия
 
 login:
   message:

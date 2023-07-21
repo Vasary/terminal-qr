@@ -4,16 +4,15 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Test;
 
-use App\Infrastructure\Persistence\DataFixtures\StoreFixtures;
 use App\Infrastructure\Test\Faker\Factory;
 use App\Infrastructure\Test\Faker\Generator;
+use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
+use Doctrine\Common\DataFixtures\Loader;
+use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
-use Doctrine\Common\DataFixtures\Loader;
-use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
-use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 
 abstract class AbstractUnitTestCase extends WebTestCase
 {

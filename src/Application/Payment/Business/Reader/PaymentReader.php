@@ -9,7 +9,6 @@ use App\Domain\Repository\PaymentRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Pagination;
 use App\Shared\Transfer\SearchCriteria;
-use Generator;
 
 final class PaymentReader
 {
