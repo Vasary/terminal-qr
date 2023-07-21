@@ -30,7 +30,7 @@ final class StoreFixtures extends Fixture implements FixtureGroupInterface
             $manager->persist(
                 new Store(
                     new Title($faker->company()),
-                    new Code($faker->word()),
+                    new Code($faker->lexify('?????')),
                     new Description($faker->text()),
                 )
             );

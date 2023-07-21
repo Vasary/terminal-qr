@@ -19,7 +19,11 @@ use App\Presentation\UI\Terminal\Form\Data;
 use App\Presentation\UI\Terminal\Response\TerminalResponse;
 use ErrorException;
 
-#[Route(path: '/terminal/{code}', name: 'terminal')]
+#[Route(
+    path: '/{code}',
+    name: 'terminal',
+    requirements: ['code' => '^\w+\:\w+$']
+)]
 final class TerminalController extends AbstractController
 {
     public function __construct(
@@ -59,15 +63,11 @@ final class TerminalController extends AbstractController
 
         $form->handleRequest($request);
         $errors = [];
+
         if ($form->isSubmitted() && $form->isValid()) {
             $payment = $this->paymentFacade->create($data->amount, $store->id(), $gateway->id());
-            if (null !== $payment->qr()) {
-                return $this->redirectTo('terminal_status', [
-                    'paymentId' => (string) $payment->id(),
-                ]);
-            }
 
-            $errors = ['terminal.error.qr.failure'];
+            return $this->redirectTo('terminal_status_page', ['id' => $payment->id()]);
         }
 
         $view = $this->renderTemplate('@terminal/terminal.html.twig', [

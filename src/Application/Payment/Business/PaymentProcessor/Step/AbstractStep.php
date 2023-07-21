@@ -29,7 +29,7 @@ abstract class AbstractStep implements StepInterface
     public function handle(Payment $payment): void
     {
         if (null === $this->nextHandler) {
-            $this->logger->info('Payment chain completed');
+            $this->logger->info('Payment chain completed', $this->getContext($payment));
         }
 
         $this->nextHandler?->handle($payment);

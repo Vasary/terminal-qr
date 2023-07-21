@@ -14,6 +14,9 @@ final class Data
     public int $amount;
 
     #[NotBlank]
+    public string $amountMask;
+
+    #[NotBlank]
     public string $gateway;
 
     #[NotBlank]

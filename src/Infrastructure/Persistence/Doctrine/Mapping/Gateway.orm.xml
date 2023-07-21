@@ -9,7 +9,7 @@
         <field name="host" type="host"/>
         <field name="portal" type="portal"/>
         <field name="currency" type="currency"/>
-        <field name="key" type="key"/>
+        <field name="key" type="key" unique="true"/>
         <field name="createdAt" type="datetimetz_immutable"/>
         <field name="updatedAt" type="datetimetz_immutable"/>
 

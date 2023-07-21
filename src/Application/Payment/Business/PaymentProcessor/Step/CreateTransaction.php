@@ -53,7 +53,7 @@ final class CreateTransaction extends AbstractStep
 
         $payment->withQR(new QR($qr->payload(), $qr->imageUrl()));
 
-        $this->statusHandler->handle($payment, WorkflowTransitionEnum::register);
+        $this->statusHandler->handle($payment, WorkflowTransitionEnum::registered);
     }
 
     private function handleFailure(RegisterPaymentResponse $response, Payment $payment): void

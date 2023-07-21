@@ -13,7 +13,7 @@ use Twig\TwigFunction;
 final class PaymentStatus extends AbstractExtension
 {
     private const statusMap = [
-        PaymentStatusEnum::init->value => 'dark',
+        PaymentStatusEnum::new->value => 'dark',
         PaymentStatusEnum::token->value => 'info',
         PaymentStatusEnum::registered->value => 'secondary',
         PaymentStatusEnum::awaiting->value => 'warning',

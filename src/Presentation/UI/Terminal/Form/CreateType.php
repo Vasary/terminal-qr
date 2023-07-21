@@ -15,7 +15,7 @@ final class CreateType extends AbstractType
     {
         return [
             [
-                'type' => 'amount',
+                'type' => 'amountMask',
                 'class' => TextType::class,
                 'options' => [
                     'required' => true,
@@ -27,6 +27,14 @@ final class CreateType extends AbstractType
                     'row_attr' => [
                         'class' => 'form-floating mb-3',
                     ],
+                ],
+            ],
+            [
+                'type' => 'amount',
+                'class' => HiddenType::class,
+                'options' => [
+                    'required' => true,
+                    'trim' => true,
                 ],
             ],
             [

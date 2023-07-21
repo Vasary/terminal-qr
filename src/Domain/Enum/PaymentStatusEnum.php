@@ -9,7 +9,7 @@ use ValueError;
 
 enum PaymentStatusEnum: int
 {
-    case init = 0;
+    case new = 0;
     case token = 1;
     case registered = 2;
     case awaiting = 3; // INTERIM_SUCCESS
@@ -32,9 +32,9 @@ enum PaymentStatusEnum: int
         return $this->name;
     }
 
-    public function isInitiated(): bool
+    public function isNew(): bool
     {
-        return self::init->value == $this->value;
+        return self::new->value == $this->value;
     }
 
     public function isTokenized(): bool

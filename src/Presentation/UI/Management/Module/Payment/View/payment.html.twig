@@ -1,9 +1,5 @@
 {% extends '@management/layout.html.twig' %}
 
-{% block javascripts %}
-    {{ encore_entry_script_tags('payment') }}
-{% endblock %}
-
 {% block content %}
     <header class="py-3 mb-4 border-bottom">
         <div class="container d-flex flex-wrap justify-content-center">
@@ -93,14 +89,6 @@
             </table>
         </div>
         <div class="mt-5">
-            <button type="button" class="btn btn-primary btn-sm" id="statusUpdate">
-                <span>{{ 'payment.button.status.update' | trans }}</span>
-            </button>
-            <button class="btn btn-primary btn-sm invisible" id="statusUpdateLoader">
-                <span class="p-2 spinner-border spinner-border-sm"></span>
-            </button>
-        </div>
-        <div class="mt-5">
             <h3 class="mb-5">{{ 'payment.title.logs' | trans }}</h3>
             <table class="table table-striped">
                 {% if payment.logs is empty %}
@@ -108,7 +96,7 @@
                         <td>{{ 'payment.logs.empty' | trans }}</td>
                     </tr>
                 {% else %}
-                    {% for log in payment.logs %}
+                    {% for log in payment.logs | sort((a, b) => b.time <=> a.time) %}
                         <tr>
                             <td>{{ log.time | date('d.m.Y') }}</td>
                             <td>{{ log.time | date('H:i') }}</td>

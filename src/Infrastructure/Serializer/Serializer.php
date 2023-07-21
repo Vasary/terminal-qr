@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Serializer;
 
 use App\Infrastructure\Serializer\Normalizer\HealthCheckResponseNormalizer;
+use App\Infrastructure\Serializer\Normalizer\PaymentNormalizer;
 use App\Infrastructure\Serializer\Normalizer\UUIDNormalizer;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Symfony\Component\PropertyInfo\Extractor\PhpDocExtractor;
@@ -15,6 +16,8 @@ use Symfony\Component\Serializer\Exception\ExceptionInterface;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
+use Symfony\Component\Serializer\Normalizer\BackedEnumNormalizer;
+use Symfony\Component\Serializer\Normalizer\DateTimeNormalizer;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Normalizer\PropertyNormalizer;
 use Symfony\Component\Serializer\Serializer as SymfonySerializer;
@@ -74,6 +77,7 @@ final class Serializer implements SerializerInterface
             new UUIDNormalizer(),
             new HealthCheckResponseNormalizer(),
             $propertyNormalizer,
+            new DateTimeNormalizer(),
             new ObjectNormalizer(),
         ];
     }

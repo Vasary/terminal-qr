@@ -67,10 +67,8 @@ payment:
     title: Список всех платежей
   button:
     search: Поиск
-    status:
-      update: Принудительно запросить статус платежа
   status:
-    init: Инициализирован
+    new: Новый
     token: Получение ключа платежа
     registered: зарегистрирован
     awaiting: ожидает оплаты

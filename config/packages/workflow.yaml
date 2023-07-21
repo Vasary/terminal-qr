@@ -7,9 +7,8 @@ framework:
       supports:
         - App\Domain\Model\Payment
       places:
-        - init
+        - new
         - token
-        - registered
         - awaiting
         - successfully
         - failure
@@ -17,19 +16,16 @@ framework:
         - unknown
       transitions:
         tokenized:
-          from: init
+          from: new
           to: token
-        register:
+        registered:
           from: token
-          to: registered
-        wait:
-          from: registered
           to: awaiting
         complete:
           from: awaiting
           to: successfully
         failure:
-          from: ['init', 'token', 'registered', 'awaiting']
+          from: [new, token, awaiting]
           to: failure
         timeout:
           from: awaiting

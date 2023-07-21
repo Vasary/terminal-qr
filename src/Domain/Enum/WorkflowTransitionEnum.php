@@ -7,8 +7,7 @@ namespace App\Domain\Enum;
 enum WorkflowTransitionEnum: string
 {
     case tokenized = 'tokenized';
-    case register = 'register';
-    case wait = 'wait';
+    case registered = 'registered';
     case complete = 'complete';
     case failure = 'failure';
     case timeout = 'timeout';

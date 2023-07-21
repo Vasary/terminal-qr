@@ -19,7 +19,7 @@ use Doctrine\Persistence\ObjectManager;
 
 final class PaymentFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    public function __construct(private readonly int $limit = 100)
+    public function __construct(private readonly int $limit = 0)
     {
     }
 
@@ -49,7 +49,7 @@ final class PaymentFixtures extends Fixture implements DependentFixtureInterface
                 $payment = new Payment(
                     $faker->randomDigitNotZero() * 100,
                     $faker->randomDigitNotZero() * 100,
-                    PaymentStatusEnum::init,
+                    PaymentStatusEnum::new,
                     new Callback($faker->url()),
                     new Currency($faker->currencyCode()),
                     $gateway,

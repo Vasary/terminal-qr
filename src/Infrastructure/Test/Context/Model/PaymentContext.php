@@ -26,11 +26,12 @@ final class PaymentContext implements ModelContextInterface
     public string $id = 'abba44b6-e3e5-477c-a3a1-b78dce149d4d';
     public int $amount = 100;
     public int $commission = 0;
-    public PaymentStatusEnum $status = PaymentStatusEnum::init;
+    public PaymentStatusEnum $status = PaymentStatusEnum::new;
     public string $callbackUrl = 'http://localhost/callback';
     public string $idGateway = 'e96f2520-2ce2-488e-879b-d11f3796f7cd';
     public string $idStore = '2cdb88ac-71af-4b3d-b8df-51fbbca74a6b';
     public string $currency = 'RUB';
+    public ?string $token = 'token';
 
     public function __invoke(bool $singleton = true): Payment
     {
@@ -57,7 +58,7 @@ final class PaymentContext implements ModelContextInterface
             ->setProperty($model, 'callback', new Callback($this->callbackUrl))
             ->setProperty($model, 'gateway', $gateway)
             ->setProperty($model, 'store', $store)
-            ->setProperty($model, 'token', new Token('token'))
+            ->setProperty($model, 'token', $this->token === null ? null : new Token($this->token))
             ->setProperty($model, 'logs', [])
             ->setTimestamps($model);
 

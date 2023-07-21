@@ -90,7 +90,7 @@ final class PaymentRepository implements PaymentRepositoryInterface
         $payment = new Payment(
             $amount,
             0,
-            PaymentStatusEnum::init,
+            PaymentStatusEnum::new,
             $gateway->callback(),
             $gateway->currency(),
             $gateway,

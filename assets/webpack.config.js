@@ -7,8 +7,9 @@ if (!Encore.isRuntimeEnvironmentConfigured()) {
 Encore
     .setOutputPath('../public/build/')
     .setPublicPath('/build')
-    .addEntry('payment', './app/payment/payment.js')
     .addEntry('bootstrap', './app/bootstrap/bootstrap.js')
+    .addEntry('terminal', './app/terminal/terminal.js')
+    .addEntry('checkStatus', './app/terminal/checkStatus.ts')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace App\Infrastructure\HTTP\Response\Mock;
+namespace App\Infrastructure\Test\Guzzle\Mock;
 
 use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Psr7\Stream;

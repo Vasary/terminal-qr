@@ -5,29 +5,28 @@
         <div class="container d-flex flex-wrap justify-content-center">
             <div href="/"
                  class="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto link-body-emphasis">
-                <span class="fs-4">{{ 'payment.title.id' | trans }}: {{ payment.id }}</span>
+                <span class="fs-4">{{ 'payment.title.name' | trans }}: {{ payment.id }}</span>
             </div>
         </div>
     </header>
     <div class="container">
-        <h3>{{ 'payment.details.title' | trans }}</h3>
+        <h3>{{ 'payment.title.details' | trans }}</h3>
         <div class="mt-5">
             <table class="table table-striped">
                 <tr>
                     <td>{{ 'payment.attribute.amount' | trans }}</td>
-                    <td>{{ payment.amount }}</td>
-                    <td rowspan="6" class="align-middle">
+                    <td>{{ payment.amount | number_format(2, '.', ',') }} {{ payment.currency }}</td>
+                    <td rowspan="8" class="align-middle">
                         <div class="card text-center">
                             <div class="card-body">
                                 {% if payment.qr is not null %}
-                                    <h6 class="card-title">{{ 'payment.attribute.qr.title' | trans }}</h6>
                                     <p class="card-text">
-                                        <img style="max-width: 300px" src="{{ payment.qr.image }}">
+                                        <img style="width: 200px; height: 200px;" src="{{ payment.qr.image }}">
                                     </p>
                                 {% else %}
-                                    <h6 class="card-title">{{ 'payment.attribute.qr.status.created' | trans }}</h6>
                                     <p class="card-text">
-                                        <img style="max-width: 300px" src="{{ asset('build/images/qr.svg') }}">
+                                        <img style="width: 200px; height: 200px;"
+                                             src="{{ asset('build/images/qr-not-found.svg') }}">
                                     </p>
                                 {% endif %}
                             </div>
@@ -36,36 +35,61 @@
                 </tr>
                 <tr>
                     <td>{{ 'payment.attribute.commission' | trans }}</td>
-                    <td>{{ payment.commission }}</td>
+                    <td>{{ payment.commission | number_format(2, '.', ',') }} {{ payment.currency }}</td>
                 </tr>
                 <tr>
                     <td>{{ 'payment.attribute.status' | trans }}</td>
-                    <td>{{ payment.status.status }}</td>
+                    <td>{{ paymentStatus(payment) | raw }}</td>
+                </tr>
+                <tr>
+                    <td>{{ 'payment.attribute.qr.title' | trans }}</td>
+                    <td>
+                        {% if payment.qr is not null %}
+                            <span class="badge text-bg-success">{{ 'payment.attribute.qr.status.registered' | trans }}</span>
+                        {% else %}
+                            <span class="badge text-bg-dark">{{ 'payment.attribute.qr.status.absents' | trans }}</span>
+                        {% endif %}
+                    </td>
                 </tr>
                 <tr>
                     <td>{{ 'payment.attribute.callback' | trans }}</td>
-                    <td>{{ payment.callback }}</td>
+                    <td>
+                        <a class="link-opacity-100 text-decoration-none" href="#">{{ payment.callback }}</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>{{ 'payment.attribute.gateway' | trans }}</td>
-                    <td>{{ payment.gateway.title }}</td>
+                    <td>
+                        <a class="link-opacity-100 text-decoration-none" href="#">{{ payment.gateway.title }}</a>
+                    </td>
                 </tr>
                 <tr>
                     <td>{{ 'payment.attribute.store' | trans }}</td>
-                    <td>{{ payment.store.title }}</td>
+                    <td>
+                        <a class="link-opacity-100 text-decoration-none" href="#">{{ payment.store.title }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>{{ 'payment.attribute.token.name' | trans }}</td>
+                    <td>
+                        {% if payment.token is not null %}
+                            <span class="badge text-bg-warning">{{ payment.token }}</span>
+                        {% else %}
+                            <span class="badge text-bg-dark">{{ 'payment.attribute.token.absents' | trans }}</span>
+                        {% endif %}
+                    </td>
                 </tr>
             </table>
         </div>
-
         <div class="mt-5">
-            <h3 class="mb-5">{{ 'payment.logs.title' | trans }}</h3>
+            <h3 class="mb-5">{{ 'payment.title.logs' | trans }}</h3>
             <table class="table table-striped">
                 {% if payment.logs is empty %}
                     <tr>
                         <td>{{ 'payment.logs.empty' | trans }}</td>
                     </tr>
                 {% else %}
-                    {% for log in payment.logs %}
+                    {% for log in payment.logs | sort((a, b) => b.time <=> a.time) %}
                         <tr>
                             <td>{{ log.time | date('d.m.Y') }}</td>
                             <td>{{ log.time | date('H:i') }}</td>
@@ -77,3 +101,4 @@
         </div>
     </div>
 {% endblock %}
+

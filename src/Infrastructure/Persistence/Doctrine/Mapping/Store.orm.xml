@@ -5,7 +5,7 @@
     <entity name="App\Domain\Model\Store" table="stores">
         <id name="id" type="id" />
         <field name="title" type="title"/>
-        <field name="code" type="code"/>
+        <field name="code" type="code" unique="true"/>
         <field name="description" type="description"/>
         <field name="createdAt" type="datetimetz_immutable"/>
         <field name="updatedAt" type="datetimetz_immutable"/>

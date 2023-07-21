@@ -37,7 +37,7 @@ final class GatewayFixtures extends Fixture implements FixtureGroupInterface
                     new Host($faker->domainName()),
                     new Portal($faker->domainName()),
                     new Currency($faker->currencyCode()),
-                    new Key($faker->word()),
+                    new Key($faker->lexify('?????')),
                 )
             );
         }

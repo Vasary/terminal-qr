@@ -1,0 +1,16 @@
+<div class="card">
+    <div class="card-header">{{ 'terminal.status.steps.failure.title' | trans }}</div>
+    <div class="card-body text-center p-5">
+        <p>
+            <img style="max-width: 150px" src="{{ asset('build/images/failure.svg') }}"
+                 alt="QRCode"/>
+        </p>
+
+        <div class="alert alert-danger mt-5">{{ 'terminal.status.steps.failure.hint' | trans }}</div>
+
+        <p class="mt-5">
+            <a href="{{ path('terminal', {'code': terminal}) }}"
+               class="w-100 button btn btn-success">{{ 'terminal.button.new' | trans }}</a>
+        </p>
+    </div>
+</div>
