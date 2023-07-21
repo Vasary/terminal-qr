@@ -29,7 +29,9 @@ final class TokenizeTest extends AbstractUnitTestCase
         $loggerMock->shouldReceive('info')->once()->withArgs(
             ['Token ' . $mockedToken . ' caught. Attache to payment.', $context]
         );
-        $loggerMock->shouldReceive('info')->once()->withArgs(['Payment chain completed', $context]);
+        $loggerMock->shouldReceive('info')->once()->withArgs(
+            ['Payment chain completed', ['id' => 'abba44b6-e3e5-477c-a3a1-b78dce149d4d', 'status' => 'token']]
+        );
 
         $httpClientMock = Mockery::mock(HttpClientInterface::class);
         $httpClientMock
@@ -39,12 +41,7 @@ final class TokenizeTest extends AbstractUnitTestCase
             ->andReturn($mockedToken)
         ;
 
-        $statusHandlerMock = Mockery::mock(PaymentStatusHandler::class);
-        $statusHandlerMock
-            ->shouldReceive('handle')
-            ->once()
-            ->withArgs([$payment, WorkflowTransitionEnum::tokenized])
-        ;
+        $statusHandlerMock = $this->getContainer()->get(PaymentStatusHandler::class);
 
         $step = new Tokenize($httpClientMock, $loggerMock, $statusHandlerMock);
 
@@ -52,7 +49,7 @@ final class TokenizeTest extends AbstractUnitTestCase
 
         $this->assertNotNull($payment->token());
         $this->assertEquals($mockedToken, (string) $payment->token());
-        $this->assertCount(1, $payment->logs());
+        $this->assertCount(3, $payment->logs());
     }
 
     public function testShouldFailsIfHttpClientThrowAnyException(): void
@@ -68,7 +65,9 @@ final class TokenizeTest extends AbstractUnitTestCase
         $loggerMock->shouldReceive('info')->once()->withArgs(['Starting tokenization process', $context]);
         $loggerMock->shouldReceive('error')->once()->withArgs(['Tokenization', $context]);
         $loggerMock->shouldReceive('notice')->once()->withArgs(['Set payment to failure status', $context]);
-        $loggerMock->shouldReceive('info')->once()->withArgs(['Payment chain completed', $context]);
+        $loggerMock->shouldReceive('info')->once()->withArgs(
+            ['Payment chain completed', ['id' => 'abba44b6-e3e5-477c-a3a1-b78dce149d4d', 'status' => 'failure']]
+        );
 
         $httpClientMock = Mockery::mock(HttpClientInterface::class);
         $httpClientMock
@@ -77,18 +76,13 @@ final class TokenizeTest extends AbstractUnitTestCase
             ->andThrow(new TokenizationException('Tokenization'))
         ;
 
-        $statusHandlerMock = Mockery::mock(PaymentStatusHandler::class);
-        $statusHandlerMock
-            ->shouldReceive('handle')
-            ->once()
-            ->withArgs([$payment, WorkflowTransitionEnum::failure])
-        ;
+        $statusHandlerMock = $this->getContainer()->get(PaymentStatusHandler::class);
 
         $step = new Tokenize($httpClientMock, $loggerMock, $statusHandlerMock);
 
         $step->handle($payment);
 
         $this->assertNull($payment->token());
-        $this->assertCount(1, $payment->logs());
+        $this->assertCount(3, $payment->logs());
     }
 }

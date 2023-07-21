@@ -26,13 +26,13 @@ final class CreateTransaction extends AbstractStep
 
     public function createTransaction(Payment $payment): void
     {
-        $this->logger->info('Attempt to register transaction at external provider');
+        $this->logger->info('Attempt to register transaction at external provider', $this->getContext($payment));
 
         try {
             $response = $this->client->registerPayment($payment->gateway()->portal(), $payment->token());
         } catch (TransactionRegistrationException $exception) {
             $this->logger->error($exception->getMessage(), $this->getContext($payment));
-            $this->logger->notice('set payment to failure status');
+            $this->logger->notice('Set payment to failure status', $this->getContext($payment));
 
             $this->statusHandler->handle($payment, WorkflowTransitionEnum::failure);
 
@@ -47,11 +47,12 @@ final class CreateTransaction extends AbstractStep
 
     private function handleSuccess(RegisterPaymentResponse $response, Payment $payment): void
     {
-        $this->logger->info('Accepted successful registration status. Continue');
+        $this->logger->info('Accepted successful registration status. Continue', $this->getContext($payment));
 
         $qr = $response->result()?->qr();
 
         $payment->withQR(new QR($qr->payload(), $qr->imageUrl()));
+        $payment->addLog('QR code caught');
 
         $this->statusHandler->handle($payment, WorkflowTransitionEnum::registered);
     }
