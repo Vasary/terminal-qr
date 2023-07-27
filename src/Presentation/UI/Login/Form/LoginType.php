@@ -36,7 +36,7 @@ final class LoginType extends AbstractType
                     'required' => false,
                     'label' => 'login.form.password',
                     'attr' => [
-                        'placeholder' => 'login.input.password',
+                        'placeholder' => 'login.form.password',
 
                     ],
                     'row_attr' => [

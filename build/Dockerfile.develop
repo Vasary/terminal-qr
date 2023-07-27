@@ -13,6 +13,9 @@ RUN set -ex && \
     docker-php-ext-install pdo pdo_sqlite sockets intl && \
     docker-php-ext-enable redis xdebug intl pcov
 
+RUN ln -s /app/bin/console /usr/bin/console && \
+    ln -s /app/bin/phpunit /usr/bin/phpunit
+
 CMD ["php-fpm"]
 
 EXPOSE 9000

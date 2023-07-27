@@ -58,6 +58,7 @@ final class PaymentContext implements ModelContextInterface
             ->setProperty($model, 'callback', new Callback($this->callbackUrl))
             ->setProperty($model, 'gateway', $gateway)
             ->setProperty($model, 'store', $store)
+            ->setProperty($model, 'qrCode', null)
             ->setProperty($model, 'token', $this->token === null ? null : new Token($this->token))
             ->setProperty($model, 'logs', [])
             ->setTimestamps($model);

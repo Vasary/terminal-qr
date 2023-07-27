@@ -9,6 +9,7 @@ use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Key;
 use App\Infrastructure\Persistence\DataFixtures\GatewayFixtures;
 use App\Infrastructure\Test\AbstractUnitTestCase;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
@@ -17,9 +18,29 @@ use App\Shared\Transfer\GatewayDelete;
 use App\Shared\Transfer\GatewayUpdate;
 use App\Shared\Transfer\SearchCriteria;
 use Doctrine\ORM\EntityManagerInterface;
+use Mockery;
 
 final class GatewayFacadeTest extends AbstractUnitTestCase
 {
+    public function testGatewayShouldBeRetrievedByKey(): void
+    {
+        $gateway = GatewayContext::create()();
+
+        $repositoryMock = Mockery::mock(GatewayRepositoryInterface::class);
+        $repositoryMock
+            ->shouldReceive('findByKey')
+            ->once()
+            ->with($gateway->key())
+            ->andReturn($gateway);
+
+        $this->getContainer()->set(GatewayRepositoryInterface::class, $repositoryMock);
+
+        /** @var GatewayFacade $facade */
+        $facade = $this->getContainer()->get(GatewayFacade::class);
+
+        $this->assertNotNull($facade->findByKey($gateway->key()));
+    }
+
     public function testGatewayFacadeShouldCreateGateway(): void
     {
         $transfer = GatewayCreate::fromArray([
@@ -30,6 +51,8 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
             'currency' => $this->faker->currencyCode(),
         ]);
 
+        $expectedKey = md5($transfer->title() . $transfer->host() . $transfer->currency() . $transfer->callback());
+
         /** @var GatewayFacade $facade */
         $facade = $this->getContainer()->get(GatewayFacade::class);
         $gateway = $facade->create($transfer);
@@ -39,6 +62,7 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
         $this->assertEquals($transfer->host(), (string) $gateway->host());
         $this->assertEquals($transfer->portal(), (string) $gateway->portal());
         $this->assertEquals($transfer->currency(), (string) $gateway->currency());
+        $this->assertEquals($expectedKey, (string) $gateway->key());
     }
 
     public function testGatewayFacadeShouldRetrieveGateways(): void

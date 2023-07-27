@@ -58,10 +58,20 @@ final class PaymentsController extends AbstractController
             'page' => $request->page,
             'order' => $request->orderBy,
             'searchValue' => $request->searchValue,
-            'searchFields' => $request->searchFields,
             'current' => $current,
             'config' => [
-                'searchFields' => ['amount', 'createdAt', 'updatedAt', 'status'],
+                'searchFields' => ['amount', 'createdAt', 'status'],
+                'headers' => [
+                    'id' => 'id',
+                    'createdAt' => 'createdAt',
+                    'amount' => 'amount',
+                    'commission' => 'commission',
+                    'status' => 'status',
+                    'gateway' => 'gateway',
+                    'store' => 'store',
+                    'currency' => 'currency',
+                    'qr' => 'qr.title',
+                ],
             ],
             'userStores' => $userStores,
         ]);

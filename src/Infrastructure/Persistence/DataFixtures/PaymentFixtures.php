@@ -19,7 +19,7 @@ use Doctrine\Persistence\ObjectManager;
 
 final class PaymentFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
-    public function __construct(private readonly int $limit = 0)
+    public function __construct(private readonly int $limit = 100)
     {
     }
 

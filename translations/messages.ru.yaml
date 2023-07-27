@@ -40,6 +40,7 @@ payment:
   details:
     title: Детали
   attribute:
+    id: '#'
     amount: Сумма
     commission: Коммиссия
     status: Статус
@@ -91,7 +92,7 @@ login:
     submit: Войти
     email: Email
     password: Пароль
-    remember: Войти
+    remember: Запомнить меня
 dashboard:
   payments: Платежи
   terminals: Терминалы оплаты

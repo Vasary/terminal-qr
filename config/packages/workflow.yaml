@@ -7,13 +7,27 @@ framework:
       supports:
         - App\Domain\Model\Payment
       places:
-        - new
-        - token
-        - awaiting
-        - successfully
-        - failure
-        - timeout
-        - unknown
+        new:
+          metadata:
+            bg_color: '#0d6efd'
+        token:
+          metadata:
+            bg_color: '#0dcaf0'
+        awaiting:
+          metadata:
+            bg_color: '#ffc107'
+        successfully:
+          metadata:
+            bg_color: '#198754'
+        failure:
+          metadata:
+            bg_color: '#dc3545'
+        timeout:
+          metadata:
+            bg_color: '#dc3545'
+        unknown:
+          metadata:
+            bg_color: '#dc3545'
       transitions:
         tokenized:
           from: new

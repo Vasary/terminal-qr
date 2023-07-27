@@ -8,7 +8,6 @@ use App\Application\Contract\HttpClientInterface;
 use App\Application\Payment\Business\PaymentProcessor\Step\CreateTransaction;
 use App\Application\Payment\Business\StateMachine\PaymentStatusHandler;
 use App\Domain\Enum\PaymentStatusEnum;
-use App\Domain\Enum\WorkflowTransitionEnum;
 use App\Infrastructure\HTTP\Response\RegisterPaymentResponse;
 use App\Infrastructure\Serializer\Serializer;
 use App\Infrastructure\Test\AbstractUnitTestCase;
@@ -22,11 +21,12 @@ final class CreateTransactionTest extends AbstractUnitTestCase
 {"result":{"status": "INTERIM_SUCCESS","qr":{"payload":"https://qr.nspk.ru/BS*******","imageUrl":"https://api.qrserver.com/v1/create-qr-code/?size=450x450&data=https://qr.nspk.ru/BS1**********************"}}}
 JSON;
 
+    private const RESPONSE_WITH_FAILURE_STATUS = '{"result":{"status": "FAILED"}}';
+
     public function testShouldSuccessfullyCreateTransactionAndChangePaymentStatusToAwaiting(): void
     {
         $paymentContext = PaymentContext::create();
         $paymentContext->status = PaymentStatusEnum::token;
-        $paymentContext->token = 'token';
 
         $payment = $paymentContext();
 
@@ -36,7 +36,6 @@ JSON;
         $loggerMock->shouldReceive('info')->once()->withArgs(
             ['Attempt to register transaction at external provider', $context]
         );
-
         $loggerMock->shouldReceive('info')->once()->withArgs(
             ['Accepted successful registration status. Continue', $context]
         );
@@ -65,5 +64,50 @@ JSON;
         $this->assertNotNull($payment->qr());
         $this->assertCount(3, $payment->logs());
         $this->assertEquals(PaymentStatusEnum::awaiting, $payment->status());
+    }
+
+    public function testShouldSFailCreateTransactionAndChangePaymentStatusToAwaiting(): void
+    {
+        $paymentContext = PaymentContext::create();
+        $paymentContext->status = PaymentStatusEnum::token;
+
+        $payment = $paymentContext();
+
+        $context = ['id' => (string) $payment->id(), 'status' => PaymentStatusEnum::token->name];
+
+        $loggerMock = Mockery::mock(LoggerInterface::class);
+        $loggerMock->shouldReceive('info')->once()->withArgs(
+            ['Attempt to register transaction at external provider', $context]
+        );
+
+        $loggerMock->shouldReceive('info')->once()->withArgs(
+            ['Accepted failure registration status. Stopping. Move payment to failure', $context]
+        );
+
+        $loggerMock->shouldReceive('info')->once()->withArgs(
+            ['Payment chain completed', ['id' => (string) $payment->id(), 'status' => PaymentStatusEnum::failure->name]]
+        );
+
+        /** @var RegisterPaymentResponse $registerPaymentResponse */
+        $registerPaymentResponse = Serializer::create()->deserialize(
+            self::RESPONSE_WITH_FAILURE_STATUS,
+            RegisterPaymentResponse::class
+        );
+
+        $httpClientMock = Mockery::mock(HttpClientInterface::class);
+        $httpClientMock
+            ->shouldReceive('registerPayment')
+            ->once()
+            ->withArgs([$payment->gateway()->portal(), $payment->token()])
+            ->andReturn($registerPaymentResponse);
+
+        $statusHandlerMock = $this->getContainer()->get(PaymentStatusHandler::class);
+        $step = new CreateTransaction($httpClientMock, $loggerMock, $statusHandlerMock);
+
+        $step->handle($payment);
+
+        $this->assertNull($payment->qr());
+        $this->assertCount(2, $payment->logs());
+        $this->assertEquals(PaymentStatusEnum::failure, $payment->status());
     }
 }

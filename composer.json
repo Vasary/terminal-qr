@@ -48,8 +48,7 @@
       "symfony/runtime": true,
       "composer-unused/composer-unused-plugin": true,
       "dealerdirect/phpcodesniffer-composer-installer": true,
-      "php-http/discovery": true,
-      "infection/extension-installer": true
+      "php-http/discovery": true
     },
     "optimize-autoloader": true,
     "preferred-install": {
@@ -104,7 +103,6 @@
   },
   "require-dev": {
     "dg/bypass-finals": "v1.4.1",
-    "infection/infection": "*",
     "mockery/mockery": "1.6.2",
     "phpunit/phpunit": "9.6.4",
     "slevomat/coding-standard": "8.8.0",

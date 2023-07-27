@@ -12,5 +12,6 @@ twig:
     '%kernel.project_dir%/src/Presentation/UI/Management/Module/Terminal/View': terminals
     '%kernel.project_dir%/src/Presentation/UI/Management/View': management
     '%kernel.project_dir%/src/Presentation/UI/View': main
+    '%kernel.project_dir%/src/Presentation/UI/_components': component
 
   form_themes: ['bootstrap_5_layout.html.twig']

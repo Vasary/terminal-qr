@@ -10,6 +10,7 @@ Encore
     .addEntry('bootstrap', './app/bootstrap/bootstrap.js')
     .addEntry('terminal', './app/terminal/terminal.js')
     .addEntry('checkStatus', './app/terminal/checkStatus.ts')
+    .addEntry('payment', './app/payment/payment.page.ts')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()
     .cleanupOutputBeforeBuild()

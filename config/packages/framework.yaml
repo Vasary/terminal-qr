@@ -8,8 +8,8 @@ framework:
         log: true
     set_locale_from_accept_language: true
     set_content_language_from_locale: true
-    default_locale: en
-    enabled_locales: ['en']
+    default_locale: ru
+    enabled_locales: ['ru']
 
 when@test:
     framework:

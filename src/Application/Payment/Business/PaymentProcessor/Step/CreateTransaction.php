@@ -24,7 +24,7 @@ final class CreateTransaction extends AbstractStep
         parent::handle($payment);
     }
 
-    public function createTransaction(Payment $payment): void
+    private function createTransaction(Payment $payment): void
     {
         $this->logger->info('Attempt to register transaction at external provider', $this->getContext($payment));
 
@@ -49,7 +49,7 @@ final class CreateTransaction extends AbstractStep
     {
         $this->logger->info('Accepted successful registration status. Continue', $this->getContext($payment));
 
-        $qr = $response->result()?->qr();
+        $qr = $response->result()->qr();
 
         $payment->withQR(new QR($qr->payload(), $qr->imageUrl()));
         $payment->addLog('QR code caught');
@@ -59,7 +59,10 @@ final class CreateTransaction extends AbstractStep
 
     private function handleFailure(RegisterPaymentResponse $response, Payment $payment): void
     {
-        $this->logger->info('Accepted failure registration status. Stopping. Move payment to failure');
+        $this->logger->info(
+            'Accepted failure registration status. Stopping. Move payment to failure',
+            $this->getContext($payment)
+        );
 
         $this->statusHandler->handle($payment, WorkflowTransitionEnum::failure);
     }

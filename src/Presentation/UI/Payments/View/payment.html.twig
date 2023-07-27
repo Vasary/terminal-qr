@@ -12,93 +12,13 @@
     <div class="container">
         <h3>{{ 'payment.title.details' | trans }}</h3>
         <div class="mt-5">
-            <table class="table table-striped">
-                <tr>
-                    <td>{{ 'payment.attribute.amount' | trans }}</td>
-                    <td>{{ payment.amount | number_format(2, '.', ',') }} {{ payment.currency }}</td>
-                    <td rowspan="8" class="align-middle">
-                        <div class="card text-center">
-                            <div class="card-body">
-                                {% if payment.qr is not null %}
-                                    <p class="card-text">
-                                        <img style="width: 200px; height: 200px;" src="{{ payment.qr.image }}">
-                                    </p>
-                                {% else %}
-                                    <p class="card-text">
-                                        <img style="width: 200px; height: 200px;"
-                                             src="{{ asset('build/images/qr-not-found.svg') }}">
-                                    </p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'payment.attribute.commission' | trans }}</td>
-                    <td>{{ payment.commission | number_format(2, '.', ',') }} {{ payment.currency }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'payment.attribute.status' | trans }}</td>
-                    <td>{{ paymentStatus(payment) | raw }}</td>
-                </tr>
-                <tr>
-                    <td>{{ 'payment.attribute.qr.title' | trans }}</td>
-                    <td>
-                        {% if payment.qr is not null %}
-                            <span class="badge text-bg-success">{{ 'payment.attribute.qr.status.registered' | trans }}</span>
-                        {% else %}
-                            <span class="badge text-bg-dark">{{ 'payment.attribute.qr.status.absents' | trans }}</span>
-                        {% endif %}
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'payment.attribute.callback' | trans }}</td>
-                    <td>
-                        <a class="link-opacity-100 text-decoration-none" href="#">{{ payment.callback }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'payment.attribute.gateway' | trans }}</td>
-                    <td>
-                        <a class="link-opacity-100 text-decoration-none" href="#">{{ payment.gateway.title }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'payment.attribute.store' | trans }}</td>
-                    <td>
-                        <a class="link-opacity-100 text-decoration-none" href="#">{{ payment.store.title }}</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>{{ 'payment.attribute.token.name' | trans }}</td>
-                    <td>
-                        {% if payment.token is not null %}
-                            <span class="badge text-bg-warning">{{ payment.token }}</span>
-                        {% else %}
-                            <span class="badge text-bg-dark">{{ 'payment.attribute.token.absents' | trans }}</span>
-                        {% endif %}
-                    </td>
-                </tr>
-            </table>
+            {% embed '@component/payment.details.html.twig' with {'payment': payment} %}{% endembed %}
         </div>
         <div class="mt-5">
-            <h3 class="mb-5">{{ 'payment.title.logs' | trans }}</h3>
-            <table class="table table-striped">
-                {% if payment.logs is empty %}
-                    <tr>
-                        <td>{{ 'payment.logs.empty' | trans }}</td>
-                    </tr>
-                {% else %}
-                    {% for log in payment.logs | sort((a, b) => b.time <=> a.time) %}
-                        <tr>
-                            <td>{{ log.time | date('d.m.Y') }}</td>
-                            <td>{{ log.time | date('H:i') }}</td>
-                            <td>{{ log.value }}</td>
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-            </table>
+            {% embed '@component/payment.flow.html.twig' with {'payment': payment} %}{% endembed %}
+        </div>
+        <div class="mt-5">
+            {% embed '@component/payment.logs.html.twig' with {'payment': payment} %}{% endembed %}
         </div>
     </div>
 {% endblock %}
-

@@ -1,0 +1,18 @@
+<div>
+    <h3 class="mb-5">{{ 'payment.title.logs' | trans }}</h3>
+    <table class="table table-striped">
+        {% if payment.logs is empty %}
+            <tr>
+                <td>{{ 'payment.logs.empty' | trans }}</td>
+            </tr>
+        {% else %}
+            {% for log in payment.logs | sort((a, b) => b.time <=> a.time) %}
+                <tr>
+                    <td>{{ log.time | date('d.m.Y') }}</td>
+                    <td>{{ log.time | date('H:i') }}</td>
+                    <td>{{ log.value }}</td>
+                </tr>
+            {% endfor %}
+        {% endif %}
+    </table>
+</div>

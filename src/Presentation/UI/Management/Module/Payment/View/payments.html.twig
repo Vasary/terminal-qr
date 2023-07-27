@@ -14,8 +14,12 @@
     <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
         <form action="{{ path('management_payments') }}" method="get" class="container">
             <div class="input-group mb-3">
-                <input type="text" class="form-control" name="searchValue" placeholder="{{ 'payment.button.search' | trans }}"
-                       value="{{ searchValue }}"/>
+                <input type="text"
+                       class="form-control"
+                       name="searchValue"
+                       placeholder="{{ 'payment.button.search' | trans }}"
+                       value="{{ searchValue }}"
+                />
                 <button class="btn btn-outline-secondary" type="submit">{{ 'payment.button.search' | trans }}</button>
                 <input type="hidden" name="orderBy" value="{{ order }}">
                 <input type="hidden" name="page" value="1">
@@ -29,20 +33,18 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>#</th>
-                    <th>
-                        <a class="text-decoration-none"
-                           href="{{ path('management_payments', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">
-                            {{ 'payment.attribute.createdAt' | trans }}
-                        </a>
-                    </th>
-                    <th>{{ 'payment.attribute.amount' | trans }}</th>
-                    <th>{{ 'payment.attribute.commission' | trans }}</th>
-                    <th>Status</th>
-                    <th>{{ 'payment.attribute.gateway' | trans }}</th>
-                    <th>{{ 'payment.attribute.store' | trans }}</th>
-                    <th>{{ 'payment.attribute.currency' | trans }}</th>
-                    <th>{{ 'payment.attribute.qr.title' | trans }}</th>
+                    {% for key, header in config.headers %}
+                        <th>
+                            {% if key in config.searchFields %}
+                                <a class="text-decoration-none"
+                                   href="{{ path('management_payments', {'page': page,'orderBy': orderBy(key, 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': config.searchFields}) }}">
+                                    {{ ('payment.attribute.' ~ header) | trans }}
+                                </a>
+                            {% else %}
+                                {{ ('payment.attribute.' ~ header) | trans }}
+                            {% endif %}
+                        </th>
+                    {% endfor %}
                 </tr>
                 </thead>
                 <tbody>
@@ -74,18 +76,15 @@
         </div>
 
         <div class="container d-flex flex-wrap justify-content-end">
-            <nav>
-                {% if items.pages > 1 %}
-                    <ul class="pagination">
-                        {% for i in 1..items.pages %}
-                            <li class="page-item">
-                                <a class="page-link"
-                                   href="{{ path('management_payments', {'page': i,'orderBy': order, 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ i }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </nav>
+            <div class="container d-flex flex-wrap justify-content-end">
+                {% embed '@component/pagination.html.twig' with {
+                    'pages': items.pages,
+                    'route': 'payments',
+                    'order': order,
+                    'searchValue': searchValue,
+                    'searchFields': config.searchFields
+                } %}{% endembed %}
+            </div>
         </div>
     </div>
 {% endblock %}

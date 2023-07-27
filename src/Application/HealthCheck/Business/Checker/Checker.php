@@ -12,12 +12,9 @@ final readonly class Checker implements CheckerInterface
 
     public function check(): array
     {
-        $response = [];
-        foreach ($this->checkers as $checker) {
-            /** @var HealthCheckerPluginInterface $checker */
-            $response[] = $checker->check();
-        }
-
-        return $response;
+        return array_map(
+            fn (HealthCheckerPluginInterface $checker) => $checker->check(),
+            $this->checkers,
+        );
     }
 }

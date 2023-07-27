@@ -1,0 +1,12 @@
+<nav>
+    {% if pages > 1 %}
+        <ul class="pagination">
+            {% for i in 1..pages %}
+                <li class="page-item">
+                    <a class="page-link"
+                       href="{{ path(route, {'page': i,'orderBy': order, 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ i }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</nav>

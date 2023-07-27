@@ -6,16 +6,16 @@ require dirname(__DIR__).'/vendor/autoload.php';
 
 $console = sprintf('%s/../bin/console', __DIR__);
 
-passthru(
-    <<<CMD
-    php $console doctrine:database:drop --force --env=test && \
-    php $console doctrine:database:create --no-interaction --env=test && \
-    php $console doctrine:sc:up --force --complete && \
-    php $console cache:clear --env=test
-    CMD,
-    $code
-);
-
-if ($code) {
-    exit('Bootstrap: can\'t reload fixtures' . PHP_EOL);
-}
+//passthru(
+//    <<<CMD
+//    php $console doctrine:database:drop --force --env=test && \
+//    php $console doctrine:database:create --no-interaction --env=test && \
+//    php $console doctrine:sc:up --force --complete && \
+//    php $console cache:clear --env=test
+//    CMD,
+//    $code
+//);
+//
+//if ($code) {
+//    exit('Bootstrap: can\'t reload fixtures' . PHP_EOL);
+//}

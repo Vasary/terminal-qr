@@ -349,4 +349,23 @@ final class StoreFacadeTest extends AbstractUnitTestCase
 
         $this->assertCount(0, $storeWithNoGateways->gateway());
     }
+
+    public function testShouldFindStoreByCode(): void
+    {
+        $store = StoreContext::create()();
+
+        $repositoryMock = Mockery::mock(StoreRepositoryInterface::class);
+        $repositoryMock
+            ->shouldReceive('findByCode')
+            ->once()
+            ->with($store->code())
+            ->andReturn($store);
+
+        $this->getContainer()->set(StoreRepositoryInterface::class, $repositoryMock);
+
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
+
+        $this->assertNotNull($facade->findByCode($store->code()));
+    }
 }
