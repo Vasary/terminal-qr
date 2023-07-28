@@ -15,64 +15,25 @@
     </header>
 
     <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
-        <form action="{{ path('payments') }}" method="get" class="container">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="searchValue"
-                       placeholder="{{ 'payment.button.search' | trans }}"
-                       value="{{ searchValue }}"/>
-                <button class="btn btn-outline-secondary" type="submit">{{ 'payment.button.search' | trans }}</button>
-                <input type="hidden" name="orderBy" value="{{ order }}">
-                <input type="hidden" name="page" value="1">
-                {% for field in config.searchFields %}
-                    <input type="hidden" name="searchFields[]" value="{{ field }}">
-                {% endfor %}
-            </div>
-        </form>
+        <div class="container">
+            {% embed '@component/payments.search.html.twig' with {
+                'route': 'payments',
+                'order': current.order,
+                'orderBy': order,
+                'searchValue': searchValue,
+                'searchFields': config.searchFields,
+            } %}{% endembed %}
+        </div>
 
         <div class="container">
-            <table class="table table-striped">
-                <thead>
-                <tr>
-                    {% for key, header in config.headers %}
-                        <th>
-                            {% if key in config.searchFields %}
-                                <a class="text-decoration-none"
-                                   href="{{ path('payments', {'page': page,'orderBy': orderBy(key, 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': config.searchFields}) }}">
-                                    {{ ('payment.attribute.' ~ header) | trans }}
-                                </a>
-                            {% else %}
-                                {{ ('payment.attribute.' ~ header) | trans }}
-                            {% endif %}
-                        </th>
-                    {% endfor %}
-                </tr>
-                </thead>
-                <tbody>
-                {% set id = 1 %}
-                {% for item in items.aggregate %}
-                    <tr>
-                        <td>
-                            <a href="{{ path('payment', {'id': item.id}) }}">{{ id }}</a>
-                        </td>
-                        <td>{{ item.createdAt | date('d.m.Y H:i') }}</td>
-                        <td>{{ item.amount | number_format(2, '.', ',') }}</td>
-                        <td>{{ item.commission | number_format(2, '.', ',') }}</td>
-                        <td>{{ paymentStatus(item) | raw }}</td>
-                        <td>{{ item.gateway.title }}</td>
-                        <td>{{ item.store.title }}</td>
-                        <td>{{ item.currency }}</td>
-                        <td>
-                            {% if item.qr is not null %}
-                                <span class="badge text-bg-success">{{ 'payment.attribute.qr.status.registered' | trans }}</span>
-                            {% else %}
-                                <span class="badge text-bg-dark">{{ 'payment.attribute.qr.status.absents' | trans }}</span>
-                            {% endif %}
-                        </td>
-                    </tr>
-                    {% set id = id + 1 %}
-                {% endfor %}
-                </tbody>
-            </table>
+            {% embed '@component/payments.table.html.twig' with {
+                'headers': config.headers,
+                'items': items.aggregate,
+                'route': 'payment',
+                'order': current.order,
+                'searchValue': searchValue,
+                'searchFields': config.searchFields,
+            } %}{% endembed %}
         </div>
         <div class="container d-flex flex-wrap justify-content-end">
             {% embed '@component/pagination.html.twig' with {

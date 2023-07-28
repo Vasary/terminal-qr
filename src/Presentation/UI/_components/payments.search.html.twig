@@ -1,0 +1,15 @@
+<div>
+    <form action="{{ path(route) }}" method="get">
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" name="searchValue"
+                   placeholder="{{ 'payment.button.search' | trans }}"
+                   value="{{ searchValue }}"/>
+            <button class="btn btn-outline-secondary" type="submit">{{ 'payment.button.search' | trans }}</button>
+            <input type="hidden" name="orderBy" value="{{ orderBy }}">
+            <input type="hidden" name="page" value="1">
+            {% for field in searchFields %}
+                <input type="hidden" name="searchFields[]" value="{{ field }}">
+            {% endfor %}
+        </div>
+    </form>
+</div>

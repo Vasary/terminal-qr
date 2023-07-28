@@ -21,21 +21,15 @@
     </tr>
     <tr>
         <td>{{ 'payment.attribute.commission' | trans }}</td>
-        <td>{{ payment.commission | number_format(2, '.', ',') }} {{ payment.currency }}</td>
+        <td>{{ payment.commission | money }} {{ payment.currency }}</td>
     </tr>
     <tr>
         <td>{{ 'payment.attribute.status' | trans }}</td>
-        <td>{{ paymentStatus(payment) | raw }}</td>
+        <td>{{ paymentStatus(payment.status) | raw }}</td>
     </tr>
     <tr>
         <td>{{ 'payment.attribute.qr.title' | trans }}</td>
-        <td>
-            {% if payment.qr is not null %}
-                <span class="badge text-bg-success">{{ 'payment.attribute.qr.status.registered' | trans }}</span>
-            {% else %}
-                <span class="badge text-bg-dark">{{ 'payment.attribute.qr.status.absents' | trans }}</span>
-            {% endif %}
-        </td>
+        <td>{{ qr(payment.qr) | raw }}</td>
     </tr>
     <tr>
         <td>{{ 'payment.attribute.callback' | trans }}</td>

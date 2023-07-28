@@ -28,6 +28,7 @@
     "symfony/intl": "6.3.0",
     "symfony/monolog-bundle": "3.8.0",
     "symfony/password-hasher": "6.3.*",
+    "symfony/property-access": "6.3.*",
     "symfony/proxy-manager-bridge": "6.3.0",
     "symfony/runtime": "6.3.0",
     "symfony/security-bundle": "6.3.0",

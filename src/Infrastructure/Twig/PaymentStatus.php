@@ -34,11 +34,11 @@ final class PaymentStatus extends AbstractExtension
         ];
     }
 
-    public function paymentStatus(Payment $payment): string
+    public function paymentStatus(PaymentStatusEnum $status): string
     {
-        $statusClass = self::statusMap[$payment->status()->value];
+        $statusClass = self::statusMap[$status->value];
 
-        return $this->getTemplate($statusClass, sprintf('payment.status.%s', strtolower($payment->status()->name)));
+        return $this->getTemplate($statusClass, sprintf('payment.status.%s', strtolower($status->name)));
     }
 
     private function getTemplate(string $bootstrapClass, string $value): string

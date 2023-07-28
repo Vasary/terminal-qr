@@ -1,0 +1,41 @@
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            {% for key, header in headers %}
+                <th>
+                    {% if key in searchFields %}
+                        <a class="text-decoration-none"
+                           href="{{ path('management_payments', {'page': page,'orderBy': orderBy(key, 'desc', order.field, order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">
+                            {{ ('payment.attribute.' ~ header.translation) | trans }}
+                        </a>
+                    {% else %}
+                        {{ ('payment.attribute.' ~ header.translation) | trans }}
+                    {% endif %}
+                </th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+        {% set id = 1 %}
+        {% for item in items %}
+            <tr>
+                {% for header in config.headers %}
+                    {% if header.key == 'id' %}
+                        <td>
+                            <a href="{{ path(route, {'id': item.id}) }}">
+                                <span class="badge text-bg-dark">{{ id }}</span>
+                            </a>
+                        </td>
+                    {% else %}
+                        <td>
+                            {{ paymentItem(item, header.key, header.filters, header.functions) | raw }}
+                        </td>
+                    {% endif %}
+                {% endfor %}
+            </tr>
+            {% set id = id + 1 %}
+        {% endfor %}
+        </tbody>
+    </table>
+</div>

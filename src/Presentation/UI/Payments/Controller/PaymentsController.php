@@ -10,6 +10,7 @@ use App\Domain\Model\Store;
 use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
 use App\Infrastructure\Security\Security;
+use App\Presentation\UI\_config\PaymentViewConfigTrait;
 use App\Presentation\UI\Payments\Controller\Request\PaymentsRequest;
 use App\Presentation\UI\Payments\Response\HTMLResponse;
 use App\Shared\Transfer\SearchCriteria;
@@ -17,6 +18,8 @@ use App\Shared\Transfer\SearchCriteria;
 #[Route(path: '/payments', name: 'payments', methods: ['GET'])]
 final class PaymentsController extends AbstractController
 {
+    use PaymentViewConfigTrait;
+
     private const PAGE_LIMIT = 25;
 
     public function __construct(private readonly PaymentFacadeInterface $facade, private readonly Security $security, private readonly UserFacadeInterface $userFacade)
@@ -59,20 +62,7 @@ final class PaymentsController extends AbstractController
             'order' => $request->orderBy,
             'searchValue' => $request->searchValue,
             'current' => $current,
-            'config' => [
-                'searchFields' => ['amount', 'createdAt', 'status'],
-                'headers' => [
-                    'id' => 'id',
-                    'createdAt' => 'createdAt',
-                    'amount' => 'amount',
-                    'commission' => 'commission',
-                    'status' => 'status',
-                    'gateway' => 'gateway',
-                    'store' => 'store',
-                    'currency' => 'currency',
-                    'qr' => 'qr.title',
-                ],
-            ],
+            'config' => $this->getViewConfig(),
             'userStores' => $userStores,
         ]);
 
