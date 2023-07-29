@@ -33,6 +33,9 @@ final class WorkflowExtension extends AbstractExtension
             MermaidDumper::DIRECTION_LEFT_TO_RIGHT
         );
 
-        return $dumper->dump($this->paymentStateMachine->getDefinition(), $this->paymentStateMachine->getMarking($payment));
+        return $dumper->dump(
+            $this->paymentStateMachine->getDefinition(),
+            $this->paymentStateMachine->getMarking($payment)
+        );
     }
 }

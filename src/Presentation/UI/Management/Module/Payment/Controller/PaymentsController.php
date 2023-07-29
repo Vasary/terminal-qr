@@ -31,20 +31,8 @@ final class PaymentsController extends AbstractController
 
         $search = $this->getSearchRequest($request);
         $orderBy = $this->getSortRequest($request);
-
-        $page = null === $request->page
-            ? 1
-            : (int) $request->page;
-
-        $current = [];
-
-        $current['order'] = count($orderBy) > 0 ? [
-            'field' => $orderBy[0]->field(),
-            'direction' => $orderBy[0]->direction(),
-        ] : [
-            'field' => '',
-            'direction' => '',
-        ];
+        $page = $this->getPage($request);
+        $current = $this->getCurrent($request);
 
         $stores = array_map(
             fn(Store $store) => (string) $store->id(),

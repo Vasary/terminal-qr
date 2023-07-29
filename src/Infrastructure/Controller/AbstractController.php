@@ -6,6 +6,7 @@ namespace App\Infrastructure\Controller;
 
 use App\Infrastructure\HTTP\AbstractRequest;
 use App\Infrastructure\HTTP\RedirectResponse;
+use App\Infrastructure\HTTP\SearchAndOrderRequest;
 use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchField;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController as SymfonyController;
@@ -50,5 +51,27 @@ abstract class AbstractController extends SymfonyController
     protected function redirectTo(string $route, array $parameters = []): RedirectResponse
     {
         return new RedirectResponse($this->generateUrl($route, $parameters), 302);
+    }
+
+    protected function getPage(SearchAndOrderRequest $request): int
+    {
+        return null === $request->page
+            ? 1
+            : (int) $request->page;
+    }
+
+    protected function getCurrent(SearchAndOrderRequest $request): array
+    {
+        $orderBy = $this->getSortRequest($request);
+
+        $current['order'] = count($orderBy) > 0 ? [
+            'field' => $orderBy[0]->field(),
+            'direction' => $orderBy[0]->direction(),
+        ] : [
+            'field' => '',
+            'direction' => '',
+        ];
+
+        return $current;
     }
 }

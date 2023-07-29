@@ -28,15 +28,15 @@
                     {% for gateway in store.gateway %}
                         {% set code = [store.code, ':', gateway.key] | join %}
                         <tr>
-                            <td>{{ id }}</td>
+                            <td><span class="badge bg-dark ">{{ id }}</span></td>
                             <td>{{ store.title }}</td>
                             <td>{{ gateway.title }}</td>
                             <td>
                                 <a href="{{ url('terminal', {'code': code}) }}" target="_blank">{{ url('terminal', {'code': code}) }}</a>
                             </td>
                         </tr>
+                        {% set id = id + 1 %}
                     {% endfor %}
-                    {% set id = id + 1 %}
                 {% endfor %}
                 </tbody>
             </table>

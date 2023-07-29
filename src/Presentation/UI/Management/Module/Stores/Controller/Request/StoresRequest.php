@@ -4,18 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Stores\Controller\Request;
 
-use App\Infrastructure\HTTP\AbstractRequest;
+use App\Infrastructure\HTTP\SearchAndOrderRequest;
 
-final class StoresRequest extends AbstractRequest
+final class StoresRequest extends SearchAndOrderRequest
 {
-    public ?string $searchValue = null;
-
-    /**
-     * @var string[]
-     */
-    public array $searchFields = [];
-
-    public ?string $orderBy = null;
-
-    public ?string $page;
 }

@@ -15,18 +15,15 @@
     </header>
 
     <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
-        <form action="{{ path('management_gateways') }}" method="get" class="container">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" name="searchValue" placeholder="{{ 'gateways.button.search' | trans }}"
-                       value="{{ searchValue }}"/>
-                <button class="btn btn-outline-secondary" type="submit">{{ 'gateways.button.search' | trans }}</button>
-                <input type="hidden" name="orderBy" value="{{ order }}">
-                <input type="hidden" name="page" value="1">
-                {% for field in config.searchFields %}
-                    <input type="hidden" name="searchFields[]" value="{{ field }}">
-                {% endfor %}
-            </div>
-        </form>
+        <div class="container">
+            {% embed '@component/payments.search.html.twig' with {
+                'route': 'management_gateways',
+                'order': current.order,
+                'orderBy': order,
+                'searchValue': searchValue,
+                'searchFields': config.searchFields,
+            } %}{% endembed %}
+        </div>
 
         <div class="container">
             <table class="table table-striped">
@@ -65,7 +62,7 @@
                 {% set id = 1 %}
                 {% for item in items.aggregate %}
                     <tr>
-                        <td>{{ id }}</td>
+                        <td><span class="badge bg-dark ">{{ id }}</span></td>
                         <td>{{ item.key }}</td>
                         <td>{{ item.title }}</td>
                         <td>{{ item.host }}</td>
@@ -98,18 +95,13 @@
         </div>
 
         <div class="container d-flex flex-wrap justify-content-end">
-            <nav>
-                {% if items.pages > 1 %}
-                    <ul class="pagination">
-                        {% for i in 1..items.pages %}
-                            <li class="page-item">
-                                <a class="page-link"
-                                   href="{{ path('management_gateways', {'page': i,'orderBy': order, 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ i }}</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% endif %}
-            </nav>
+            {% embed '@component/pagination.html.twig' with {
+                'pages': items.pages,
+                'route': 'management_gateways',
+                'order': order,
+                'searchValue': searchValue,
+                'searchFields': config.searchFields
+            } %}{% endembed %}
         </div>
     </div>
 {% endblock %}

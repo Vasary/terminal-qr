@@ -26,20 +26,8 @@ final class GatewaysController extends AbstractController
 
         $search = $this->getSearchRequest($request);
         $orderBy = $this->getSortRequest($request);
-
-        $page = null === $request->page
-            ? 1
-            : (int) $request->page;
-
-        $current = [];
-
-        $current['order'] = count($orderBy) > 0 ? [
-                'field' => $orderBy[0]->field(),
-                'direction' => $orderBy[0]->direction(),
-            ] : [
-                'field' => '',
-                'direction' => '',
-            ];
+        $page = $this->getPage($request);
+        $current = $this->getCurrent($request);
 
         $view = $this->renderTemplate('@gateway/gateways.html.twig', [
             'items' => $this->gatewayFacade->findByCriteria(
@@ -51,7 +39,7 @@ final class GatewaysController extends AbstractController
             'searchFields' => $request->searchFields,
             'current' => $current,
             'config' => [
-                'searchFields' => ['title', 'host', 'portal'],
+                'searchFields' => ['title', 'host', 'portal', 'key'],
             ],
         ]);
 

@@ -22,25 +22,12 @@ final class StoresController extends AbstractController
 
     public function __invoke(StoresRequest $request): HTMLResponse
     {
-        // TODO Full refactoring
         $this->isAccessGranted();
 
         $search = $this->getSearchRequest($request);
         $orderBy = $this->getSortRequest($request);
-
-        $page = null === $request->page
-            ? 1
-            : (int) $request->page;
-
-        $current = [];
-
-        $current['order'] = count($orderBy) > 0 ? [
-                'field' => $orderBy[0]->field(),
-                'direction' => $orderBy[0]->direction(),
-            ] : [
-                'field' => '',
-                'direction' => '',
-            ];
+        $page = $this->getPage($request);
+        $current = $this->getCurrent($request);
 
         $view = $this->renderTemplate('@stores/stores.html.twig', [
             'stores' => $this->storeFacade->findByCriteria(
@@ -51,6 +38,9 @@ final class StoresController extends AbstractController
             'searchValue' => $request->searchValue,
             'searchFields' => $request->searchFields,
             'current' => $current,
+            'config' => [
+                'searchFields' => ['title', 'code']
+            ]
         ]);
 
         return new HTMLResponse($view);
