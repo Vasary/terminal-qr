@@ -8,6 +8,7 @@ use App\Application\Contract\HttpClientInterface;
 use App\Application\Payment\Business\PaymentProcessor\Step\CreateTransaction;
 use App\Application\Payment\Business\StateMachine\PaymentStatusHandler;
 use App\Domain\Enum\PaymentStatusEnum;
+use App\Infrastructure\HTTP\Exception\TransactionRegistrationException;
 use App\Infrastructure\HTTP\Response\RegisterPaymentResponse;
 use App\Infrastructure\Serializer\Serializer;
 use App\Infrastructure\Test\AbstractUnitTestCase;
@@ -66,7 +67,7 @@ JSON;
         $this->assertEquals(PaymentStatusEnum::awaiting, $payment->status());
     }
 
-    public function testShouldSFailCreateTransactionAndChangePaymentStatusToAwaiting(): void
+    public function testShouldFailCreateTransactionAndChangePaymentStatusToAwaiting(): void
     {
         $paymentContext = PaymentContext::create();
         $paymentContext->status = PaymentStatusEnum::token;
@@ -100,6 +101,49 @@ JSON;
             ->once()
             ->withArgs([$payment->gateway()->portal(), $payment->token()])
             ->andReturn($registerPaymentResponse);
+
+        $statusHandlerMock = $this->getContainer()->get(PaymentStatusHandler::class);
+        $step = new CreateTransaction($httpClientMock, $loggerMock, $statusHandlerMock);
+
+        $step->handle($payment);
+
+        $this->assertNull($payment->qr());
+        $this->assertCount(2, $payment->logs());
+        $this->assertEquals(PaymentStatusEnum::failure, $payment->status());
+    }
+
+    public function testShouldFailCreateTransactionAndChangePaymentStatusToAwaitingAndThrowException(): void
+    {
+        $paymentContext = PaymentContext::create();
+        $paymentContext->status = PaymentStatusEnum::token;
+
+        $payment = $paymentContext();
+
+        $context = ['id' => (string) $payment->id(), 'status' => PaymentStatusEnum::token->name];
+
+        $loggerMock = Mockery::mock(LoggerInterface::class);
+        $loggerMock->shouldReceive('info')->once()->withArgs(
+            ['Attempt to register transaction at external provider', $context]
+        );
+
+        $loggerMock->shouldReceive('error')->once()->withArgs(
+            ['Test', $context]
+        );
+
+        $loggerMock->shouldReceive('notice')->once()->withArgs(
+            ['Set payment to failure status', $context]
+        );
+
+        $loggerMock->shouldReceive('info')->once()->withArgs(
+            ['Payment chain completed', ['id' => (string) $payment->id(), 'status' => 'failure']]
+        );
+
+        $httpClientMock = Mockery::mock(HttpClientInterface::class);
+        $httpClientMock
+            ->shouldReceive('registerPayment')
+            ->once()
+            ->withArgs([$payment->gateway()->portal(), $payment->token()])
+            ->andThrow(new TransactionRegistrationException('Test'));
 
         $statusHandlerMock = $this->getContainer()->get(PaymentStatusHandler::class);
         $step = new CreateTransaction($httpClientMock, $loggerMock, $statusHandlerMock);

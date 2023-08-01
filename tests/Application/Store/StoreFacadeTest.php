@@ -15,10 +15,12 @@ use App\Infrastructure\Persistence\DataFixtures\StoreFixtures;
 use App\Infrastructure\Test\AbstractUnitTestCase;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
 use App\Infrastructure\Test\Context\Model\StoreContext;
+use App\Infrastructure\Test\Context\Model\UserContext;
 use App\Shared\Transfer\SearchCriteria;
 use App\Shared\Transfer\StoreCreate;
 use App\Shared\Transfer\StoreDelete;
 use App\Shared\Transfer\StoreUpdate;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 
@@ -58,6 +60,8 @@ final class StoreFacadeTest extends AbstractUnitTestCase
 
         $this->assertEquals($transfer->title(), $store->title());
         $this->assertEquals($transfer->description(), $store->description());
+        $this->assertInstanceOf(DateTimeImmutable::class, $store->createdAt());
+        $this->assertInstanceOf(DateTimeImmutable::class, $store->updatedAt());
         $this->assertCount(1, iterator_to_array($repository->find()));
     }
 
@@ -367,5 +371,68 @@ final class StoreFacadeTest extends AbstractUnitTestCase
         $facade = $this->getContainer()->get(StoreFacade::class);
 
         $this->assertNotNull($facade->findByCode($store->code()));
+    }
+
+    public function testStoreShouldSuccessfullyAddUser(): void
+    {
+        $store = StoreContext::create()();
+        $user = UserContext::create()();
+
+        $store->addUser($user);
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        $entityManager->persist($store);
+        $entityManager->persist($user);
+
+
+
+        $entityManager->flush();
+
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
+
+        $store = $facade->findById($store->id());
+
+        $this->assertCount(1, $store->users());
+    }
+
+    public function testShouldDoNothingIfTryToRemoveNotAttachedUser(): void
+    {
+        $store = StoreContext::create()();
+        $user = UserContext::create()();
+
+        $store->removeUser($user);
+
+        $this->assertCount(0, $store->users());
+    }
+
+    public function testStoreShouldSuccessfullyRemoveUser(): void
+    {
+        $store = StoreContext::create()();
+        $user = UserContext::create()();
+
+        $store->addUser($user);
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        $entityManager->persist($store);
+        $entityManager->persist($user);
+
+        $entityManager->flush();
+
+        /** @var StoreFacade $facade */
+        $facade = $this->getContainer()->get(StoreFacade::class);
+
+        $this->assertCount(1, $store->users());
+
+        $store = $facade->findById($store->id());
+        $store->removeUser($user);
+
+        $dbStore = $facade->findById($store->id());
+
+        $this->assertCount(0, $dbStore->users());
     }
 }

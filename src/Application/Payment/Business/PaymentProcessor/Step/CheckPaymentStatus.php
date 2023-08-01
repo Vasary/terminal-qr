@@ -19,6 +19,6 @@ final class CheckPaymentStatus extends AbstractStep
 
     public function checkPaymentStatus(Payment $payment): void
     {
-        $this->logger->info('Attempt to check payment status');
+        $this->logger->info('Attempt to check payment status', $this->getContext($payment));
     }
 }

@@ -137,4 +137,9 @@ class Gateway
         $this->stores->removeElement($store);
         $store->removeGateway($this);
     }
+
+    public function stores(): Collection
+    {
+        return $this->stores;
+    }
 }

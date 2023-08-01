@@ -22,12 +22,14 @@
         <testsuite name="HealthCheck">
             <directory>tests/Presentation/HealthCheck</directory>
         </testsuite>
+        <testsuite name="Domain">
+            <directory>tests/Domain</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src/Application</directory>
             <directory suffix=".php">src/Domain</directory>
-            <directory suffix=".php">src/Infrastructure</directory>
         </include>
         <exclude>
             <directory suffix=".php">src/Infrastructure/Persistence/Doctrine/Migration/</directory>

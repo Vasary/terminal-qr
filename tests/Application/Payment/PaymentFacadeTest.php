@@ -9,11 +9,15 @@ use App\Application\Store\Business\StoreFacade;
 use App\Domain\Enum\PaymentStatusEnum;
 use App\Domain\Model\QR;
 use App\Domain\Model\Store;
+use App\Domain\ValueObject\Id;
 use App\Infrastructure\Persistence\DataFixtures\PaymentFixtures;
 use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\Context\Model\GatewayContext;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
+use App\Infrastructure\Test\Context\Model\StoreContext;
 use App\Infrastructure\Test\Guzzle\Mock\TokenResponseMock;
 use App\Shared\Transfer\SearchCriteria;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
@@ -82,6 +86,10 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
         $this->assertEquals($payment->gateway(), $dbPayment->gateway());
         $this->assertEquals($payment->qr(), $dbPayment->qr());
         $this->assertEquals($payment->callback(), $dbPayment->callback());
+        $this->assertInstanceOf(Id::class, $dbPayment->qr()->id());
+        $this->assertInstanceOf(DateTimeImmutable::class, $dbPayment->qr()->createdAt());
+        $this->assertEquals('http://localhost/payload.jpg', $dbPayment->qr()->payload());
+        $this->assertEquals('http://localhost/qr.jpg', $dbPayment->qr()->image());
     }
 
     public function testPaymentShouldSuccessfullyChangeStatus(): void
@@ -135,5 +143,39 @@ final class PaymentFacadeTest extends AbstractUnitTestCase
         $this->assertNotNull($dbPayment);
         $this->assertCount(1, $dbPayment->logs());
         $this->assertEquals('Hello world', $dbPayment->logs()[0]->value());
+    }
+
+    public function testShouldSuccessfullyCreateNewPayment(): void
+    {
+        $storeContext = StoreContext::create();
+        $gatewayContext = GatewayContext::create();
+
+        $gateway = $gatewayContext();
+        $store = $storeContext();
+
+        $store->addGateway($gateway);
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        $entityManager->persist($store);
+        $entityManager->flush();
+
+        /** @var PaymentFacade $facade */
+        $facade = $this->getContainer()->get(PaymentFacade::class);
+
+        $payment = $facade->create(100, $store->id(), $gateway->id());
+
+        $this->assertEquals(100, $payment->amount());
+        $this->assertEquals($store->id(), $payment->store()->id());
+        $this->assertEquals($gateway->id(), $payment->gateway()->id());
+        $this->assertEquals(PaymentStatusEnum::new, $payment->status());
+        $this->assertEquals($gateway->callback(), $payment->callback());
+        $this->assertNull($payment->token());
+        $this->assertNull($payment->qr());
+        $this->assertCount(1, $payment->logs());
+        $this->assertEquals($gateway->currency(), $payment->currency());
+        $this->assertInstanceOf(DateTimeImmutable::class, $payment->createdAt());
+        $this->assertInstanceOf(DateTimeImmutable::class, $payment->updatedAt());
     }
 }

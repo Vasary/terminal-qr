@@ -13,10 +13,13 @@ use App\Domain\ValueObject\Key;
 use App\Infrastructure\Persistence\DataFixtures\GatewayFixtures;
 use App\Infrastructure\Test\AbstractUnitTestCase;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
+use App\Infrastructure\Test\Context\Model\StoreContext;
+use App\Infrastructure\Test\Context\Model\UserContext;
 use App\Shared\Transfer\GatewayCreate;
 use App\Shared\Transfer\GatewayDelete;
 use App\Shared\Transfer\GatewayUpdate;
 use App\Shared\Transfer\SearchCriteria;
+use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 
@@ -63,6 +66,8 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
         $this->assertEquals($transfer->portal(), (string) $gateway->portal());
         $this->assertEquals($transfer->currency(), (string) $gateway->currency());
         $this->assertEquals($expectedKey, (string) $gateway->key());
+        $this->assertInstanceOf(DateTimeImmutable::class, $gateway->createdAt());
+        $this->assertInstanceOf(DateTimeImmutable::class, $gateway->updatedAt());
     }
 
     public function testGatewayFacadeShouldRetrieveGateways(): void
@@ -120,7 +125,6 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
         $this->assertEquals((string) $gatewayInDatabase->portal(), $transfer->portal());
         $this->assertEquals((string) $gatewayInDatabase->currency(), $transfer->currency());
     }
-
 
     public function testShouldFailsWithNotExistingGatewayId(): void
     {
@@ -311,5 +315,49 @@ final class GatewayFacadeTest extends AbstractUnitTestCase
 
         $this->assertNull($result);
         $this->assertCount(9, iterator_to_array($facade->find()));
+    }
+
+    public function testShouldSuccessfullyAddStore(): void
+    {
+        $gateway = GatewayContext::create()();
+        $store = StoreContext::create()();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        $gateway->addStore($store);
+
+        $entityManager->persist($gateway);
+        $entityManager->persist($store);
+        $entityManager->flush($gateway);
+
+        /** @var GatewayFacade $facade */
+        $facade = $this->getContainer()->get(GatewayFacade::class);
+
+        $dbGateway = $facade->findById($gateway->id());
+
+        $this->assertCount(1, $dbGateway->stores());
+    }
+
+    public function testShouldFailRemoveStore(): void
+    {
+        $gateway = GatewayContext::create()();
+        $store = StoreContext::create()();
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        $entityManager->persist($gateway);
+        $entityManager->persist($store);
+        $entityManager->flush($gateway);
+
+        /** @var GatewayFacade $facade */
+        $facade = $this->getContainer()->get(GatewayFacade::class);
+
+        $dbGateway = $facade->findById($gateway->id());
+        $this->assertCount(0, $dbGateway->stores());
+
+        $dbGateway->removeStore($store);
+        $this->assertCount(0, $dbGateway->stores());
     }
 }

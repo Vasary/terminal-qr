@@ -64,14 +64,6 @@ class Store
         return $this->code;
     }
 
-    public function withCode(string $code): self
-    {
-        $this->code = new Code($code);
-        $this->updatedAt = new DateTimeImmutable();
-
-        return $this;
-    }
-
     public function description(): Description
     {
         return $this->description;
