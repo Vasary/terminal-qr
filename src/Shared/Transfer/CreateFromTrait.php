@@ -75,18 +75,12 @@ trait CreateFromTrait
             throw new \RuntimeException(sprintf('%s class is not exists', $class));
         }
 
-        try {
-
-            $property->setValue(
-                $instance,
-                array_map(
-                    fn (array $propertiesCollection) => $class::fromArray($propertiesCollection),
-                    $data[$property->name]
-                )
-            );
-        } catch (\Throwable $throwable) {
-            dd($data[$property->name], $throwable->getMessage());
-        }
-
+        $property->setValue(
+            $instance,
+            array_map(
+                fn (array $propertiesCollection) => $class::fromArray($propertiesCollection),
+                $data[$property->name]
+            )
+        );
     }
 }

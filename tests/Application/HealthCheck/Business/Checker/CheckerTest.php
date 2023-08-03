@@ -9,13 +9,13 @@ use App\Application\HealthCheck\Business\Checker\HealthCheckerPluginInterface;
 use App\Application\HealthCheck\Business\Checker\Response;
 use Mockery;
 
-it('Should return an empty array', function () {
+it('should return an empty array', function () {
     $checker = new Checker([]);
 
     expect($checker->check())->toHaveCount(0);
 });
 
-it('Should return any one element in array', function () {
+it('should return any one element in array', function () {
     $plugin = Mockery::mock(HealthCheckerPluginInterface::class);
     $plugin
         ->shouldReceive('check')

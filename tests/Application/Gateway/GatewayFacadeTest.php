@@ -191,7 +191,7 @@ it('should\'t return any gateways with not findable pattern ', function () {
         ->and($result->items())->toEqual(0);
 });
 
-it('Should retrieve gateways ordered by field desc', function (string $direction, string $sorter) {
+it('should retrieve gateways ordered by field desc', function (string $direction, string $sorter) {
     $this->loadFixtures(new GatewayFixtures(10));
 
     /** @var GatewayFacade $facade */

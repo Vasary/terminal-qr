@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use RuntimeException;
 
-it('Should fails if entity manager is not existing', function () {
+it('should fails if entity manager is not existing', function () {
     $containerMock = Mockery::mock(ContainerInterface::class);
     $containerMock
         ->shouldReceive('has')
@@ -32,7 +32,7 @@ it('Should fails if entity manager is not existing', function () {
     ;
 });
 
-it('Should fails if entity manager can\'t Connect to database', function () {
+it('should fails if entity manager can\'t Connect to database', function () {
     $containerMock = Mockery::mock(ContainerInterface::class);
     $containerMock
         ->shouldReceive('has')
@@ -61,7 +61,7 @@ it('Should fails if entity manager can\'t Connect to database', function () {
     ;
 });
 
-it('Should return successful result', function () {
+it('should return successful result', function () {
     $containerMock = Mockery::mock(ContainerInterface::class);
     $containerMock
         ->shouldReceive('has')

@@ -10,204 +10,164 @@ use App\Domain\Repository\StoreRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\Persistence\DataFixtures\UserFixtures;
-use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\StoreContext;
 use App\Infrastructure\Test\Context\Model\UserContext;
 use App\Shared\Transfer\UserCreate;
 use App\Shared\Transfer\UserDelete;
 use App\Shared\Transfer\UserUpdate;
 use DateTimeImmutable;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final class UserFacadeTest extends AbstractWebTestCase
-{
-    public function testStoreFacadeShouldRetrieveUsers(): void
-    {
-        $this->loadFixtures(new UserFixtures($this->getContainer()->get(UserPasswordHasherInterface::class)));
+it('should return users', function () {
+    $this->loadFixtures(new UserFixtures($this->getContainer()->get(UserPasswordHasherInterface::class)));
 
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
 
-        $this->assertCount(2, iterator_to_array($facade->find()));
-    }
+    expect(iterator_to_array($facade->find()))->toHaveCount(2);
+});
 
-    public function testUserFacadeShouldCreateUser(): void
-    {
-        $store = StoreContext::create()();
+it('should successfully create user', function () {
+    $store = StoreContext::create()();
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+    $this->save($store);
 
-        $entityManager->persist($store);
-        $entityManager->flush();
+    $transfer = UserCreate::fromArray([
+        'email' => $this->faker->email(),
+        'roles' => ['ROLE_ADMIN', 'ROLE_MANAGER'],
+        'stores' => [
+            (string) $store->id(),
+        ],
+        'password' => 'my password',
+    ]);
 
-        $transfer = UserCreate::fromArray([
-            'email' => $this->faker->email(),
-            'roles' => ['ROLE_ADMIN', 'ROLE_MANAGER'],
-            'stores' => [
-                (string) $store->id(),
-            ],
-            'password' => 'my password',
-        ]);
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
 
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $user = $facade->create($transfer);
 
-        $user = $facade->create($transfer);
+    expect($user->email())->toEqual($transfer->email())
+        ->and(iterator_to_array($repository->find()))->toHaveCount(1);
 
-        $this->assertEquals($transfer->email(), $user->email());
-        $this->assertCount(1, iterator_to_array($repository->find()));
+    $dbUser = $repository->findByEmail(new Email($transfer->email()));
 
-        $dbUser = $repository->findByEmail(new Email($transfer->email()));
-        $this->assertCount(3, $user->roles());
-        $this->assertCount(3, $dbUser->roles());
-        $this->assertInstanceOf(DateTimeImmutable::class, $user->createdAt());
-        $this->assertInstanceOf(DateTimeImmutable::class, $user->updatedAt());
-        $this->assertCount(1, $dbUser->stores());
-        $this->assertCount(1, $user->stores());
-    }
+    expect($user->roles())->toHaveCount(3)
+        ->and($dbUser->roles())->toHaveCount(3)
+        ->and($user->createdAt())->toBeInstanceOf(DateTimeImmutable::class)
+        ->and($user->updatedAt())->toBeInstanceOf(DateTimeImmutable::class)
+        ->and($user->stores())->toHaveCount(1)
+        ->and($dbUser->stores())->toHaveCount(1);
+});
 
-    public function testShouldSuccessfullyDeleteUser(): void
-    {
-        $user = UserContext::create()();
+it('should successfully delete user', function () {
+    $user = UserContext::create()();
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+    $this->save($user);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
 
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $facade->delete(UserDelete::fromArray(['id' => (string) $user->id()]));
 
-        $facade->delete(UserDelete::fromArray(['id' => (string) $user->id()]));
+    expect(iterator_to_array($repository->find()))->toHaveCount(0);
+});
 
-        $this->assertCount(0, iterator_to_array($repository->find()));
-    }
+it('successfully remove user and relations to stores', function () {
+    $store = StoreContext::create()();
+    $user = UserContext::create()();
 
-    public function testShouldSuccessfullyDeleteUserAndRelations(): void
-    {
-        $store = StoreContext::create()();
-        $user = UserContext::create()();
+    $user->addStore($store);
 
-        $user->addStore($store);
+    $this->save($user);
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
+    /** @var StoreRepositoryInterface $storeRepository */
+    $storeRepository = $this->getContainer()->get(StoreRepositoryInterface::class);
 
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $facade->delete(UserDelete::fromArray(['id' => (string) $user->id()]));
 
-        /** @var StoreRepositoryInterface $storeRepository */
-        $storeRepository = $this->getContainer()->get(StoreRepositoryInterface::class);
+    expect(iterator_to_array($repository->find()))->toHaveCount(0)
+        ->and(iterator_to_array($store->users()))->toHaveCount(0);
 
-        $facade->delete(UserDelete::fromArray(['id' => (string) $user->id()]));
+    $dbStore = $storeRepository->findOne($store->id());
 
-        $this->assertCount(0, iterator_to_array($repository->find()));
-        $this->assertCount(0, iterator_to_array($store->users()));
+    expect($dbStore->users())->toHaveCount(0);
+});
 
-        $dbStore = $storeRepository->findOne($store->id());
-        $this->assertCount(0, iterator_to_array($dbStore->users()));
-    }
+it('should successfully handle attempt to remove not exising user', function () {
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
 
-    public function testShouldSuccessfullyHandleAttemptToRemoveNotExisingUser(): void
-    {
-        $this->expectException(NotFoundException::class);
+    $facade->delete(UserDelete::fromArray(['id' => 'not-existing']));
+})->expectException(NotFoundException::class);
 
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
+it('should successfully update user', function () {
+    $user = UserContext::create()();
+    $store = StoreContext::create()();
 
-        $facade->delete(UserDelete::fromArray(['id' => 'not-existing']));
-    }
+    $this->save($user, $store);
 
-    public function testShouldSuccessfullyUpdateUser(): void
-    {
-        $user = UserContext::create()();
-        $store = StoreContext::create()();
+    $clonedUser = clone $user;
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
 
-        $entityManager->persist($store);
-        $entityManager->persist($user);
-        $entityManager->flush();
+    $transfer = UserUpdate::fromArray([
+        'email' => 'test@mail.com',
+        'roles' => ['ROLE'],
+        'stores' => [(string) $store->id()],
+        'password' => 'my password',
+        'id' => (string) $user->id(),
+    ]);
 
-        $clonedUser = clone $user;
+    $updatedUser = $facade->update($transfer);
 
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
+    expect($updatedUser->id())->toBe($clonedUser->id())
+        ->and((string) $updatedUser->email())->toEqual('test@mail.com')
+        ->and($updatedUser->roles())->toHaveCount(2)
+        ->and(array_flip($updatedUser->roles()))->toHaveKey('ROLE')
+        ->and($updatedUser->stores())->toHaveCount(1)
+        ->and($updatedUser->stores()->get(0)->id())->toEqual($store->id());
+});
 
-        $transfer = UserUpdate::fromArray([
-            'email' => 'test@mail.com',
-            'roles' => ['ROLE'],
-            'stores' => [(string) $store->id()],
-            'password' => 'my password',
-            'id' => (string) $user->id(),
-        ]);
+it('should fails when try to update user with not existing store', function () {
+    $user = UserContext::create()();
 
-        $updatedUser = $facade->update($transfer);
+    $this->save($user);
 
-        $this->assertEquals($clonedUser->id(), $updatedUser->id());
-        $this->assertEquals('test@mail.com', (string) $updatedUser->email());
-        $this->assertCount(2, $updatedUser->roles());
-        $this->assertArrayHasKey('ROLE', array_flip($updatedUser->roles()));
-        $this->assertCount(1, $updatedUser->stores());
-        $this->assertEquals($store->id(), $updatedUser->stores()->get(0)->id());
-    }
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
 
-    public function testShouldSuccessfullyUpdateUserWithNotExistingStore(): void
-    {
-        $this->expectException(NotFoundException::class);
+    $transfer = UserUpdate::fromArray([
+        'email' => 'test@mail.com',
+        'roles' => ['ROLE'],
+        'stores' => ['1111-2222-3333-4444'],
+        'password' => 'my password',
+        'id' => (string) $user->id(),
+    ]);
 
-        $user = UserContext::create()();
+    $facade->update($transfer);
+})->expectException(NotFoundException::class);
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+it('should find user by id', function () {
+    $user = UserContext::create()();
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+    $this->save($user);
 
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
+    /** @var UserFacade $facade */
+    $facade = $this->getContainer()->get(UserFacade::class);
+    $dbUser = $facade->findById($user->id());
 
-        $transfer = UserUpdate::fromArray([
-            'email' => 'test@mail.com',
-            'roles' => ['ROLE'],
-            'stores' => ['1111-2222-3333-4444'],
-            'password' => 'my password',
-            'id' => (string) $user->id(),
-        ]);
-
-        $facade->update($transfer);
-    }
-
-    public function testUserCouldBeFoundById(): void
-    {
-        $user = UserContext::create()();
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
-
-        $entityManager->persist($user);
-        $entityManager->flush();
-
-        /** @var UserFacade $facade */
-        $facade = $this->getContainer()->get(UserFacade::class);
-        $dbUser = $facade->findById($user->id());
-
-        $this->assertEquals($user, $dbUser);
-    }
-}
+    expect($dbUser)->toEqual($user);
+});

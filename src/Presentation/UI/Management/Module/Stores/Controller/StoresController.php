@@ -39,8 +39,8 @@ final class StoresController extends AbstractController
             'searchFields' => $request->searchFields,
             'current' => $current,
             'config' => [
-                'searchFields' => ['title', 'code']
-            ]
+                'searchFields' => ['title', 'code'],
+            ],
         ]);
 
         return new HTMLResponse($view);

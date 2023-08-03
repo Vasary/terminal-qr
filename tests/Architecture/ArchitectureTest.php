@@ -4,10 +4,10 @@ declare(strict_types = 1);
 
 use Pest\Expectation;
 
-//test('globals')
-//    ->expect(['dd', 'dump'])
-//    ->not->toBeUsed()
-//    ->ignoring(Expectation::class);
+test('globals')
+    ->expect(['dd', 'dump'])
+    ->not->toBeUsed()
+    ->ignoring(Expectation::class);
 
 
 test('contracts')
@@ -18,3 +18,7 @@ test('contracts')
         'App\Application\Contract\TranslatorInterface',
         'App\Application\Contract\UserPasswordHasherInterface',
     ])->toBeInterfaces();
+
+test('app')
+    ->expect('App\Domain\Model')
+    ->toExtendNothing();
