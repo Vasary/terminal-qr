@@ -10,12 +10,12 @@ use App\Application\Payment\Business\StateMachine\PaymentStatusHandler;
 use App\Domain\Enum\PaymentStatusEnum;
 use App\Domain\Enum\WorkflowTransitionEnum;
 use App\Infrastructure\HTTP\Exception\TokenizationException;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 use Mockery;
 use Psr\Log\LoggerInterface;
 
-final class TokenizeTest extends AbstractUnitTestCase
+final class TokenizeTest extends AbstractWebTestCase
 {
     public function testShouldSuccessfullyUpdatePaymentStatus(): void
     {

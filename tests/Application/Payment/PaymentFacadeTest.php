@@ -11,7 +11,7 @@ use App\Domain\Model\QR;
 use App\Domain\Model\Store;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Persistence\DataFixtures\PaymentFixtures;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 use App\Infrastructure\Test\Context\Model\StoreContext;
@@ -22,7 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use GuzzleHttp\Client;
 use GuzzleHttp\Handler\MockHandler;
 
-final class PaymentFacadeTest extends AbstractUnitTestCase
+final class PaymentFacadeTest extends AbstractWebTestCase
 {
     public function testShouldRetrieveAllPayments(): void
     {

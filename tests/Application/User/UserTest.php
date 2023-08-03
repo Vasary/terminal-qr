@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace App\Tests\Application\User;
 
 use App\Application\User\User;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\UserContext;
 
-final class UserTest extends AbstractUnitTestCase
+final class UserTest extends AbstractWebTestCase
 {
     public function testApplicationUserProvideAccessToDomainUser(): void
     {

@@ -10,7 +10,7 @@ use App\Domain\Repository\StoreRepositoryInterface;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\Persistence\DataFixtures\UserFixtures;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\StoreContext;
 use App\Infrastructure\Test\Context\Model\UserContext;
 use App\Shared\Transfer\UserCreate;
@@ -20,7 +20,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-final class UserFacadeTest extends AbstractUnitTestCase
+final class UserFacadeTest extends AbstractWebTestCase
 {
     public function testStoreFacadeShouldRetrieveUsers(): void
     {

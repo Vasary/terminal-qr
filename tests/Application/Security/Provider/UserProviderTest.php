@@ -11,13 +11,13 @@ use App\Domain\Exception\UserNotFoundException;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Security\User\PasswordAuthenticatedUserInterface;
 use App\Infrastructure\Security\User\UserInterface;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\UserContext;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use RuntimeException;
 
-final class UserProviderTest extends AbstractUnitTestCase
+final class UserProviderTest extends AbstractWebTestCase
 {
     public function testShouldSuccessfullyLoadUserByIdentifier(): void
     {

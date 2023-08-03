@@ -9,12 +9,12 @@ use App\Application\Payment\Business\PaymentProcessor\Step\CheckPaymentStatus;
 use App\Application\Payment\Business\PaymentProcessor\Step\Start;
 use App\Application\Payment\Business\StateMachine\PaymentStatusHandler;
 use App\Domain\Enum\PaymentStatusEnum;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 use Mockery;
 use Psr\Log\LoggerInterface;
 
-final class CheckStatusTest extends AbstractUnitTestCase
+final class CheckStatusTest extends AbstractWebTestCase
 {
     public function testShouldSuccessfullyCheckPaymentStatus(): void
     {

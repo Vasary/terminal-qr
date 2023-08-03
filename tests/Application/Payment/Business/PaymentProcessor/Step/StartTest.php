@@ -8,12 +8,12 @@ use App\Application\Contract\HttpClientInterface;
 use App\Application\Payment\Business\PaymentProcessor\Step\Start;
 use App\Application\Payment\Business\StateMachine\PaymentStatusHandler;
 use App\Domain\Enum\PaymentStatusEnum;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 use Mockery;
 use Psr\Log\LoggerInterface;
 
-final class StartTest extends AbstractUnitTestCase
+final class StartTest extends AbstractWebTestCase
 {
     public function testShouldSuccessfullyAddInitializationLogRecordToPayment(): void
     {

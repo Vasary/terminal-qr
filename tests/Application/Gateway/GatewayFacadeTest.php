@@ -9,12 +9,10 @@ use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
 use App\Domain\ValueObject\Id;
-use App\Domain\ValueObject\Key;
 use App\Infrastructure\Persistence\DataFixtures\GatewayFixtures;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
 use App\Infrastructure\Test\Context\Model\StoreContext;
-use App\Infrastructure\Test\Context\Model\UserContext;
 use App\Shared\Transfer\GatewayCreate;
 use App\Shared\Transfer\GatewayDelete;
 use App\Shared\Transfer\GatewayUpdate;
@@ -23,7 +21,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 
-final class GatewayFacadeTest extends AbstractUnitTestCase
+final class GatewayFacadeTest extends AbstractWebTestCase
 {
     public function testGatewayShouldBeRetrievedByKey(): void
     {

@@ -12,7 +12,7 @@ use App\Domain\Model\Store;
 use App\Domain\Repository\StoreRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Persistence\DataFixtures\StoreFixtures;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
 use App\Infrastructure\Test\Context\Model\StoreContext;
 use App\Infrastructure\Test\Context\Model\UserContext;
@@ -24,7 +24,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 
-final class StoreFacadeTest extends AbstractUnitTestCase
+final class StoreFacadeTest extends AbstractWebTestCase
 {
     public function testStoreFacadeShouldInitializeSuccessfully(): void
     {

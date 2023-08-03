@@ -1,34 +1,27 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Application\HealthCheck\Business\Checker;
 
 use App\Application\HealthCheck\Business\Checker\Checker;
 use App\Application\HealthCheck\Business\Checker\HealthCheckerPluginInterface;
-use App\Infrastructure\Test\AbstractUnitTestCase;
-use Mockery;
 use App\Application\HealthCheck\Business\Checker\Response;
+use Mockery;
 
-final class CheckerTest extends AbstractUnitTestCase
-{
-    public function testShouldReturnEmptyArrayOfResults(): void
-    {
-        $checker = new Checker([]);
+it('Should return an empty array', function () {
+    $checker = new Checker([]);
 
-        $this->assertCount(0, $checker->check());
-    }
+    expect($checker->check())->toHaveCount(0);
+});
 
-    public function testShouldReturnOneElementInArrayOfResult(): void
-    {
-        $plugin = Mockery::mock(HealthCheckerPluginInterface::class);
-        $plugin
-            ->shouldReceive('check')
-            ->andReturn(new Response('name', true, 'message'));
+it('Should return any one element in array', function () {
+    $plugin = Mockery::mock(HealthCheckerPluginInterface::class);
+    $plugin
+        ->shouldReceive('check')
+        ->andReturn(new Response('name', true, 'message'));
 
-        $result = (new Checker([$plugin]))->check();
+    $result = (new Checker([$plugin]))->check();
 
-        $this->assertCount(1, $result);
-        $this->assertInstanceOf(Response::class, $result[0]);
-    }
-}
+    expect($result)->toHaveCount(1)->and(current($result))->toBeInstanceOf(Response::class);
+});

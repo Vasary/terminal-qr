@@ -7,9 +7,9 @@ namespace App\Tests\Application\Payment\Business\PaymentProcessor;
 use App\Application\Payment\Business\PaymentProcessor\PaymentProcessor;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\ValueObject\Id;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 
-final class PaymentProcessorTest extends AbstractUnitTestCase
+final class PaymentProcessorTest extends AbstractWebTestCase
 {
     public function testShouldFailWhenPaymentNotFound(): void
     {

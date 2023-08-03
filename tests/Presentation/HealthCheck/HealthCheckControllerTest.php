@@ -1,71 +1,59 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace App\Tests\Presentation\HealthCheck;
 
 use App\Application\HealthCheck\Business\Checker\CheckerInterface;
 use App\Application\HealthCheck\Business\Checker\Response;
-use App\Infrastructure\Json\Json;
-use App\Infrastructure\Test\AbstractUnitTestCase;
 use Mockery;
 
-final class HealthCheckControllerTest extends AbstractUnitTestCase
-{
-    public function testShouldSuccessfullyRetrieveOkResponse(): void
-    {
-        $checkerMock = Mockery::mock(CheckerInterface::class);
-        $checkerMock
-            ->shouldReceive('check')
-            ->once()
-            ->andReturn([new Response('Mock checker', true, 'ok')]);
+test('Should successfully get successfully response', function () {
+    $checkerMock = Mockery::mock(CheckerInterface::class);
+    $checkerMock
+        ->shouldReceive('check')
+        ->once()
+        ->andReturn([new Response('Mock checker', true, 'ok')]);
 
-        $client = self::createClient();
-        $client->getContainer()->set(CheckerInterface::class, $checkerMock);
+    $client = self::createClient();
+    $client->getContainer()->set(CheckerInterface::class, $checkerMock);
 
-        $client->request('GET', '/health/check');
+    $client->request('GET', '/health/check');
 
-        $response = $client->getResponse();
+    $response = $client->getResponse();
 
-        $decodedContent = json_decode($response->getContent(), true);
+    $content = json_decode($response->getContent(), true);
+    $healthCheckResponse = $content[0];
 
-        $this->assertEquals(200, $response->getStatusCode());
-        $this->assertJson($response->getContent());
+    expect($response->getStatusCode())->toEqual(200)
+        ->and($response->getContent())->toBeJson()
+        ->and($content)->toBeArray()
+        ->and($healthCheckResponse)->toHaveKeys(['service', 'result', 'message'])
+        ->and($healthCheckResponse['result'])->toBeTrue()
+    ;
+});
 
-        $healthCheckResponse = $decodedContent[0];
+test('Should get fail response', function () {
+    $checkerMock = Mockery::mock(CheckerInterface::class);
+    $checkerMock
+        ->shouldReceive('check')
+        ->once()
+        ->andReturn([new Response('Mock checker', false, 'ok')]);
 
-        $this->assertIsArray($decodedContent);
-        $this->assertArrayHasKey('service', $healthCheckResponse);
-        $this->assertArrayHasKey('result', $healthCheckResponse);
-        $this->assertArrayHasKey('message', $healthCheckResponse);
-        $this->assertTrue($healthCheckResponse['result']);
-    }
+    $client = static::createClient();
+    $client->getContainer()->set(CheckerInterface::class, $checkerMock);
 
-    public function testShouldSuccessfullyRetrieveErrorResponse(): void
-    {
-        $checkerMock = Mockery::mock(CheckerInterface::class);
-        $checkerMock
-            ->shouldReceive('check')
-            ->once()
-            ->andReturn([new Response('Mock checker', false, 'ok')]);
+    $client->request('GET', '/health/check');
 
-        $client = self::createClient();
-        $client->getContainer()->set(CheckerInterface::class, $checkerMock);
+    $response = $client->getResponse();
 
-        $client->request('GET', '/health/check');
+    $content = json_decode($response->getContent(), true);
+    $healthCheckResponse = $content[0];
 
-        $response = $client->getResponse();
-        $content = json_decode($response->getContent(), true);
-
-        $this->assertEquals(500, $response->getStatusCode());
-        $this->assertJson($response->getContent());
-
-        $healthCheckResponse = $content[0];
-
-        $this->assertIsArray($content);
-        $this->assertArrayHasKey('service', $healthCheckResponse);
-        $this->assertArrayHasKey('result', $healthCheckResponse);
-        $this->assertArrayHasKey('message', $healthCheckResponse);
-        $this->assertFalse($healthCheckResponse['result']);
-    }
-}
+    expect($response->getStatusCode())->toEqual(500)
+        ->and($response->getContent())->toBeJson()
+        ->and($content)->toBeArray()
+        ->and($healthCheckResponse)->toHaveKeys(['service', 'result', 'message'])
+        ->and($healthCheckResponse['result'])->toBeFalse()
+    ;
+});

@@ -11,12 +11,12 @@ use App\Domain\Enum\PaymentStatusEnum;
 use App\Infrastructure\HTTP\Exception\TransactionRegistrationException;
 use App\Infrastructure\HTTP\Response\RegisterPaymentResponse;
 use App\Infrastructure\Serializer\Serializer;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 use Mockery;
 use Psr\Log\LoggerInterface;
 
-final class CreateTransactionTest extends AbstractUnitTestCase
+final class CreateTransactionTest extends AbstractWebTestCase
 {
     private const RESPONSE_WITH_QR = <<<JSON
 {"result":{"status": "INTERIM_SUCCESS","qr":{"payload":"https://qr.nspk.ru/BS*******","imageUrl":"https://api.qrserver.com/v1/create-qr-code/?size=450x450&data=https://qr.nspk.ru/BS1**********************"}}}

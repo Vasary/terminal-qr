@@ -13,6 +13,11 @@
         <field name="createdAt" type="datetimetz_immutable"/>
         <field name="updatedAt" type="datetimetz_immutable"/>
 
-        <many-to-many target-entity="App\Domain\Model\Store" field="stores" />
+        <many-to-many target-entity="App\Domain\Model\Store" field="stores">
+            <cascade>
+                <cascade-persist />
+                <cascade-refresh />
+            </cascade>
+        </many-to-many>
     </entity>
 </doctrine-mapping>

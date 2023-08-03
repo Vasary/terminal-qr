@@ -7,10 +7,10 @@ namespace App\Tests\Application\Payment\Business\StateMachine;
 use App\Application\Payment\Business\StateMachine\PaymentStatusHandler;
 use App\Domain\Enum\WorkflowTransitionEnum;
 use App\Domain\Exception\WorkflowException;
-use App\Infrastructure\Test\AbstractUnitTestCase;
+use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 
-final class PaymentStatusHandlerTest extends AbstractUnitTestCase
+final class PaymentStatusHandlerTest extends AbstractWebTestCase
 {
     public function testShouldFailChangeStateOfPayment(): void
     {

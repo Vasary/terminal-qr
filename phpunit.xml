@@ -25,6 +25,9 @@
         <testsuite name="Domain">
             <directory>tests/Domain</directory>
         </testsuite>
+        <testsuite name="Infrastructure">
+            <directory>tests/Infrastructure</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

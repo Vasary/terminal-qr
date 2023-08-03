@@ -12,9 +12,9 @@ use Doctrine\Common\DataFixtures\Loader;
 use Doctrine\Common\DataFixtures\Purger\ORMPurger;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
-use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase as Base;
 
-abstract class AbstractUnitTestCase extends WebTestCase
+abstract class AbstractWebTestCase extends Base
 {
     use CleanModelContextTrait;
 
