@@ -11,4 +11,4 @@ dropDatabase();
 createSchema();
 runMigrations();
 
-uses(AbstractWebTestCase::class)->in('Presentation/HealthCheck', 'Presentation/UI');
+uses(AbstractWebTestCase::class)->in('Application', 'Presentation', 'Infrastructure');

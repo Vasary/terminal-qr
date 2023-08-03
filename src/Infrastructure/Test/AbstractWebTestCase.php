@@ -36,6 +36,18 @@ abstract class AbstractWebTestCase extends Base
         Mockery::close();
     }
 
+    public function save(...$models): void
+    {
+        /** @var EntityManagerInterface $manager */
+        $manager = $this->getContainer()->get(EntityManagerInterface::class);
+
+        foreach ($models as $model) {
+            $manager->persist($model);
+        }
+
+        $manager->flush();
+    }
+
     protected function loadFixtures(FixtureInterface $fixture): void
     {
         $loader = new Loader();

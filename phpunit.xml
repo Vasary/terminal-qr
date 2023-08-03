@@ -28,6 +28,9 @@
         <testsuite name="Infrastructure">
             <directory>tests/Infrastructure</directory>
         </testsuite>
+        <testsuite name="Architecture">
+            <directory>tests/Architecture</directory>
+        </testsuite>
     </testsuites>
     <coverage processUncoveredFiles="true">
         <include>

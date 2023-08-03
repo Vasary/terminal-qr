@@ -10,7 +10,6 @@ use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Persistence\DataFixtures\GatewayFixtures;
-use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
 use App\Infrastructure\Test\Context\Model\StoreContext;
 use App\Shared\Transfer\GatewayCreate;
@@ -21,341 +20,266 @@ use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 
-final class GatewayFacadeTest extends AbstractWebTestCase
-{
-    public function testGatewayShouldBeRetrievedByKey(): void
-    {
-        $gateway = GatewayContext::create()();
+it('should retrieve gateway by key', function () {
+    $gateway = GatewayContext::create()();
 
-        $repositoryMock = Mockery::mock(GatewayRepositoryInterface::class);
-        $repositoryMock
-            ->shouldReceive('findByKey')
-            ->once()
-            ->with($gateway->key())
-            ->andReturn($gateway);
+    $repositoryMock = Mockery::mock(GatewayRepositoryInterface::class);
+    $repositoryMock
+        ->shouldReceive('findByKey')
+        ->once()
+        ->with($gateway->key())
+        ->andReturn($gateway);
 
-        $this->getContainer()->set(GatewayRepositoryInterface::class, $repositoryMock);
+    $this->getContainer()->set(GatewayRepositoryInterface::class, $repositoryMock);
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $this->assertNotNull($facade->findByKey($gateway->key()));
-    }
+    expect($facade->findByKey($gateway->key()))->not->toBeNull();
+});
 
-    public function testGatewayFacadeShouldCreateGateway(): void
-    {
-        $transfer = GatewayCreate::fromArray([
-            'title' => $this->faker->title(),
-            'callback' => $this->faker->url(),
-            'host' => $this->faker->domainName(),
-            'portal' => $this->faker->company(),
-            'currency' => $this->faker->currencyCode(),
-        ]);
+it('should successfully create a gateway', function () {
+    $transfer = GatewayCreate::fromArray([
+        'title' => faker()->title(),
+        'callback' => faker()->url(),
+        'host' => faker()->domainName(),
+        'portal' => faker()->company(),
+        'currency' => faker()->currencyCode(),
+    ]);
 
-        $expectedKey = md5($transfer->title() . $transfer->host() . $transfer->currency() . $transfer->callback());
+    $expectedKey = md5($transfer->title() . $transfer->host() . $transfer->currency() . $transfer->callback());
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
-        $gateway = $facade->create($transfer);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
+    $gateway = $facade->create($transfer);
 
-        $this->assertEquals($transfer->title(), (string) $gateway->title());
-        $this->assertEquals($transfer->callback(), (string) $gateway->callback());
-        $this->assertEquals($transfer->host(), (string) $gateway->host());
-        $this->assertEquals($transfer->portal(), (string) $gateway->portal());
-        $this->assertEquals($transfer->currency(), (string) $gateway->currency());
-        $this->assertEquals($expectedKey, (string) $gateway->key());
-        $this->assertInstanceOf(DateTimeImmutable::class, $gateway->createdAt());
-        $this->assertInstanceOf(DateTimeImmutable::class, $gateway->updatedAt());
-    }
+    expect((string) $gateway->title())->toEqual($transfer->title())
+        ->and((string) $gateway->callback())->toEqual($transfer->callback())
+        ->and((string) $gateway->host())->toEqual($transfer->host())
+        ->and((string) $gateway->portal())->toEqual($transfer->portal())
+        ->and((string) $gateway->currency())->toEqual($transfer->currency())
+        ->and($expectedKey)->toEqual((string) $gateway->key())
+        ->and($gateway->createdAt())->toBeInstanceOf(DateTimeImmutable::class)
+        ->and($gateway->updatedAt())->toBeInstanceOf(DateTimeImmutable::class);
+});
 
-    public function testGatewayFacadeShouldRetrieveGateways(): void
-    {
-        $this->loadFixtures(new GatewayFixtures(10));
+it('should return ten records via facade', function () {
+    $this->loadFixtures(new GatewayFixtures(10));
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $this->assertCount(10, iterator_to_array($facade->find()));
-    }
+    expect(iterator_to_array($facade->find()))->toHaveCount(10);
+});
 
-    public function testShouldUpdateGateway(): void
-    {
-        $gateway = GatewayContext::create()();
+it('should successfully update gateway', function () {
+    $gateway = GatewayContext::create()();
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+    $this->save($gateway);
 
-        $entityManager->persist($gateway);
-        $entityManager->flush();
+    $transfer = GatewayUpdate::fromArray([
+        'id' => (string) $gateway->id(),
+        'title' => faker()->title(),
+        'callback' => faker()->url(),
+        'host' => faker()->domainName(),
+        'portal' => faker()->company(),
+        'currency' => faker()->currencyCode(),
+    ]);
 
-        $transfer = GatewayUpdate::fromArray([
-            'id' => (string) $gateway->id(),
-            'title' => $this->faker->title(),
-            'callback' => $this->faker->url(),
-            'host' => $this->faker->domainName(),
-            'portal' => $this->faker->company(),
-            'currency' => $this->faker->currencyCode(),
-        ]);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+    $updatedGateway = $facade->update($transfer);
+    $gatewayInDatabase = $facade->findById(Id::fromString($transfer->id()));
 
-        /** @var GatewayRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(GatewayRepositoryInterface::class);
+    expect((string) $updatedGateway->id())->toEqual($transfer->id())
+        ->and((string) $updatedGateway->title())->toEqual($transfer->title())
+        ->and((string) $updatedGateway->callback())->toEqual($transfer->callback())
+        ->and((string) $updatedGateway->host())->toEqual($transfer->host())
+        ->and((string) $updatedGateway->portal())->toEqual($transfer->portal())
+        ->and((string) $updatedGateway->currency())->toEqual($transfer->currency())
+        ->and(iterator_to_array($facade->find()))->toHaveCount(1)
+        ->and($gatewayInDatabase)->not->toBeNull()
+        ->and((string) $gatewayInDatabase->title())->toEqual($transfer->title())
+        ->and((string) $gatewayInDatabase->callback())->toEqual($transfer->callback())
+        ->and((string) $gatewayInDatabase->host())->toEqual($transfer->host())
+        ->and((string) $gatewayInDatabase->portal())->toEqual($transfer->portal())
+        ->and((string) $gatewayInDatabase->currency())->toEqual($transfer->currency())
+    ;
+});
 
-        $updatedGateway = $facade->update($transfer);
-        $gatewayInDatabase = $repository->findById(Id::fromString($transfer->id()));
+it('should fails on update with not-existing gateway id', function () {
+    $this->getContainer()->get(GatewayFacade::class)->update(
+        GatewayUpdate::fromArray([
+            'id' => faker()->uuid(),
+            'title' => faker()->title(),
+            'callback' => faker()->url(),
+            'host' => faker()->domainName(),
+            'portal' => faker()->company(),
+            'currency' => faker()->currencyCode(),
+        ])
+    );
+})->expectException(NotFoundException::class);
 
-        $this->assertEquals((string) $updatedGateway->id(), $transfer->id());
-        $this->assertEquals((string) $updatedGateway->title(), $transfer->title());
-        $this->assertEquals((string) $updatedGateway->callback(), $transfer->callback());
-        $this->assertEquals((string) $updatedGateway->host(), $transfer->host());
-        $this->assertEquals((string) $updatedGateway->portal(), $transfer->portal());
-        $this->assertEquals((string) $updatedGateway->currency(), $transfer->currency());
-        $this->assertCount(1, iterator_to_array($facade->find()));
+it('should retrieve gateway', function () {
+    $this->loadFixtures(new GatewayFixtures(3));
+    $gateway = GatewayContext::create()();
 
-        $this->assertNotNull($gatewayInDatabase);
+    /** @var EntityManagerInterface $entityManager */
+    $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
 
-        $this->assertEquals((string) $gatewayInDatabase->id(), $transfer->id());
-        $this->assertEquals((string) $gatewayInDatabase->title(), $transfer->title());
-        $this->assertEquals((string) $gatewayInDatabase->callback(), $transfer->callback());
-        $this->assertEquals((string) $gatewayInDatabase->host(), $transfer->host());
-        $this->assertEquals((string) $gatewayInDatabase->portal(), $transfer->portal());
-        $this->assertEquals((string) $gatewayInDatabase->currency(), $transfer->currency());
-    }
+    $entityManager->persist($gateway);
+    $entityManager->flush();
 
-    public function testShouldFailsWithNotExistingGatewayId(): void
-    {
-        $this->expectException(NotFoundException::class);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $transfer = GatewayUpdate::fromArray([
-            'id' => $this->faker->uuid(),
-            'title' => $this->faker->title(),
-            'callback' => $this->faker->url(),
-            'host' => $this->faker->domainName(),
-            'portal' => $this->faker->company(),
-            'currency' => $this->faker->currencyCode(),
-        ]);
-
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
-
-        $facade->update($transfer);
-    }
-
-    public function testShouldRetrieveGatewayWithPaginationData(): void
-    {
-        $this->loadFixtures(new GatewayFixtures(3));
-        $gateway = GatewayContext::create()();
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
-
-        $entityManager->persist($gateway);
-        $entityManager->flush();
-
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
-
-        $searchCriteria = SearchCriteria::fromArray(
-            [
-                'fields' => [
-                    [
-                        'name' => 'title',
-                        'value' => 'My gateway',
-                    ],
+    $searchCriteria = SearchCriteria::fromArray(
+        [
+            'fields' => [
+                [
+                    'name' => 'title',
+                    'value' => 'My gateway',
                 ],
-                'orderBy' => [
-                    [
-                        'field' => 'createdAt',
-                        'direction' => 'desc',
-                    ],
+            ],
+            'orderBy' => [
+                [
+                    'field' => 'createdAt',
+                    'direction' => 'desc',
                 ],
-                'page' => 1,
-                'limit' => 4,
-                'stores' => [],
-            ]
-        );
+            ],
+            'page' => 1,
+            'limit' => 4,
+            'stores' => [],
+        ]
+    );
 
-        $result = $facade->findByCriteria($searchCriteria);
+    $result = $facade->findByCriteria($searchCriteria);
 
-        $this->assertCount(4, iterator_to_array($facade->find()));
-        $this->assertCount(1, $result->aggregate());
-        $this->assertEquals(1, $result->pages());
-        $this->assertEquals(1, $result->items());
-    }
+    expect(iterator_to_array($facade->find()))->toHaveCount(4)
+        ->and($result->aggregate())->toHaveCount(1)
+        ->and($result->pages())->toEqual(1)
+        ->and($result->items())->toEqual(1);
+});
 
-    public function testShouldNotRetrieveGatewaysWithPaginationData(): void
-    {
-        $this->loadFixtures(new GatewayFixtures(3));
+it('should\'t return any gateways with not findable pattern ', function () {
+    $this->loadFixtures(new GatewayFixtures(3));
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $searchCriteria = SearchCriteria::fromArray(
-            [
-                'fields' => [
-                    [
-                        'name' => 'title',
-                        'value' => 'no-existing-gateway',
-                    ],
+    $searchCriteria = SearchCriteria::fromArray(
+        [
+            'fields' => [
+                [
+                    'name' => 'title',
+                    'value' => 'no-existing-gateway',
                 ],
-                'orderBy' => [],
-                'page' => 1,
-                'limit' => 4,
-                'stores' => [],
-            ]
-        );
+            ],
+            'orderBy' => [],
+            'page' => 1,
+            'limit' => 4,
+            'stores' => [],
+        ]
+    );
 
-        $result = $facade->findByCriteria($searchCriteria);
+    $result = $facade->findByCriteria($searchCriteria);
 
-        $this->assertCount(3, iterator_to_array($facade->find()));
-        $this->assertCount(0, $result->aggregate());
-        $this->assertEquals(0, $result->pages());
-        $this->assertEquals(0, $result->items());
-    }
+    expect(iterator_to_array($facade->find()))->toHaveCount(3)
+        ->and($result->aggregate())->toHaveCount(0)
+        ->and($result->pages())->toEqual(0)
+        ->and($result->items())->toEqual(0);
+});
 
-    public function testShouldRetrieveGatewaysOrderedByFieldAsc(): void
-    {
-        $this->loadFixtures(new GatewayFixtures(10));
+it('Should retrieve gateways ordered by field desc', function (string $direction, string $sorter) {
+    $this->loadFixtures(new GatewayFixtures(10));
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $searchCriteria = SearchCriteria::fromArray(
-            [
-                'fields' => [],
-                'orderBy' => [
-                    [
-                        'field' => 'title',
-                        'direction' => 'asc',
-                    ],
+    $searchCriteria = SearchCriteria::fromArray(
+        [
+            'fields' => [],
+            'orderBy' => [
+                [
+                    'field' => 'title',
+                    'direction' => $direction,
                 ],
-                'page' => 1,
-                'limit' => 10,
-                'stores' => [],
-            ]
-        );
+            ],
+            'page' => 1,
+            'limit' => 10,
+            'stores' => [],
+        ]
+    );
 
-        $result = $facade->findByCriteria($searchCriteria);
+    $result = $facade->findByCriteria($searchCriteria);
 
-        $titles = [];
-        foreach ($result->aggregate() as $item) {
-            /** @var Gateway $item */
-            $titles[] = (string) $item->title();
-        }
-
-        $expectedSorted = [...$titles];
-
-        asort($expectedSorted);
-
-        $this->assertCount(10, iterator_to_array($facade->find()));
-        $this->assertCount(10, $result->aggregate());
-        $this->assertEquals(1, $result->pages());
-        $this->assertEquals(10, $result->items());
-        $this->assertSame($expectedSorted, $titles);
+    $titles = [];
+    foreach ($result->aggregate() as $item) {
+        /** @var Gateway $item */
+        $titles[] = (string) $item->title();
     }
 
-    public function testShouldRetrieveGatewaysOrderedByFieldDesc(): void
-    {
-        $this->loadFixtures(new GatewayFixtures(10));
+    $expectedSorted = [...$titles];
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+    $sorter($expectedSorted);
 
-        $searchCriteria = SearchCriteria::fromArray(
-            [
-                'fields' => [],
-                'orderBy' => [
-                    [
-                        'field' => 'title',
-                        'direction' => 'desc',
-                    ],
-                ],
-                'page' => 1,
-                'limit' => 10,
-                'stores' => [],
-            ]
-        );
+    expect(iterator_to_array($facade->find()))->toHaveCount(10)
+        ->and($result->aggregate())->toHaveCount(10)
+        ->and($result->pages())->toEqual(1)
+        ->and($result->items())->toEqual(10)
+        ->and($titles)->toBe($expectedSorted);
+})->with([
+    ['desc', 'arsort'],
+    ['asc', 'asort'],
+]);
 
-        $result = $facade->findByCriteria($searchCriteria);
+it('should successfully delete delete gateway', function () {
+    $this->loadFixtures(new GatewayFixtures(10));
 
-        $titles = [];
-        foreach ($result->aggregate() as $item) {
-            /** @var Gateway $item */
-            $titles[] = (string) $item->title();
-        }
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $expectedSorted = [...$titles];
+    /** @var Gateway $randomGateway */
+    $randomGateway = iterator_to_array($facade->find())[0];
 
-        arsort($expectedSorted);
+    $facade->delete(new GatewayDelete((string) $randomGateway->id()));
 
-        $this->assertCount(10, iterator_to_array($facade->find()));
-        $this->assertCount(10, $result->aggregate());
-        $this->assertEquals(1, $result->pages());
-        $this->assertEquals(10, $result->items());
-        $this->assertSame($expectedSorted, $titles);
-    }
+    $result = $facade->findById($randomGateway->id());
 
-    public function testShouldSuccessfullyDeleteGateway(): void
-    {
-        $this->loadFixtures(new GatewayFixtures(10));
+    expect($result)->toBeNull()->and(iterator_to_array($facade->find()))->toHaveCount(9);
+});
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+it('should successfully add store', function () {
+    $gateway = GatewayContext::create()();
+    $store = StoreContext::create()();
 
-        /** @var Gateway $randomGateway */
-        $randomGateway = iterator_to_array($facade->find())[0];
+    $gateway->addStore($store);
 
-        $facade->delete(new GatewayDelete((string) $randomGateway->id()));
+    $this->save($gateway, $store);
 
-        $result = $facade->findById($randomGateway->id());
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $this->assertNull($result);
-        $this->assertCount(9, iterator_to_array($facade->find()));
-    }
+    $dbGateway = $facade->findById($gateway->id());
 
-    public function testShouldSuccessfullyAddStore(): void
-    {
-        $gateway = GatewayContext::create()();
-        $store = StoreContext::create()();
+    expect($dbGateway->stores())->toHaveCount(1);
+});
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+it('should not remove not bound store', function () {
+    $gateway = GatewayContext::create()();
+    $store = StoreContext::create()();
 
-        $gateway->addStore($store);
+    $this->save($gateway, $store);
 
-        $entityManager->persist($gateway);
-        $entityManager->persist($store);
-        $entityManager->flush($gateway);
+    /** @var GatewayFacade $facade */
+    $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
+    $dbGateway = $facade->findById($gateway->id());
 
-        $dbGateway = $facade->findById($gateway->id());
+    expect($dbGateway)->not->toBeNull()->and($dbGateway->stores())->toHaveCount(0);
 
-        $this->assertCount(1, $dbGateway->stores());
-    }
+    $dbGateway->removeStore($store);
 
-    public function testShouldFailRemoveStore(): void
-    {
-        $gateway = GatewayContext::create()();
-        $store = StoreContext::create()();
-
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
-
-        $entityManager->persist($gateway);
-        $entityManager->persist($store);
-        $entityManager->flush($gateway);
-
-        /** @var GatewayFacade $facade */
-        $facade = $this->getContainer()->get(GatewayFacade::class);
-
-        $dbGateway = $facade->findById($gateway->id());
-        $this->assertCount(0, $dbGateway->stores());
-
-        $dbGateway->removeStore($store);
-        $this->assertCount(0, $dbGateway->stores());
-    }
-}
+    expect($dbGateway->stores())->toHaveCount(0);
+});

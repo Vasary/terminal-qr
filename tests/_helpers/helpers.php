@@ -2,11 +2,25 @@
 
 declare(strict_types = 1);
 
+use App\Infrastructure\Test\Faker\Factory;
+use App\Infrastructure\Test\Faker\Generator;
 use App\Kernel;
 use Doctrine\Migrations\MigratorConfiguration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\SchemaTool;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+
+
+if (!function_exists('faker')) {
+    function faker(): Generator
+    {
+        static $faker;
+
+        $faker ??= Factory::create();
+
+        return $faker;
+    }
+}
 
 function app(): Kernel
 {
@@ -16,7 +30,7 @@ function app(): Kernel
         $env = $_ENV['APP_ENV'] ?? $_SERVER['APP_ENV'] ?? 'test';
         $debug = $_ENV['APP_DEBUG'] ?? $_SERVER['APP_DEBUG'] ?? true;
 
-        $kernel = new Kernel((string) $env, (bool) $debug);
+        $kernel = new Kernel((string)$env, (bool)$debug);
         $kernel->boot();
 
         return $kernel;
