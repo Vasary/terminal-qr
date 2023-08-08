@@ -1,11 +1,19 @@
+DOCKER_COMPOSE = docker-compose -f docker-compose.yml -f build/docker-compose.yml
+COMPOSE_PROJECT_NAME=terminal
+
+# Targets
+.PHONY: up down exec test build
+up: build
+	$(DOCKER_COMPOSE) up -d
+
+down:
+	$(DOCKER_COMPOSE) down
+
 build:
-	docker build . --file build/Dockerfile.develop --tag vasary/qr_terminal:develop
+	$(DOCKER_COMPOSE) build
 
-run:
-	docker run -it -v $(PWD):/app -p 8080:8080 vasary/qr_terminal:develop sh
+exec:
+	$(DOCKER_COMPOSE) exec qr sh
 
-prod:
-	docker build . --file build/Dockerfile --tag vasary/qr_terminal:production
-
-run_prod:
-	docker run -p 81:80 -e APP_SECRET=c4ca4238a0b923820dcc509a6f75849b vasary/qr_terminal:production
+test:
+	$(DOCKER_COMPOSE) exec qr vendor/bin/pest

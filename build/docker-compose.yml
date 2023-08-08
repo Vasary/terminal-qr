@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  db:
+    container_name: db
+    image: postgres:15.3-alpine
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "15432:5432"
+    networks:
+      - terminal
+
+  qr:
+    container_name: terminal
+    build:
+      context: .
+      dockerfile: build/Dockerfile.develop
+    user: "502:502"
+    environment:
+      DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: db
+    volumes:
+      - .:/app
+    ports:
+      - "8080:80"
+      - "19003:9003"
+    depends_on:
+      - db
+    networks:
+      - terminal
+    command: php -S 0.0.0.0:80 -t /app/public
+
+  assets:
+    container_name: assets
+    build:
+      context: .
+      dockerfile: build/Dockerfile.develop
+    user: "502:502"
+    volumes:
+      - .:/app
+    command: npm run watch --prefix assets
+
+networks:
+  terminal:

@@ -7,14 +7,14 @@ WORKDIR /app
 RUN set -ex && \
     apk add --no-cache --virtual .php-deps make && \
     apk add --no-cache --virtual .build-deps $PHPIZE_DEPS zlib-dev icu-dev g++ && \
-    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers nodejs npm && \
+    apk add --update --no-cache icu sqlite-dev sqlite pcre-dev linux-headers nodejs npm postgresql-dev && \
     pecl install redis xdebug uopz pcov && \
     docker-php-ext-configure intl && \
-    docker-php-ext-install pdo pdo_sqlite sockets intl && \
+    docker-php-ext-install pdo pdo_pgsql sockets intl && \
     docker-php-ext-enable redis xdebug intl pcov
 
 RUN ln -s /app/bin/console /usr/bin/console && \
-    ln -s /app/bin/phpunit /usr/bin/phpunit
+    ln -s /app/vendor/bin/pest /usr/bin/pest
 
 CMD ["php-fpm"]
 

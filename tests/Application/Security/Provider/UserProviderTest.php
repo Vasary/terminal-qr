@@ -2,7 +2,6 @@
 
 declare(strict_types = 1);
 
-
 namespace App\Tests\Application\Security\Provider;
 
 use App\Application\Security\Provider\UserProvider;

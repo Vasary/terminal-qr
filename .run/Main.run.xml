@@ -1,0 +1,20 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="Main" type="PestRunConfigurationType">
+    <CommandLine>
+      <envs>
+        <env name="APP_SECRET" value="rPV3YB5e7U4Q" />
+      </envs>
+    </CommandLine>
+    <option name="pestRunnerSettings">
+      <PestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" method="" scope="ConfigurationFile" use_alternative_configuration_file="true" />
+    </option>
+    <option name="runnerSettings">
+      <PhpTestRunnerSettings configuration_file="$PROJECT_DIR$/phpunit.xml" method="" scope="ConfigurationFile" use_alternative_configuration_file="true" />
+    </option>
+    <method v="2">
+      <option name="DeactivateBeforeRunTask">
+        <option name="dataSourceId" value="8fadc815-3a7d-44d6-bebd-e8dc93a62927" />
+      </option>
+    </method>
+  </configuration>
+</component>

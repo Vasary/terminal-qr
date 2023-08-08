@@ -14,94 +14,97 @@ use Doctrine\ORM\EntityManagerInterface;
 use Mockery;
 use RuntimeException;
 
-it('should fails if entity manager is not existing', function () {
-    $containerMock = Mockery::mock(ContainerInterface::class);
-    $containerMock
-        ->shouldReceive('has')
-        ->with('doctrine.orm.entity_manager')
-        ->andReturnFalse();
+describe('Health check -> communication', function () {
+    it('should fails if entity manager is not existing', function () {
+        $containerMock = Mockery::mock(ContainerInterface::class);
+        $containerMock
+            ->shouldReceive('has')
+            ->with('doctrine.orm.entity_manager')
+            ->andReturnFalse();
 
-    $plugin = new DoctrineConnectionCheckerPlugin($containerMock);
+        $plugin = new DoctrineConnectionCheckerPlugin($containerMock);
 
-    $response = $plugin->check();
+        $response = $plugin->check();
 
-    expect($response)->toBeInstanceOf(Response::class)
-        ->and($response->result())->toBeFalse()
-        ->and($response->name())->toEqual('doctrine')
-        ->and($response->message())->toEqual('Entity Manager not found')
-    ;
-});
+        expect($response)->toBeInstanceOf(Response::class)
+            ->and($response->result())->toBeFalse()
+            ->and($response->name())->toEqual('doctrine')
+            ->and($response->message())->toEqual('Entity Manager not found')
+        ;
+    });
 
-it('should fails if entity manager can\'t Connect to database', function () {
-    $containerMock = Mockery::mock(ContainerInterface::class);
-    $containerMock
-        ->shouldReceive('has')
-        ->with('doctrine.orm.entity_manager')
-        ->andReturnTrue();
+    it('should fails if entity manager can\'t Connect to database', function () {
+        $containerMock = Mockery::mock(ContainerInterface::class);
+        $containerMock
+            ->shouldReceive('has')
+            ->with('doctrine.orm.entity_manager')
+            ->andReturnTrue();
 
-    $entityManagerMock = Mockery::mock(EntityManagerInterface::class);
-    $entityManagerMock
-        ->shouldReceive('getConnection')
-        ->andThrow(new RuntimeException('message'))
-    ;
+        $entityManagerMock = Mockery::mock(EntityManagerInterface::class);
+        $entityManagerMock
+            ->shouldReceive('getConnection')
+            ->andThrow(new RuntimeException('message'))
+        ;
 
-    $containerMock
-        ->shouldReceive('get')
-        ->with('doctrine.orm.entity_manager')
-        ->andReturn($entityManagerMock);
+        $containerMock
+            ->shouldReceive('get')
+            ->with('doctrine.orm.entity_manager')
+            ->andReturn($entityManagerMock);
 
-    $plugin = new DoctrineConnectionCheckerPlugin($containerMock);
+        $plugin = new DoctrineConnectionCheckerPlugin($containerMock);
 
-    $response = $plugin->check();
+        $response = $plugin->check();
 
-    expect($response)->toBeInstanceOf(Response::class)
-        ->and($response->result())->toBeFalse()
-        ->and($response->name())->toEqual('doctrine')
-        ->and($response->message())->toEqual('message')
-    ;
-});
+        expect($response)->toBeInstanceOf(Response::class)
+            ->and($response->result())->toBeFalse()
+            ->and($response->name())->toEqual('doctrine')
+            ->and($response->message())->toEqual('message')
+        ;
+    });
 
-it('should return successful result', function () {
-    $containerMock = Mockery::mock(ContainerInterface::class);
-    $containerMock
-        ->shouldReceive('has')
-        ->with('doctrine.orm.entity_manager')
-        ->andReturnTrue();
+    it('should return successful result', function () {
+        $containerMock = Mockery::mock(ContainerInterface::class);
+        $containerMock
+            ->shouldReceive('has')
+            ->with('doctrine.orm.entity_manager')
+            ->andReturnTrue();
 
-    $resultMock = Mockery::mock(Result::class);
-    $resultMock->shouldReceive('free');
+        $resultMock = Mockery::mock(Result::class);
+        $resultMock->shouldReceive('free');
 
-    $connectionMock = Mockery::mock(Connection::class);
-    $connectionMock
-        ->shouldReceive('executeQuery')
-        ->andReturn($resultMock)
-    ;
+        $connectionMock = Mockery::mock(Connection::class);
+        $connectionMock
+            ->shouldReceive('executeQuery')
+            ->andReturn($resultMock)
+        ;
 
-    $platformMock = Mockery::mock(AbstractPlatform::class);
-    $platformMock
-        ->shouldReceive('getDummySelectSQL')
-        ->andReturn('select * from table');
+        $platformMock = Mockery::mock(AbstractPlatform::class);
+        $platformMock
+            ->shouldReceive('getDummySelectSQL')
+            ->andReturn('select * from table');
 
-    $connectionMock->shouldReceive('getDatabasePlatform')->andReturn($platformMock);
+        $connectionMock->shouldReceive('getDatabasePlatform')->andReturn($platformMock);
 
-    $entityManagerMock = Mockery::mock(EntityManagerInterface::class);
-    $entityManagerMock
-        ->shouldReceive('getConnection')
-        ->andReturn($connectionMock)
-    ;
+        $entityManagerMock = Mockery::mock(EntityManagerInterface::class);
+        $entityManagerMock
+            ->shouldReceive('getConnection')
+            ->andReturn($connectionMock)
+        ;
 
-    $containerMock
-        ->shouldReceive('get')
-        ->with('doctrine.orm.entity_manager')
-        ->andReturn($entityManagerMock);
+        $containerMock
+            ->shouldReceive('get')
+            ->with('doctrine.orm.entity_manager')
+            ->andReturn($entityManagerMock);
 
-    $plugin = new DoctrineConnectionCheckerPlugin($containerMock);
+        $plugin = new DoctrineConnectionCheckerPlugin($containerMock);
 
-    $response = $plugin->check();
+        $response = $plugin->check();
 
-    expect($response)->toBeInstanceOf(Response::class)
-        ->and($response->result())->toBeTrue()
-        ->and($response->name())->toEqual('doctrine')
-        ->and($response->message())->toEqual('ok')
-    ;
+        expect($response)->toBeInstanceOf(Response::class)
+            ->and($response->result())->toBeTrue()
+            ->and($response->name())->toEqual('doctrine')
+            ->and($response->message())->toEqual('ok')
+        ;
+    });
+
 });

@@ -8,7 +8,7 @@ use App\Domain\ValueObject\Id;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\Type;
-use Symfony\Component\Uid\AbstractUid;
+use InvalidArgumentException;
 
 final class IdType extends Type
 {
@@ -21,12 +21,8 @@ final class IdType extends Type
 
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
-        if ($platform->hasNativeGuidType()) {
-            return $platform->getGuidTypeDeclarationSQL($column);
-        }
-
-        return $platform->getBinaryTypeDeclarationSQL([
-            'length' => '16',
+        return $platform->getStringTypeDeclarationSQL([
+            'length' => '36',
             'fixed' => true,
         ]);
     }
@@ -37,11 +33,11 @@ final class IdType extends Type
             return null;
         }
 
-        if (!\is_string($value)) {
+        if (!is_string($value)) {
             throw ConversionException::conversionFailedInvalidType(
                 $value,
                 $this->getName(),
-                ['null', 'string', AbstractUid::class]
+                ['null', 'string', Id::class]
             );
         }
 
@@ -58,7 +54,7 @@ final class IdType extends Type
             return null !== $value
                 ? (string) $value
                 : null;
-        } catch (\InvalidArgumentException) {
+        } catch (InvalidArgumentException) {
             throw ConversionException::conversionFailed($value, $this->getName());
         }
     }

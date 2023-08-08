@@ -9,19 +9,21 @@ use App\Application\HealthCheck\Business\Checker\HealthCheckerPluginInterface;
 use App\Application\HealthCheck\Business\Checker\Response;
 use Mockery;
 
-it('should return an empty array', function () {
-    $checker = new Checker([]);
+describe('Health check -> business', function () {
+    it('should return an empty array', function () {
+        $checker = new Checker([]);
 
-    expect($checker->check())->toHaveCount(0);
-});
+        expect($checker->check())->toHaveCount(0);
+    });
 
-it('should return any one element in array', function () {
-    $plugin = Mockery::mock(HealthCheckerPluginInterface::class);
-    $plugin
-        ->shouldReceive('check')
-        ->andReturn(new Response('name', true, 'message'));
+    it('should return any one element in array', function () {
+        $plugin = Mockery::mock(HealthCheckerPluginInterface::class);
+        $plugin
+            ->shouldReceive('check')
+            ->andReturn(new Response('name', true, 'message'));
 
-    $result = (new Checker([$plugin]))->check();
+        $result = (new Checker([$plugin]))->check();
 
-    expect($result)->toHaveCount(1)->and(current($result))->toBeInstanceOf(Response::class);
+        expect($result)->toHaveCount(1)->and(current($result))->toBeInstanceOf(Response::class);
+    });
 });

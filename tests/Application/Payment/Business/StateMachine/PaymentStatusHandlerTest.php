@@ -7,32 +7,26 @@ namespace App\Tests\Application\Payment\Business\StateMachine;
 use App\Application\Payment\Business\StateMachine\PaymentStatusHandler;
 use App\Domain\Enum\WorkflowTransitionEnum;
 use App\Domain\Exception\WorkflowException;
-use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\PaymentContext;
 
-final class PaymentStatusHandlerTest extends AbstractWebTestCase
-{
-    public function testShouldFailChangeStateOfPayment(): void
-    {
-        $payment = PaymentContext::create()();
+it('should fail to change the state of payment', function () {
+    $payment = PaymentContext::create()();
 
-        $this->expectException(WorkflowException::class);
+    $this->expectException(WorkflowException::class);
 
-        /** @var PaymentStatusHandler $facade */
-        $handler = $this->getContainer()->get(PaymentStatusHandler::class);
+    /** @var PaymentStatusHandler $facade */
+    $handler = $this->getContainer()->get(PaymentStatusHandler::class);
 
-        $handler->handle($payment, WorkflowTransitionEnum::alert);
-    }
+    $handler->handle($payment, WorkflowTransitionEnum::alert);
+});
 
-    public function testShouldSuccessfullyChangeStateOfPayment(): void
-    {
-        $payment = PaymentContext::create()();
+it('should successfully change the state of payment', function () {
+    $payment = PaymentContext::create()();
 
-        /** @var PaymentStatusHandler $facade */
-        $handler = $this->getContainer()->get(PaymentStatusHandler::class);
+    /** @var PaymentStatusHandler $facade */
+    $handler = $this->getContainer()->get(PaymentStatusHandler::class);
 
-        $handler->handle($payment, WorkflowTransitionEnum::tokenized);
+    $handler->handle($payment, WorkflowTransitionEnum::tokenized);
 
-        $this->assertCount(2, $payment->logs());
-    }
-}
+    expect($payment->logs())->toHaveCount(2);
+});

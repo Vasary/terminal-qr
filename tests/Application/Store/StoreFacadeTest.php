@@ -46,8 +46,8 @@ final class StoreFacadeTest extends AbstractWebTestCase
     public function testStoreFacadeShouldCreateStore(): void
     {
         $transfer = StoreCreate::fromArray([
-            'title' => $this->faker->title(),
-            'description' => $this->faker->text(),
+            'title' => faker()->title(),
+            'description' => faker()->text(),
         ]);
 
         /** @var StoreFacade $facade */
@@ -87,8 +87,8 @@ final class StoreFacadeTest extends AbstractWebTestCase
 
         $transfer = StoreUpdate::fromArray([
             'id' => (string) $store->id(),
-            'title' => $this->faker->title(),
-            'description' => $this->faker->text(),
+            'title' => faker()->title(),
+            'description' => faker()->text(),
         ]);
 
         /** @var StoreFacade $facade */
@@ -115,9 +115,9 @@ final class StoreFacadeTest extends AbstractWebTestCase
         $this->expectException(NotFoundException::class);
 
         $transfer = StoreUpdate::fromArray([
-            'id' => $this->faker->uuid(),
-            'title' => $this->faker->title(),
-            'description' => $this->faker->text(),
+            'id' => faker()->uuid(),
+            'title' => faker()->title(),
+            'description' => faker()->text(),
         ]);
 
         /** @var StoreFacade $facade */
