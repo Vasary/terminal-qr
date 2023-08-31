@@ -15,12 +15,11 @@ doctrine:
             description: App\Infrastructure\Persistence\Doctrine\Type\DescriptionType
             callback: App\Infrastructure\Persistence\Doctrine\Type\CallbackType
             currency: App\Infrastructure\Persistence\Doctrine\Type\CurrencyType
-            host: App\Infrastructure\Persistence\Doctrine\Type\HostType
             key: App\Infrastructure\Persistence\Doctrine\Type\KeyType
-            portal: App\Infrastructure\Persistence\Doctrine\Type\PortalType
             email: App\Infrastructure\Persistence\Doctrine\Type\EmailType
             log: App\Infrastructure\Persistence\Doctrine\Type\LogType
             token: App\Infrastructure\Persistence\Doctrine\Type\TokenType
+            credential: App\Infrastructure\Persistence\Doctrine\Type\CredentialType
     orm:
         auto_generate_proxy_classes: true
         quote_strategy: doctrine.orm.quote_strategy.ansi

@@ -2,23 +2,22 @@
 
 declare(strict_types = 1);
 
-namespace App\Tests\Application\Gateway;
-
 use App\Application\Gateway\Business\GatewayFacade;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
+use App\Domain\ValueObject\Credentials\Stub;
 use App\Domain\ValueObject\Id;
+use App\Domain\ValueObject\Uuid;
 use App\Infrastructure\Persistence\DataFixtures\GatewayFixtures;
 use App\Infrastructure\Test\Context\Model\GatewayContext;
 use App\Infrastructure\Test\Context\Model\StoreContext;
+use App\Infrastructure\Test\Stub\IdFactoryStub;
 use App\Shared\Transfer\GatewayCreate;
 use App\Shared\Transfer\GatewayDelete;
 use App\Shared\Transfer\GatewayUpdate;
 use App\Shared\Transfer\SearchCriteria;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
-use Mockery;
 
 describe('Gateway Facade', function () {
     it('should retrieve gateway by key', function () {
@@ -39,29 +38,43 @@ describe('Gateway Facade', function () {
         expect($facade->findByKey($gateway->key()))->not->toBeNull();
     });
 
-    it('should successfully create a gateway', function () {
+    it('should successfully create a gateway with stub credential', function () {
         $transfer = GatewayCreate::fromArray([
             'title' => faker()->title(),
             'callback' => faker()->url(),
-            'host' => faker()->domainName(),
-            'portal' => faker()->company(),
-            'currency' => faker()->currencyCode(),
         ]);
 
-        $expectedKey = md5($transfer->title() . $transfer->host() . $transfer->currency() . $transfer->callback());
+        $credentials = [
+            'type' => Stub::class,
+            'login' => faker()->lexify('?????'),
+            'password' => faker()->lexify('????????'),
+        ];
+
+        $idFactory = new IdFactoryStub(
+            new Uuid('edff293a-02d4-4872-b193-c51f8305a953'),
+            new Uuid('f5593d03-aa33-4405-b133-a772f33ec061'),
+        );
+
+        Id::setFactory($idFactory);
 
         /** @var GatewayFacade $facade */
         $facade = $this->getContainer()->get(GatewayFacade::class);
-        $gateway = $facade->create($transfer);
 
-        expect((string) $gateway->title())->toEqual($transfer->title())
+        $gateway = $facade->create($transfer, $credentials);
+
+        /** @var Stub $gatewayCredential */
+        $gatewayCredential = $gateway->credential();
+
+        expect($gatewayCredential)->toBeInstanceOf(Stub::class)
+            ->and($gatewayCredential->login())->toEqual($credentials['login'])
+            ->and($gatewayCredential->password())->toEqual($credentials['password'])
+            ->and((string) $gateway->title())->toEqual($transfer->title())
             ->and((string) $gateway->callback())->toEqual($transfer->callback())
-            ->and((string) $gateway->host())->toEqual($transfer->host())
-            ->and((string) $gateway->portal())->toEqual($transfer->portal())
-            ->and((string) $gateway->currency())->toEqual($transfer->currency())
-            ->and($expectedKey)->toEqual((string) $gateway->key())
+            ->and((string) $gateway->key())->toEqual('edff293a-02d4-4872-b193-c51f8305a953')
             ->and($gateway->createdAt())->toBeInstanceOf(DateTimeImmutable::class)
-            ->and($gateway->updatedAt())->toBeInstanceOf(DateTimeImmutable::class);
+            ->and($gateway->updatedAt())->toBeInstanceOf(DateTimeImmutable::class)
+            ->and($idFactory->isEmpty())->toBeTrue()
+        ;
     });
 
     it('should return ten records via facade', function () {
@@ -82,30 +95,37 @@ describe('Gateway Facade', function () {
             'id' => (string) $gateway->id(),
             'title' => faker()->title(),
             'callback' => faker()->url(),
-            'host' => faker()->domainName(),
-            'portal' => faker()->company(),
-            'currency' => faker()->currencyCode(),
         ]);
+
+        $credentials = [
+            'type' => Stub::class,
+            'login' => faker()->lexify('?????'),
+            'password' => faker()->lexify('????????'),
+        ];
 
         /** @var GatewayFacade $facade */
         $facade = $this->getContainer()->get(GatewayFacade::class);
 
-        $updatedGateway = $facade->update($transfer);
+        $updatedGateway = $facade->update($transfer, $credentials);
         $gatewayInDatabase = $facade->findById(Id::fromString($transfer->id()));
+
+        /** @var Stub $updatedGatewayCredential */
+        $updatedGatewayCredential = $updatedGateway->credential();
+
+        /** @var Stub $gatewayInDatabaseCredential */
+        $gatewayInDatabaseCredential = $gatewayInDatabase->credential();
 
         expect((string) $updatedGateway->id())->toEqual($transfer->id())
             ->and((string) $updatedGateway->title())->toEqual($transfer->title())
             ->and((string) $updatedGateway->callback())->toEqual($transfer->callback())
-            ->and((string) $updatedGateway->host())->toEqual($transfer->host())
-            ->and((string) $updatedGateway->portal())->toEqual($transfer->portal())
-            ->and((string) $updatedGateway->currency())->toEqual($transfer->currency())
             ->and(iterator_to_array($facade->find()))->toHaveCount(1)
             ->and($gatewayInDatabase)->not->toBeNull()
             ->and((string) $gatewayInDatabase->title())->toEqual($transfer->title())
             ->and((string) $gatewayInDatabase->callback())->toEqual($transfer->callback())
-            ->and((string) $gatewayInDatabase->host())->toEqual($transfer->host())
-            ->and((string) $gatewayInDatabase->portal())->toEqual($transfer->portal())
-            ->and((string) $gatewayInDatabase->currency())->toEqual($transfer->currency())
+            ->and($updatedGatewayCredential->login())->toEqual($credentials['login'])
+            ->and($updatedGatewayCredential->password())->toEqual($credentials['password'])
+            ->and($gatewayInDatabaseCredential->login())->toEqual($credentials['login'])
+            ->and($gatewayInDatabaseCredential->password())->toEqual($credentials['password'])
         ;
     });
 
@@ -115,10 +135,8 @@ describe('Gateway Facade', function () {
                 'id' => faker()->uuid(),
                 'title' => faker()->title(),
                 'callback' => faker()->url(),
-                'host' => faker()->domainName(),
-                'portal' => faker()->company(),
-                'currency' => faker()->currencyCode(),
-            ])
+            ]),
+            []
         );
     })->expectException(NotFoundException::class);
 
@@ -284,5 +302,4 @@ describe('Gateway Facade', function () {
 
         expect($dbGateway->stores())->toHaveCount(0);
     });
-
 });

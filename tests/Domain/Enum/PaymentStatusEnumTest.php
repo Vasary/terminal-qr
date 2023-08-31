@@ -2,8 +2,6 @@
 
 declare(strict_types = 1);
 
-namespace App\Tests\Domain\Enum;
-
 use App\Domain\Enum\PaymentStatusEnum;
 
 it('Enum should have cases', function () {

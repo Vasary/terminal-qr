@@ -12,7 +12,6 @@ use App\Domain\ValueObject\Title;
 use App\Infrastructure\Test\Context\ContextTrait;
 use App\Infrastructure\Test\Context\ModelContextInterface;
 use App\Infrastructure\Test\Context\ModelContextTrait;
-use App\Infrastructure\Test\Context\StandaloneTrait;
 use App\Infrastructure\Test\Context\TimestampTrait;
 use Doctrine\Common\Collections\ArrayCollection;
 
@@ -20,7 +19,6 @@ final class StoreContext implements ModelContextInterface
 {
     use ContextTrait;
     use ModelContextTrait;
-    use StandaloneTrait;
     use TimestampTrait;
 
     public string $id = '888c23c6-06fe-4a95-a66c-f292da2f7607';
@@ -28,7 +26,7 @@ final class StoreContext implements ModelContextInterface
     public string $code = 'coffee';
     public string $description = 'My test description';
 
-    public function __invoke(bool $singleton = true): Store
+    public function __invoke(): Store
     {
         /** @var Store $model */
         $model = $this->getInstance(Store::class);
@@ -42,6 +40,6 @@ final class StoreContext implements ModelContextInterface
             ->setProperty($model, 'users', new ArrayCollection())
             ->setTimestamps($model);
 
-        return $singleton ? $this->obtainInstance($model) : $model;
+        return $model;
     }
 }

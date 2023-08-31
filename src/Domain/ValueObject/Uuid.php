@@ -6,7 +6,7 @@ namespace App\Domain\ValueObject;
 
 final readonly class Uuid
 {
-    public function __construct(private readonly string $value)
+    public function __construct(private string $value)
     {
     }
 

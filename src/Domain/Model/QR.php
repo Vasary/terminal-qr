@@ -12,10 +12,14 @@ class QR
     private Id $id;
     private DateTimeImmutable $createdAt;
 
-    public function __construct(private readonly string $payload, private readonly string $imageUrl,)
+    public function __construct(
+        private readonly string $payload,
+        private readonly string $imageUrl,
+        DateTimeImmutable $now,
+    )
     {
         $this->id = Id::create();
-        $this->createdAt = new DateTimeImmutable();
+        $this->createdAt = $now;
     }
 
     public function id(): Id

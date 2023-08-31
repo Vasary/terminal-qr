@@ -6,15 +6,14 @@ namespace App\Infrastructure\Persistence\DataFixtures;
 
 use App\Domain\Model\Gateway;
 use App\Domain\ValueObject\Callback;
-use App\Domain\ValueObject\Currency;
-use App\Domain\ValueObject\Host;
+use App\Domain\ValueObject\Credentials\Stub;
 use App\Domain\ValueObject\Key;
-use App\Domain\ValueObject\Portal;
 use App\Domain\ValueObject\Title;
 use App\Infrastructure\Test\Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
+use function App\Infrastructure\DateTime\now;
 
 final class GatewayFixtures extends Fixture implements FixtureGroupInterface
 {
@@ -34,10 +33,9 @@ final class GatewayFixtures extends Fixture implements FixtureGroupInterface
                 new Gateway(
                     new Title($faker->company()),
                     new Callback($faker->url()),
-                    new Host($faker->domainName()),
-                    new Portal($faker->domainName()),
-                    new Currency($faker->currencyCode()),
-                    new Key($faker->lexify('?????')),
+                    new Key($faker->uuid()),
+                    new Stub('', ''),
+                    now(),
                 )
             );
         }

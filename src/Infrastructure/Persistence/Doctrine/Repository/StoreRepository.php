@@ -17,6 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
 use Generator;
+use function App\Infrastructure\DateTime\now;
 
 final class StoreRepository implements StoreRepositoryInterface
 {
@@ -32,7 +33,8 @@ final class StoreRepository implements StoreRepositoryInterface
         $store = new Store(
             new Title($title),
             new Code($code),
-            new Description($description)
+            new Description($description),
+            now(),
         );
 
         $this->entityManager->persist($store);

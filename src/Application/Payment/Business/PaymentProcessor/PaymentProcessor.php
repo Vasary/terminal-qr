@@ -20,7 +20,6 @@ final readonly class PaymentProcessor
         private StoreFacadeInterface $storeFacade,
         private GatewayFacadeInterface $gatewayFacade,
         private PaymentRepositoryInterface $repository,
-        private Start $start,
         private LoggerInterface $logger,
     )
     {
@@ -50,13 +49,13 @@ final readonly class PaymentProcessor
             throw new NotFoundException(Payment::class, $paymentId);
         }
 
-        try {
-            $this->start->handle($payment);
-        } catch (Throwable $exception) {
-            $this->logger->critical($exception->getMessage());
-        }
-
-        $this->repository->update($payment);
+//        try {
+//            $this->start->handle($payment);
+//        } catch (Throwable $exception) {
+//            $this->logger->critical($exception->getMessage());
+//        }
+//
+//        $this->repository->update($payment);
 
         return $payment;
     }

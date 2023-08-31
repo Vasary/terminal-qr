@@ -18,11 +18,11 @@ interface GatewayFacadeInterface
 {
     public function findById(Id $id): ?Gateway;
 
-    public function create(GatewayCreate $transfer): Gateway;
+    public function create(GatewayCreate $transfer, array $credentials): Gateway;
 
     public function find(): Generator;
 
-    public function update(GatewayUpdate $transfer): Gateway;
+    public function update(GatewayUpdate $transfer, array $credentials): Gateway;
 
     public function findByCriteria(SearchCriteria $searchCriteria): Pagination;
 

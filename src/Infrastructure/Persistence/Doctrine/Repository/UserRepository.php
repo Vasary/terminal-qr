@@ -11,6 +11,7 @@ use App\Domain\ValueObject\Id;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Generator;
+use function App\Infrastructure\DateTime\now;
 
 final class UserRepository implements UserRepositoryInterface
 {
@@ -43,7 +44,7 @@ final class UserRepository implements UserRepositoryInterface
 
     public function create(string $email, array $roles, string $hashedPassword): User
     {
-        $user = new User(new Email($email));
+        $user = new User(new Email($email), now());
 
         foreach ($roles as $role) {
             $user->addRole($role);

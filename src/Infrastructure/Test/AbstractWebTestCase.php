@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Test;
 
+use App\Domain\ValueObject\Id;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
@@ -18,8 +19,12 @@ abstract class AbstractWebTestCase extends Base
 
     protected function tearDown(): void
     {
-        $this->cleanModelsContexts();
         Mockery::close();
+        Id::setFactory(null);
+
+        /** @var EntityManagerInterface $manager */
+        $manager = $this->getContainer()->get(EntityManagerInterface::class);
+        $manager->clear();
 
         parent::tearDown();
     }

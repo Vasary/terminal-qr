@@ -13,14 +13,12 @@ use App\Domain\ValueObject\Token;
 use App\Infrastructure\Test\Context\ContextTrait;
 use App\Infrastructure\Test\Context\ModelContextInterface;
 use App\Infrastructure\Test\Context\ModelContextTrait;
-use App\Infrastructure\Test\Context\StandaloneTrait;
 use App\Infrastructure\Test\Context\TimestampTrait;
 
 final class PaymentContext implements ModelContextInterface
 {
     use ContextTrait;
     use ModelContextTrait;
-    use StandaloneTrait;
     use TimestampTrait;
 
     public string $id = 'abba44b6-e3e5-477c-a3a1-b78dce149d4d';
@@ -33,7 +31,7 @@ final class PaymentContext implements ModelContextInterface
     public string $currency = 'RUB';
     public ?string $token = 'token';
 
-    public function __invoke(bool $singleton = true): Payment
+    public function __invoke(): Payment
     {
         /** @var Payment $model */
         $model = $this->getInstance(Payment::class);
@@ -42,7 +40,7 @@ final class PaymentContext implements ModelContextInterface
         $storeContext->id = $this->idStore;
 
         $gatewayContext = GatewayContext::create();
-        $gatewayContext->id = $this->idGateway;
+        $gatewayContext->withId(Id::fromString($this->idGateway));
 
         $store = $storeContext();
         $gateway = $gatewayContext();
@@ -63,6 +61,6 @@ final class PaymentContext implements ModelContextInterface
             ->setProperty($model, 'logs', [])
             ->setTimestamps($model);
 
-        return $singleton ? $this->obtainInstance($model) : $model;
+        return $model;
     }
 }

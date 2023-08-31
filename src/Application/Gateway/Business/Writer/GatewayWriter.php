@@ -7,7 +7,9 @@ namespace App\Application\Gateway\Business\Writer;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
+use App\Domain\ValueObject\Credentials\Credential;
 use App\Domain\ValueObject\Id;
+use App\Infrastructure\Serializer\Serializer;
 use App\Shared\Transfer\GatewayCreate;
 use App\Shared\Transfer\GatewayDelete;
 use App\Shared\Transfer\GatewayUpdate;
@@ -18,32 +20,36 @@ final readonly class GatewayWriter
     {
     }
 
-    public function write(GatewayCreate $transfer): Gateway
+    public function write(GatewayCreate $transfer, array $credentialsData): Gateway
     {
+        $key = (string) Id::create();
+
+        /** @var Credential $credentials */
+        $credentials = Serializer::create()->toType($credentialsData, Credential::class);
+
         return $this->repository->create(
             $transfer->title(),
             $transfer->callback(),
-            $transfer->host(),
-            $transfer->portal(),
-            $transfer->currency(),
-            $this->generateKey($transfer),
+            $key,
+            $credentials
         );
     }
 
     /**
      * @throws NotFoundException
      */
-    public function update(GatewayUpdate $transfer): Gateway
+    public function update(GatewayUpdate $transfer, array $credentialsData): Gateway
     {
         $id = Id::fromString($transfer->id());
         $gateway = $this->getGateway($id);
 
+        /** @var Credential $credentials */
+        $credentials = Serializer::create()->toType($credentialsData, Credential::class);
+
         $gateway
             ->withTitle($transfer->title())
             ->withCallback($transfer->callback())
-            ->withHost($transfer->host())
-            ->withPortal($transfer->portal())
-            ->withCurrency($transfer->currency())
+            ->withCredentials($credentials)
         ;
 
         $this->repository->update($gateway);
@@ -60,11 +66,6 @@ final readonly class GatewayWriter
         $gateway = $this->getGateway($id);
 
         $this->repository->delete($gateway);
-    }
-
-    private function generateKey(GatewayCreate $transfer): string
-    {
-        return md5($transfer->title() . $transfer->host() . $transfer->currency() . $transfer->callback());
     }
 
     /**

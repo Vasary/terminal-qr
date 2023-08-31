@@ -2,8 +2,6 @@
 
 declare(strict_types = 1);
 
-namespace App\Tests\Application\User;
-
 use App\Application\User\User;
 use App\Infrastructure\Test\Context\Model\UserContext;
 

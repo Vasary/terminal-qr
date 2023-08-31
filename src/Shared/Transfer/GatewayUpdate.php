@@ -12,9 +12,6 @@ final class GatewayUpdate
         private readonly string $id,
         private readonly string $title,
         private readonly string $callback,
-        private readonly string $host,
-        private readonly string $portal,
-        private readonly string $currency,
     ) {
     }
 
@@ -31,25 +28,5 @@ final class GatewayUpdate
     public function callback(): string
     {
         return $this->callback;
-    }
-
-    public function host(): string
-    {
-        return $this->host;
-    }
-
-    public function portal(): string
-    {
-        return $this->portal;
-    }
-
-    public function currency(): string
-    {
-        return $this->currency;
-    }
-
-    public function key(): string
-    {
-        return $this->key;
     }
 }

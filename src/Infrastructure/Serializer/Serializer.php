@@ -4,7 +4,9 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Serializer;
 
-use App\Infrastructure\Serializer\Normalizer\CredentialNormalizer;
+use App\Infrastructure\Serializer\Denormalizer\CredentialSPBDenormalizer;
+use App\Infrastructure\Serializer\Normalizer\CredentialSPBNormalizer;
+use App\Infrastructure\Serializer\Normalizer\CredentialStubNormalizer;
 use App\Infrastructure\Serializer\Normalizer\HealthCheckResponseNormalizer;
 use App\Infrastructure\Serializer\Normalizer\UUIDNormalizer;
 use Doctrine\Common\Annotations\AnnotationReader;
@@ -13,6 +15,7 @@ use Symfony\Component\PropertyInfo\Extractor\ReflectionExtractor;
 use Symfony\Component\PropertyInfo\PropertyInfoExtractor;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Exception\ExceptionInterface;
+use Symfony\Component\Serializer\Mapping\ClassDiscriminatorFromClassMetadata;
 use Symfony\Component\Serializer\Mapping\Factory\ClassMetadataFactory;
 use Symfony\Component\Serializer\Mapping\Loader\AnnotationLoader;
 use Symfony\Component\Serializer\NameConverter\MetadataAwareNameConverter;
@@ -57,6 +60,11 @@ final class Serializer implements SerializerInterface
         return json_encode($this->serializer->normalize($object));
     }
 
+    public function toType(array $data, string $type): object
+    {
+        return $this->serializer->denormalize($data, $type);
+    }
+
     public function deserialize(string $data, string $type): object
     {
         return $this->serializer->deserialize($data, $type, JsonEncoder::FORMAT);
@@ -65,6 +73,8 @@ final class Serializer implements SerializerInterface
     private function getNormalizers(): array
     {
         $classMetadataFactory = new ClassMetadataFactory(new AnnotationLoader(new AnnotationReader()));
+        $discriminator = new ClassDiscriminatorFromClassMetadata($classMetadataFactory);
+
         $extractor = new PropertyInfoExtractor([], [new PhpDocExtractor(), new ReflectionExtractor()]);
         $propertyNormalizer = new PropertyNormalizer(
             null,
@@ -75,9 +85,14 @@ final class Serializer implements SerializerInterface
         return [
             new UUIDNormalizer(),
             new HealthCheckResponseNormalizer(),
-            new CredentialNormalizer(),
+            new CredentialSPBNormalizer(),
             new DateTimeNormalizer(),
-            new ObjectNormalizer(),
+            new CredentialSPBDenormalizer(),
+            new CredentialStubNormalizer(),
+            new ObjectNormalizer(
+                classMetadataFactory: $classMetadataFactory,
+                classDiscriminatorResolver: $discriminator
+            ),
             $propertyNormalizer,
         ];
     }

@@ -9,21 +9,16 @@ use App\Domain\Factory\UUID\Generator\SimpleGenerator;
 use App\Domain\Factory\UUID\IdFactory;
 use App\Domain\Factory\UUID\IdFactoryInterface;
 use App\Domain\ValueObject\Uuid;
+use LogicException;
 use RuntimeException;
 use SplQueue;
 
 final class IdFactoryStub implements IdFactoryInterface
 {
-    private IdFactory $factory;
     private SplQueue $queue;
 
     public function __construct(Uuid ...$ids)
     {
-        $this->factory = new IdFactory(
-            new SimpleGenerator(),
-            new Builder(),
-        );
-
         $this->queue = new SplQueue();
 
         foreach ($ids as $id) {
@@ -42,7 +37,7 @@ final class IdFactoryStub implements IdFactoryInterface
 
     public function fromString(string $uuidString): Uuid
     {
-        return $this->factory->fromString($uuidString);
+        throw new LogicException('Create from string is now available for a stubs');
     }
 
     public function isEmpty(): bool

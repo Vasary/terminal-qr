@@ -2,11 +2,8 @@
 
 declare(strict_types = 1);
 
-namespace App\Tests\Presentation\HealthCheck;
-
 use App\Application\HealthCheck\Business\Checker\CheckerInterface;
 use App\Application\HealthCheck\Business\Checker\Response;
-use Mockery;
 
 test('Should successfully get successfully response', function () {
     $checkerMock = Mockery::mock(CheckerInterface::class);
@@ -32,7 +29,6 @@ test('Should successfully get successfully response', function () {
         ->and($healthCheckResponse['result'])->toBeTrue()
     ;
 });
-
 //test('Should get fail response', function () {
 //    $checkerMock = Mockery::mock(CheckerInterface::class);
 //    $checkerMock
@@ -57,3 +53,4 @@ test('Should successfully get successfully response', function () {
 //        ->and($healthCheckResponse['result'])->toBeFalse()
 //    ;
 //});
+

@@ -19,13 +19,13 @@ class User
     private string $password;
     private Collection $stores;
 
-    public function __construct(private Email $email, private array $roles = [])
+    public function __construct(private Email $email, DateTimeImmutable $now, private array $roles = [])
     {
         $this->id = Id::create();
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
         $this->password = '';
         $this->stores = new ArrayCollection();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
     }
 
     public function id(): Id
@@ -87,6 +87,7 @@ class User
         foreach ($this->stores as $store) {
             /** @var Store $store */
             $this->removeStore($store);
+            $store->removeUser($this);
         }
     }
 

@@ -16,6 +16,7 @@ use Doctrine\Common\Collections\Criteria;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
+use function App\Infrastructure\DateTime\now;
 
 final class PaymentRepository implements PaymentRepositoryInterface
 {
@@ -92,9 +93,10 @@ final class PaymentRepository implements PaymentRepositoryInterface
             0,
             PaymentStatusEnum::new,
             $gateway->callback(),
-            $gateway->currency(),
+            $gateway->currency(), // provide currency
             $gateway,
             $store,
+            now(),
         );
 
         $this->entityManager->persist($payment);

@@ -10,4 +10,14 @@ trait ContextTrait
     {
         return new static();
     }
+
+    public function __call(string $name, array $arguments): self
+    {
+        if (str_starts_with($name, 'with')) {
+            $property = lcfirst(substr($name, 4));
+            $this->$property = $arguments[0];
+        }
+
+        return $this;
+    }
 }

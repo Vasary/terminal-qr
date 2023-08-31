@@ -8,8 +8,6 @@ services:
       POSTGRES_DB: ${DB_NAME}
       POSTGRES_USER: ${DB_USER}
       POSTGRES_PASSWORD: ${DB_PASSWORD}
-    ports:
-      - "15432:5432"
     networks:
       - terminal
 
@@ -27,8 +25,7 @@ services:
     volumes:
       - .:/app
     ports:
-      - "8080:80"
-      - "19003:9003"
+      - "8081:80"
     depends_on:
       - db
     networks:

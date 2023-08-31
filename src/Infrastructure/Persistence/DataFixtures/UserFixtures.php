@@ -11,6 +11,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use function App\Infrastructure\DateTime\now;
 
 final class UserFixtures extends Fixture implements FixtureGroupInterface
 {
@@ -36,7 +37,7 @@ final class UserFixtures extends Fixture implements FixtureGroupInterface
 
     private function createUser(string $email, string $password, string $additionalRole): User
     {
-        $user = new User(new DomainUser(new Email($email)));
+        $user = new User(new DomainUser(new Email($email), now()));
 
         $hashedPassword = $this->hasher->hashPassword($user, $password);
 

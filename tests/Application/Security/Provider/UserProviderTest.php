@@ -2,106 +2,86 @@
 
 declare(strict_types = 1);
 
-namespace App\Tests\Application\Security\Provider;
-
 use App\Application\Security\Provider\UserProvider;
 use App\Application\User\User;
 use App\Domain\Exception\UserNotFoundException;
 use App\Domain\Repository\UserRepositoryInterface;
 use App\Infrastructure\Security\User\PasswordAuthenticatedUserInterface;
 use App\Infrastructure\Security\User\UserInterface;
-use App\Infrastructure\Test\AbstractWebTestCase;
 use App\Infrastructure\Test\Context\Model\UserContext;
 use Doctrine\ORM\EntityManagerInterface;
-use Mockery;
-use RuntimeException;
 
-final class UserProviderTest extends AbstractWebTestCase
-{
-    public function testShouldSuccessfullyLoadUserByIdentifier(): void
-    {
-        $user = UserContext::create()();
+test('should successfully load user by identifier', function () {
+    $user = UserContext::create()();
 
-        /** @var EntityManagerInterface $entityManager */
-        $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
+    /** @var EntityManagerInterface $entityManager */
+    $entityManager = $this->getContainer()->get(EntityManagerInterface::class);
 
-        $entityManager->persist($user);
-        $entityManager->flush();
+    $entityManager->persist($user);
+    $entityManager->flush();
 
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $provider = new UserProvider($repository);
 
-        $provider = new UserProvider($repository);
+    $applicationUser = $provider->loadUserByIdentifier((string) $user->email());
 
-        $applicationUser = $provider->loadUserByIdentifier((string) $user->email());
+    expect($applicationUser)->toBeInstanceOf(User::class);
+    expect($applicationUser->getDomainUser())->toEqual($user);
+});
+test('should fails try to load user by invalid identifier', function () {
+    $this->expectException(UserNotFoundException::class);
 
-        $this->assertInstanceOf(User::class, $applicationUser);
-        $this->assertEquals($user, $applicationUser->getDomainUser());
-    }
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-    public function testShouldFailsTryToLoadUserByInvalidIdentifier(): void
-    {
-        $this->expectException(UserNotFoundException::class);
+    $provider = new UserProvider($repository);
 
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $provider->loadUserByIdentifier('not-existing@localhost.com');
+});
+test('should successfully refresh user', function () {
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-        $provider = new UserProvider($repository);
+    $provider = new UserProvider($repository);
 
-        $provider->loadUserByIdentifier('not-existing@localhost.com');
-    }
+    $user = UserContext::create()();
+    $applicationUser = new User($user);
 
-    public function testShouldSuccessfullyRefreshUser(): void
-    {
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $refreshedUser = $provider->refreshUser($applicationUser);
+    expect($refreshedUser)->toBe($applicationUser);
+});
+test('fails on refresh user', function () {
+    $this->expectException(RuntimeException::class);
 
-        $provider = new UserProvider($repository);
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-        $user = UserContext::create()();
-        $applicationUser = new User($user);
+    $provider = new UserProvider($repository);
 
-        $refreshedUser = $provider->refreshUser($applicationUser);
-        $this->assertSame($applicationUser, $refreshedUser);
-    }
+    $applicationUser = Mockery::mock(UserInterface::class);
+    $provider->refreshUser($applicationUser);
+});
+test('should check class support condition', function () {
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-    public function testFailsOnRefreshUser(): void
-    {
-        $this->expectException(RuntimeException::class);
+    $provider = new UserProvider($repository);
 
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $applicationUserInvalid = Mockery::mock(UserInterface::class);
 
-        $provider = new UserProvider($repository);
+    expect($provider->supportsClass(User::class))->toBeTrue();
+    expect($provider->supportsClass($applicationUserInvalid::class))->toBeFalse();
+});
+test('should fails on unimplemented method', function () {
+    $this->expectException(RuntimeException::class);
 
-        $applicationUser = Mockery::mock(UserInterface::class);
-        $provider->refreshUser($applicationUser);
-    }
+    /** @var UserRepositoryInterface $repository */
+    $repository = $this->getContainer()->get(UserRepositoryInterface::class);
 
-    public function testShouldCheckClassSupportCondition(): void
-    {
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
+    $provider = new UserProvider($repository);
+    $applicationUser = Mockery::mock(PasswordAuthenticatedUserInterface::class);
 
-        $provider = new UserProvider($repository);
-
-        $applicationUserInvalid = Mockery::mock(UserInterface::class);
-
-        $this->assertTrue($provider->supportsClass(User::class));
-        $this->assertFalse($provider->supportsClass($applicationUserInvalid::class));
-    }
-
-    public function testShouldFailsOnUnimplementedMethod(): void
-    {
-        $this->expectException(RuntimeException::class);
-
-        /** @var UserRepositoryInterface $repository */
-        $repository = $this->getContainer()->get(UserRepositoryInterface::class);
-
-        $provider = new UserProvider($repository);
-        $applicationUser = Mockery::mock(PasswordAuthenticatedUserInterface::class);
-
-        $provider->upgradePassword($applicationUser, '');
-    }
-}
+    $provider->upgradePassword($applicationUser, '');
+});

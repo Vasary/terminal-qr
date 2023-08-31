@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types = 1);
 
-namespace Application\HealthCheck\Business\Checker;
+declare(strict_types = 1);
 
 use App\Application\HealthCheck\Business\Checker\Checker;
 use App\Application\HealthCheck\Business\Checker\HealthCheckerPluginInterface;
 use App\Application\HealthCheck\Business\Checker\Response;
-use Mockery;
 
 describe('Health check -> business', function () {
     it('should return an empty array', function () {

@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace App\Infrastructure\Persistence\Doctrine\Type;
 
-use App\Domain\ValueObject\Code;
-use App\Infrastructure\Serializer\Serializer;
+use App\Domain\ValueObject\Credentials\Credential;
+use App\Infrastructure\Persistence\Doctrine\Converter\CredentialConverter;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Types\ConversionException;
 use Doctrine\DBAL\Types\JsonType;
@@ -20,9 +20,9 @@ final class CredentialType extends JsonType
         return self::NAME;
     }
 
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): Code
+    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): Credential
     {
-        return new Code($value);
+        return CredentialConverter::toObject($value);
     }
 
     /**
@@ -31,12 +31,7 @@ final class CredentialType extends JsonType
      */
     public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): string
     {
-        $value = [
-            'type' => $value::class,
-            'data' => Serializer::create()->toArray($value),
-        ];
-
-        return parent::convertToDatabaseValue($value, $platform);
+        return CredentialConverter::toString($value);
     }
 
     public function requiresSQLCommentHint(AbstractPlatform $platform): bool

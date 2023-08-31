@@ -23,12 +23,17 @@ class Store
 
     private Collection $users;
 
-    public function __construct(private Title $title, private Code $code, private Description $description,) {
+    public function __construct(
+        private Title $title,
+        private readonly Code $code,
+        private Description $description,
+        DateTimeImmutable $now,
+    ) {
         $this->id = Id::create();
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
         $this->gateways = new ArrayCollection();
         $this->users = new ArrayCollection();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
     }
 
     public function id(): Id

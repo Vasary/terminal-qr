@@ -2,8 +2,6 @@
 
 declare(strict_types = 1);
 
-namespace App\Tests\Application\User;
-
 use App\Application\User\Business\UserFacade;
 use App\Domain\Exception\NotFoundException;
 use App\Domain\Repository\StoreRepositoryInterface;
@@ -15,7 +13,6 @@ use App\Infrastructure\Test\Context\Model\UserContext;
 use App\Shared\Transfer\UserCreate;
 use App\Shared\Transfer\UserDelete;
 use App\Shared\Transfer\UserUpdate;
-use DateTimeImmutable;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 describe('User facade', function () {

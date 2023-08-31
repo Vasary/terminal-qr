@@ -28,9 +28,9 @@ final readonly class GatewayFacade implements GatewayFacadeInterface
         return $this->reader->findById($id);
     }
 
-    public function create(GatewayCreate $transfer): Gateway
+    public function create(GatewayCreate $transfer, array $credentials): Gateway
     {
-        return $this->writer->write($transfer);
+        return $this->writer->write($transfer, $credentials);
     }
 
     public function find(): Generator
@@ -41,9 +41,9 @@ final readonly class GatewayFacade implements GatewayFacadeInterface
     /**
      * @throws NotFoundException
      */
-    public function update(GatewayUpdate $transfer): Gateway
+    public function update(GatewayUpdate $transfer, array $credentials): Gateway
     {
-        return $this->writer->update($transfer);
+        return $this->writer->update($transfer, $credentials);
     }
 
     public function findByCriteria(SearchCriteria $searchCriteria): Pagination

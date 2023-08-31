@@ -7,12 +7,14 @@ namespace App\Infrastructure\Persistence\Doctrine\Repository;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
 use App\Domain\ValueObject\Callback;
+use App\Domain\ValueObject\Credentials\Credential;
 use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Host;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Key;
 use App\Domain\ValueObject\Portal;
 use App\Domain\ValueObject\Title;
+use App\Infrastructure\Persistence\Doctrine\Type\CredentialType;
 use App\Shared\Transfer\OrderByField;
 use App\Shared\Transfer\SearchField;
 use Doctrine\Common\Collections\Criteria;
@@ -20,6 +22,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
 use Generator;
+use function App\Infrastructure\DateTime\now;
 
 final class GatewayRepository implements GatewayRepositoryInterface
 {
@@ -41,15 +44,14 @@ final class GatewayRepository implements GatewayRepositoryInterface
                 ->getOneOrNullResult();
     }
 
-    public function create(string $title, string $callback, string $host, string $portal, string $currency, string $key): Gateway
+    public function create(string $title, string $callback, string $key, Credential $credential): Gateway
     {
         $gateway = new Gateway(
             new Title($title),
             new Callback($callback),
-            new Host($host),
-            new Portal($portal),
-            new Currency($currency),
             new Key($key),
+            $credential,
+            now()
         );
 
         $this->entityManager->persist($gateway);

@@ -17,12 +17,10 @@ class Payment
     private Id $id;
     private DateTimeImmutable $updatedAt;
     private DateTimeImmutable $createdAt;
-
     private ?QR $qrCode;
 
     /** @var Log[] */
     private array $logs;
-
     private ?Token $token;
 
     public function __construct(
@@ -33,13 +31,14 @@ class Payment
         private readonly Currency $currency,
         private readonly Gateway $gateway,
         private readonly Store $store,
+        DateTimeImmutable $now,
     )
     {
         $this->id = Id::create();
         $this->qrCode = null;
         $this->logs = [];
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
         $this->token = null;
     }
 

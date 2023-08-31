@@ -5,11 +5,9 @@ declare(strict_types = 1);
 namespace App\Domain\Model;
 
 use App\Domain\ValueObject\Callback;
-use App\Domain\ValueObject\Currency;
-use App\Domain\ValueObject\Host;
+use App\Domain\ValueObject\Credentials\Credential;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Key;
-use App\Domain\ValueObject\Portal;
 use App\Domain\ValueObject\Title;
 use DateTimeImmutable;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -20,21 +18,18 @@ class Gateway
     private Id $id;
     private DateTimeImmutable $updatedAt;
     private readonly DateTimeImmutable $createdAt;
-
     private Collection $stores;
 
     public function __construct(
         private Title $title,
         private Callback $callback,
-        private Host $host,
-        private Portal $portal,
-        private Currency $currency,
         private readonly Key $key,
-
+        private Credential $credential,
+        DateTimeImmutable $now,
     ) {
         $this->id = Id::create();
-        $this->createdAt = new DateTimeImmutable();
-        $this->updatedAt = new DateTimeImmutable();
+        $this->createdAt = $now;
+        $this->updatedAt = $now;
         $this->stores = new ArrayCollection();
     }
 
@@ -79,40 +74,9 @@ class Gateway
         return $this;
     }
 
-    public function host(): Host
+    public function withCredentials(Credential $credential): self
     {
-        return $this->host;
-    }
-
-    public function withHost(string $host): self
-    {
-        $this->host = new Host($host);
-        $this->updatedAt = new DateTimeImmutable();
-
-        return $this;
-    }
-
-    public function portal(): Portal
-    {
-        return $this->portal;
-    }
-
-    public function withPortal(string $portal): self
-    {
-        $this->portal = new Portal($portal);
-        $this->updatedAt = new DateTimeImmutable();
-
-        return $this;
-    }
-
-    public function currency(): Currency
-    {
-        return $this->currency;
-    }
-
-    public function withCurrency(string $currency): self
-    {
-        $this->currency = new Currency($currency);
+        $this->credential = $credential;
         $this->updatedAt = new DateTimeImmutable();
 
         return $this;
@@ -141,5 +105,10 @@ class Gateway
     public function stores(): Collection
     {
         return $this->stores;
+    }
+
+    public function credential(): Credential
+    {
+        return $this->credential;
     }
 }

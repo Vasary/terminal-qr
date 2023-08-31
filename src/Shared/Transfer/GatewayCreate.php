@@ -8,13 +8,8 @@ final class GatewayCreate
 {
     use CreateFromTrait;
 
-    public function __construct(
-        private readonly string $title,
-        private readonly string $callback,
-        private readonly string $host,
-        private readonly string $portal,
-        private readonly string $currency,
-    ) {
+    public function __construct(private readonly string $title, private readonly string $callback,)
+    {
     }
 
     public function title(): string
@@ -25,20 +20,5 @@ final class GatewayCreate
     public function callback(): string
     {
         return $this->callback;
-    }
-
-    public function host(): string
-    {
-        return $this->host;
-    }
-
-    public function portal(): string
-    {
-        return $this->portal;
-    }
-
-    public function currency(): string
-    {
-        return $this->currency;
     }
 }

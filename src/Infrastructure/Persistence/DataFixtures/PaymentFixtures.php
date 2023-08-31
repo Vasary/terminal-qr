@@ -16,6 +16,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use function App\Infrastructure\DateTime\now;
 
 final class PaymentFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
@@ -54,6 +55,7 @@ final class PaymentFixtures extends Fixture implements DependentFixtureInterface
                     new Currency($faker->currencyCode()),
                     $gateway,
                     $store,
+                    now(),
                 );
 
                 for ($j = 0; $j <= rand(1, 10); $j++) {
@@ -63,7 +65,7 @@ final class PaymentFixtures extends Fixture implements DependentFixtureInterface
                 if (0 === mt_rand(1, 2) % 2) {
                     $payment->withToken($faker->lexify());
                     $payment->withQR(
-                        new QR('/build/images/qr.svg', '/build/images/qr.svg')
+                        new QR('/build/images/qr.svg', '/build/images/qr.svg', now())
                     );
                     $payment->withStatus(PaymentStatusEnum::successfully);
                 }

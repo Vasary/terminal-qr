@@ -17,5 +17,7 @@ interface SerializerInterface
 
     public function toJson(object $object): string;
 
+    public function toType(array $data, string $type): object;
+
     public function deserialize(string $data, string $type): object;
 }

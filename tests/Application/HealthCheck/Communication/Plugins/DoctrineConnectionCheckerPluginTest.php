@@ -1,8 +1,7 @@
 <?php
 
-declare(strict_types = 1);
 
-namespace App\Tests\Application\HealthCheck\Communication\Plugins;
+declare(strict_types = 1);
 
 use App\Application\Contract\ContainerInterface;
 use App\Application\HealthCheck\Business\Checker\Response;
@@ -11,8 +10,6 @@ use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Result;
 use Doctrine\ORM\EntityManagerInterface;
-use Mockery;
-use RuntimeException;
 
 describe('Health check -> communication', function () {
     it('should fails if entity manager is not existing', function () {
