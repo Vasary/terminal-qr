@@ -25,7 +25,7 @@ final class CreateController extends AbstractController
 
     public function __invoke(HttpRequest $request): BaseResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $data = new Data();
         $form = $this->createForm(CreateType::class, $data);

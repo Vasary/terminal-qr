@@ -11,18 +11,6 @@ services:
             - '../src/Infrastructure/Persistence/Doctrine/Type/*'
             - '../src/Infrastructure/Test/_helpers/*'
 
-    Symfony\Bridge\Monolog\Processor\TokenProcessor:
-        tags:
-            - { name: monolog.processor, handler: main }
-
-    Symfony\Bridge\Monolog\Processor\RouteProcessor:
-        tags:
-            - { name: monolog.processor, handler: main }
-
-    App\Infrastructure\Logging\Processor\TraceIdProcessor:
-        tags:
-            - { name: monolog.processor, handler: main }
-
     App\Application\HealthCheck\Business\Checker\Checker:
         arguments:
             $checkers:

@@ -18,7 +18,7 @@ final class UsersController extends AbstractController
 
     public function __invoke(): HTMLResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $view = $this->renderTemplate('@user/users.html.twig', [
             'users' => $this->facade->find(),

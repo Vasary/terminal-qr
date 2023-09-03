@@ -32,6 +32,9 @@ security:
         csrf_token_id: authenticate
         enable_csrf: true
 
+  role_hierarchy:
+    ROLE_ADMIN: ['ROLE_MANAGER']
+    ROLE_MANAGER: ['ROLE_USER']
+
   access_control:
-    - { path: '^/management', roles: ROLE_ADMIN }
-    - { path: '^/payments', roles: ROLE_MANAGER }
+    - { path: '^/management', roles: [ROLE_ADMIN, ROLE_MANAGER] }

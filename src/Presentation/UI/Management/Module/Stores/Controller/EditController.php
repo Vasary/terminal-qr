@@ -41,7 +41,7 @@ final class EditController extends AbstractController
 
     public function __invoke(HttpRequest $requestStack): BaseResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $request = $requestStack->getRequest();
         $store = $this->storeFacade->findById(Id::fromString($request->get('id')));

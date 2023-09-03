@@ -27,7 +27,7 @@ final class EditController extends AbstractController
 
     public function __invoke(HttpRequest $request): BaseResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
         $request = $request->getRequest();
 
         $id = $request->get('id');

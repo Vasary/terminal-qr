@@ -22,7 +22,7 @@ final class GatewaysController extends AbstractController
 
     public function __invoke(GatewaysRequest $request): HTMLResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $search = $this->getSearchRequest($request);
         $orderBy = $this->getSortRequest($request);
@@ -39,7 +39,7 @@ final class GatewaysController extends AbstractController
             'searchFields' => $request->searchFields,
             'current' => $current,
             'config' => [
-                'searchFields' => ['title', 'host', 'portal', 'key'],
+                'searchFields' => ['title', 'key'],
             ],
         ]);
 

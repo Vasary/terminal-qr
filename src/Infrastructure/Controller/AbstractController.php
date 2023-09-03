@@ -25,6 +25,11 @@ abstract class AbstractController extends SymfonyController
         $this->denyAccessUnlessGranted(self::AUTHENTICATED_FULLY);
     }
 
+    protected function isAccessGrantedUnless(string $role): void
+    {
+        $this->denyAccessUnlessGranted($role);
+    }
+
     protected function getSearchRequest(AbstractRequest $request): array
     {
         if (null === $request->searchValue) {

@@ -8,6 +8,11 @@
                 <span class="fs-4">{{ 'payment.list.title' | trans }}</span>
             </div>
         </div>
+        <div class="container">
+            {% for store in userStores %}
+                <span class="badge text-bg-primary mt-1">{{ store.title }}</span>
+            {% endfor %}
+        </div>
     </header>
     <div class="py-3 mb-4 border-bottom container d-flex flex-wrap justify-content-center">
         <div class="container">

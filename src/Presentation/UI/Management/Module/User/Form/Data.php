@@ -15,7 +15,6 @@ final class Data
     public string $email;
 
     #[Length(min: 0, max: 25)]
-    #[NotBlank]
     public string $password;
 
     #[NotBlank]

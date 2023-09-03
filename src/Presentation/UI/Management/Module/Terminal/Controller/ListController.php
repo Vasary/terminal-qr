@@ -19,7 +19,7 @@ final class ListController extends AbstractController
 
     public function __invoke(): BaseResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $view = $this->renderTemplate('@terminals/terminals.html.twig', [
             'stores' => $this->storeFacade->find(),

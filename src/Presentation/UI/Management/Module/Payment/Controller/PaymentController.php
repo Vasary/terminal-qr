@@ -20,7 +20,8 @@ final class PaymentController extends AbstractController
 
     public function __invoke(HttpRequest $requestStack): HTMLResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_MANAGER');
+
         $request = $requestStack->getRequest();
 
         $view = $this->renderTemplate('@payment/payment.html.twig', [

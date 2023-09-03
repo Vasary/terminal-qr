@@ -22,7 +22,7 @@ use ErrorException;
 #[Route(
     path: '/{code}',
     name: 'terminal',
-    requirements: ['code' => '^\w+\:\w+$']
+    requirements: ['code' => '^\w+\:[a-z0-9-]+$']
 )]
 final class TerminalController extends AbstractController
 {

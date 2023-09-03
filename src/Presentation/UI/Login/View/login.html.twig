@@ -10,15 +10,7 @@
                     </div>
                     <div class="card-body">
                         <p class="card-text">{{ 'login.message.as' | trans }} {{ app.user.domainUser.email }}.</p>
-
-                        {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('management_stores') }}" class="btn btn-primary">{{ 'login.dashboard' | trans }}</a>
-                        {% endif %}
-
-                        {% if is_granted('ROLE_MANAGER') %}
-                            <a href="{{ path('payments') }}" class="btn btn-primary">{{ 'login.payments' | trans }}</a>
-                        {% endif %}
-
+                        <a href="{{ path('management_stores') }}" class="btn btn-primary">{{ 'login.dashboard' | trans }}</a>
                         <a href="{{ path('logout') }}" class="btn btn-primary float-end">{{ 'login.logout' | trans }}</a>
                     </div>
                 </div>

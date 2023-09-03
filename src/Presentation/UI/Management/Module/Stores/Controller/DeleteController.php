@@ -23,7 +23,7 @@ final class DeleteController extends AbstractController
 
     public function __invoke(HttpRequest $requestStack): BaseResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $request = $requestStack->getRequest();
         $form = $this->createForm(DeleteType::class);

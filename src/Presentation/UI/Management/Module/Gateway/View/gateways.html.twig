@@ -37,18 +37,6 @@
                     </th>
                     <th>
                         <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('host', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.host' | trans }}</a>
-                    </th>
-                    <th>
-                        <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('portal', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.portal' | trans }}</a>
-                    </th>
-                    <th>
-                        <a class="text-decoration-none"
-                           href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('currency', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.currency' | trans }}</a>
-                    </th>
-                    <th>
-                        <a class="text-decoration-none"
                            href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.createdAt' | trans }}</a>
                     </th>
                     <th>
@@ -65,9 +53,6 @@
                         <td><span class="badge bg-dark ">{{ id }}</span></td>
                         <td>{{ item.key }}</td>
                         <td>{{ item.title }}</td>
-                        <td>{{ item.host }}</td>
-                        <td>{{ item.portal }}</td>
-                        <td>{{ item.currency }}</td>
                         <td>{{ item.createdAt | date('d/m/Y H:i') }}</td>
                         <td>{{ item.updatedAt | date('d/m/Y H:i') }}</td>
                         <td>

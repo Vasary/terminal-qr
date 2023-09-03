@@ -22,7 +22,7 @@ final class StoresController extends AbstractController
 
     public function __invoke(StoresRequest $request): HTMLResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $search = $this->getSearchRequest($request);
         $orderBy = $this->getSortRequest($request);

@@ -12,19 +12,28 @@
     <nav class="py-2 bg-body-tertiary border-bottom">
         <div class="container d-flex flex-wrap">
             <ul class="nav me-auto">
-                <li class="nav-item"><a href="{{ path('management_users') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.users' | trans }}</a>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <li class="nav-item">
+                        <a href="{{ path('management_users') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.users' | trans }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('management_stores') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.stores' | trans }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('management_gateways') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.gateways' | trans }}</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="{{ path('management_terminals') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.terminals' | trans }}</a>
+                    </li>
+                {% endif %}
+
+                <li class="nav-item">
+                    <a href="{{ path('management_payments') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.payments' | trans }}</a>
                 </li>
-                <li class="nav-item"><a href="{{ path('management_stores') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.stores' | trans }}</a>
-                </li>
-                <li class="nav-item"><a href="{{ path('management_gateways') }}"
-                                        class="nav-link link-body-emphasis px-2">{{ 'dashboard.gateways' | trans }}</a></li>
-                <li class="nav-item"><a href="{{ path('management_terminals') }}"
-                                        class="nav-link link-body-emphasis px-2">{{ 'dashboard.terminals' | trans }}</a></li>
-                <li class="nav-item"><a href="{{ path('management_payments') }}"
-                                        class="nav-link link-body-emphasis px-2">{{ 'dashboard.payments' | trans }}</a></li>
             </ul>
             <ul class="nav">
-                <li class="nav-item"><a href="{{ path('logout') }}" class="nav-link link-body-emphasis px-2">{{ 'dashboard.logout' | trans }}</a>
+                <li class="nav-item"><a href="{{ path('logout') }}"
+                                        class="nav-link link-body-emphasis px-2">{{ 'dashboard.logout' | trans }}</a>
                 </li>
             </ul>
         </div>

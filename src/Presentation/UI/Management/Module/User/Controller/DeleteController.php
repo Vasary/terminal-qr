@@ -27,7 +27,7 @@ final class DeleteController extends AbstractController
 
     public function __invoke(HttpRequest $requestStack): BaseResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $request = $requestStack->getRequest();
         $user = $this->facade->findById(Id::fromString($request->get('id')));

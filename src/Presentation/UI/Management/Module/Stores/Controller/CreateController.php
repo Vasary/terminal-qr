@@ -34,7 +34,7 @@ final class CreateController extends AbstractController
 
     public function __invoke(HttpRequest $requestStack): BaseResponse
     {
-        $this->isAccessGranted();
+        $this->isAccessGrantedUnless('ROLE_ADMIN');
 
         $data = new Data();
 
