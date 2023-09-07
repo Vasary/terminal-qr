@@ -12,7 +12,7 @@ use App\Infrastructure\Test\Faker\Factory;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
-use function App\Infrastructure\DateTime\now;
+
 
 final class StoreFixtures extends Fixture implements FixtureGroupInterface
 {

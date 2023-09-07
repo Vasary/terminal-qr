@@ -11,7 +11,7 @@ use App\Domain\ValueObject\Id;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use Generator;
-use function App\Infrastructure\DateTime\now;
+
 
 final class UserRepository implements UserRepositoryInterface
 {

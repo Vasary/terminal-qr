@@ -6,8 +6,10 @@ namespace App\Presentation\UI\Management\Module\Gateway\Form;
 
 use App\Infrastructure\Form\AbstractType;
 use App\Infrastructure\Form\ChoiceType;
+use App\Infrastructure\Form\CredentialType;
 use App\Infrastructure\Form\SubmitType;
 use App\Infrastructure\Form\TextType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 final class CreateType extends AbstractType
 {
@@ -30,33 +32,18 @@ final class CreateType extends AbstractType
                 ],
             ],
             [
-                'type' => 'host',
-                'class' => TextType::class,
+                'type' => 'credentials',
+                'class' => CollectionType::class,
                 'options' => [
+                    'entry_type' => TextType::class,
+//                    'by_reference' => false,
+                    'entry_options' => [
+                        'label' => false,
+                    ],
+                    'allow_add' => true,
+                    'allow_delete' => true,
+                    'delete_empty' => false,
                     'required' => true,
-                    'label' => 'gateways.attribute.host',
-                    'trim' => true,
-                    'attr' => [
-                        'placeholder' => 'gateways.attribute.host',
-                    ],
-                    'row_attr' => [
-                        'class' => 'form-floating mb-3',
-                    ],
-                ],
-            ],
-            [
-                'type' => 'portal',
-                'class' => TextType::class,
-                'options' => [
-                    'required' => true,
-                    'label' => 'gateways.attribute.portal',
-                    'trim' => true,
-                    'attr' => [
-                        'placeholder' => 'gateways.attribute.portal',
-                    ],
-                    'row_attr' => [
-                        'class' => 'form-floating mb-3',
-                    ],
                 ],
             ],
             [

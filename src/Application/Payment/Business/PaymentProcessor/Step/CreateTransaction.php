@@ -9,7 +9,7 @@ use App\Domain\Model\Payment;
 use App\Domain\Model\QR;
 use App\Infrastructure\HTTP\Exception\TransactionRegistrationException;
 use App\Infrastructure\HTTP\Response\RegisterPaymentResponse;
-use function App\Infrastructure\DateTime\now;
+
 
 final class CreateTransaction extends AbstractStep
 {

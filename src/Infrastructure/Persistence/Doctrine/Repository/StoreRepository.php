@@ -17,7 +17,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use Doctrine\Persistence\ObjectRepository;
 use Generator;
-use function App\Infrastructure\DateTime\now;
+
 
 final class StoreRepository implements StoreRepositoryInterface
 {

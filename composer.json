@@ -60,6 +60,7 @@
     "sort-packages": true
   },
   "autoload": {
+    "files": ["src/Infrastructure/DateTime/DateTime.php"],
     "psr-4": {
       "App\\": "src/"
     }

@@ -32,6 +32,8 @@ final class Data
     #[NotBlank]
     public string $title;
 
+    public array $credentials = [];
+
     public function toArray(): array
     {
         return [

@@ -16,7 +16,7 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use function App\Infrastructure\DateTime\now;
+
 
 final class PaymentFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {

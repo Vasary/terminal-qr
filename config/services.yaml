@@ -10,6 +10,7 @@ services:
             - '../src/Domain/*'
             - '../src/Infrastructure/Persistence/Doctrine/Type/*'
             - '../src/Infrastructure/Test/_helpers/*'
+            - '../src/Infrastructure/DateTime/*'
 
     App\Application\HealthCheck\Business\Checker\Checker:
         arguments:
