@@ -11,6 +11,7 @@ services:
             - '../src/Infrastructure/Persistence/Doctrine/Type/*'
             - '../src/Infrastructure/Test/_helpers/*'
             - '../src/Infrastructure/DateTime/*'
+            - '../src/Shared/Helpers/*'
 
     App\Application\HealthCheck\Business\Checker\Checker:
         arguments:

@@ -9,6 +9,7 @@ use App\Infrastructure\Annotation\Route;
 use App\Infrastructure\Controller\AbstractController;
 use App\Infrastructure\HTTP\HTMLResponse as BaseResponse;
 use App\Infrastructure\HTTP\HttpRequest;
+use App\Presentation\UI\Management\Module\Gateway\Controller\Trait\CredentialsExtractorTrait;
 use App\Presentation\UI\Management\Module\Gateway\Form\CreateType;
 use App\Presentation\UI\Management\Module\Gateway\Form\Data;
 use App\Presentation\UI\Management\Response\HTMLResponse;
@@ -17,6 +18,8 @@ use App\Shared\Transfer\GatewayCreate;
 #[Route(path: '/management/gateway', name: 'management_getaway_create', methods: ['GET', 'POST'])]
 final class CreateController extends AbstractController
 {
+    use CredentialsExtractorTrait;
+
     private const PAGE_TITLE = 'gateways.form.title';
 
     public function __construct(private readonly GatewayFacadeInterface $gatewayFacade)
@@ -29,10 +32,10 @@ final class CreateController extends AbstractController
 
         $data = new Data();
         $form = $this->createForm(CreateType::class, $data);
-
         $form->handleRequest($request->getRequest());
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->gatewayFacade->create(GatewayCreate::fromArray($data->toArray()));
+            $this->gatewayFacade->create(GatewayCreate::fromArray($data->toArray()), $this->extractCredentials($data));
 
             return $this->redirectTo('management_gateways');
         }

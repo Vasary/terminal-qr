@@ -6,6 +6,7 @@ namespace App\Infrastructure\Form;
 
 use App\Presentation\UI\Management\Module\Gateway\Form\Credential;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class CredentialType extends \Symfony\Component\Form\AbstractType
@@ -18,18 +19,14 @@ final class CredentialType extends \Symfony\Component\Form\AbstractType
                 TextType::class,
                 [
                     'required' => true,
-                    'attr' => [
-                        'placeholder' => 'Document description, eg: Ticket, receipt, itinerary, map, etc…',
-                    ],
-                ]
+                ],
             )
             ->add(
                 'value',
                 TextType::class,
                 [
-                    'mapped' => false,
                     'required' => true,
-                ]
+                ],
             );
 
         parent::buildForm($builder, $options);
@@ -40,7 +37,7 @@ final class CredentialType extends \Symfony\Component\Form\AbstractType
         $resolver->setDefaults(
             [
                 'data_class' => Credential::class,
-            ]
+            ],
         );
     }
 }

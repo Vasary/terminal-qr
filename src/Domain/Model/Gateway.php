@@ -6,6 +6,7 @@ namespace App\Domain\Model;
 
 use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Credentials\Credential;
+use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Key;
 use App\Domain\ValueObject\Title;
@@ -25,6 +26,7 @@ class Gateway
         private Callback $callback,
         private readonly Key $key,
         private Credential $credential,
+        private readonly Currency $currency,
         DateTimeImmutable $now,
     ) {
         $this->id = Id::create();
@@ -110,5 +112,10 @@ class Gateway
     public function credential(): Credential
     {
         return $this->credential;
+    }
+
+    public function currency(): Currency
+    {
+        return $this->currency;
     }
 }

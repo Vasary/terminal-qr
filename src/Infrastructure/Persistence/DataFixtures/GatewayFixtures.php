@@ -7,6 +7,7 @@ namespace App\Infrastructure\Persistence\DataFixtures;
 use App\Domain\Model\Gateway;
 use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Credentials\Stub;
+use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Key;
 use App\Domain\ValueObject\Title;
 use App\Infrastructure\Test\Faker\Factory;
@@ -33,7 +34,8 @@ final class GatewayFixtures extends Fixture implements FixtureGroupInterface
                     new Title($faker->company()),
                     new Callback($faker->url()),
                     new Key($faker->uuid()),
-                    new Stub('', ''),
+                    new Stub('login-value', 'password-value'),
+                    new Currency('USD'),
                     now(),
                 )
             );

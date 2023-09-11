@@ -8,6 +8,8 @@ use App\Domain\Exception\NotFoundException;
 use App\Domain\Model\Gateway;
 use App\Domain\Repository\GatewayRepositoryInterface;
 use App\Domain\ValueObject\Credentials\Credential;
+use App\Domain\ValueObject\Credentials\Stub;
+use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Serializer\Serializer;
 use App\Shared\Transfer\GatewayCreate;
@@ -31,7 +33,8 @@ final readonly class GatewayWriter
             $transfer->title(),
             $transfer->callback(),
             $key,
-            $credentials
+            $credentials,
+            new Currency('EUR')
         );
     }
 

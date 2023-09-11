@@ -44,14 +44,15 @@ final class GatewayRepository implements GatewayRepositoryInterface
                 ->getOneOrNullResult();
     }
 
-    public function create(string $title, string $callback, string $key, Credential $credential): Gateway
+    public function create(string $title, string $callback, string $key, Credential $credential, Currency $currency): Gateway
     {
         $gateway = new Gateway(
             new Title($title),
             new Callback($callback),
             new Key($key),
             $credential,
-            now()
+            $currency,
+            now(),
         );
 
         $this->entityManager->persist($gateway);

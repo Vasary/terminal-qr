@@ -7,6 +7,7 @@ namespace App\Infrastructure\Form;
 use Symfony\Component\Form\AbstractType as Base;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Translation\TranslatableMessage;
 
 abstract class AbstractType extends Base
 {
@@ -24,5 +25,10 @@ abstract class AbstractType extends Base
         foreach ($this->declareTypes() as $type) {
             $builder->add($type['type'], $type['class'], $type['options']);
         }
+    }
+
+    public function translate(string $message): TranslatableMessage
+    {
+        return new TranslatableMessage($message);
     }
 }

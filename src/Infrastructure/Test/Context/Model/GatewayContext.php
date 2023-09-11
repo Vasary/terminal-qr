@@ -60,6 +60,7 @@ final class GatewayContext implements ModelContextInterface
             ->setProperty($model, 'callback', $this->callback)
             ->setProperty($model, 'key', $this->key)
             ->setProperty($model, 'credential', $this->credential)
+            ->setProperty($model, 'currency', $this->currency)
             ->setProperty($model, 'stores', new ArrayCollection())
             ->setTimestamps($model);
 

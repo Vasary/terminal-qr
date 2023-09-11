@@ -1,0 +1,59 @@
+{% block credentials_widget %}
+
+    {{ form_errors(form) }}
+
+    <div {{ stimulus_controller('form-collection') }}
+            data-form-collection-index-value="{{ form|length > 0 ? form|last.vars.name + 1 : 0 }}"
+            data-form-collection-prototype-value="{{ form_widget(form.vars.prototype)|e('html_attr') }}"
+            class="mb-4"
+    >
+        <div {{ stimulus_target('form-collection', 'collectionContainer') }}>
+            {% if form|length == 0 %}
+                <div class="alert alert-light" role="alert">
+                    <div class="form-text text-center">{{ 'form.empty.hint' | trans }}</div>
+                </div>
+            {% else %}
+                {% for credential in form %}
+                    {{ form_widget(credential) }}
+                {% endfor %}
+            {% endif %}
+        </div>
+        <div class="float-end">
+            <a class="btn btn-success" {{ stimulus_action('form-collection', 'addCollectionElement') }}>{{ 'gateways.button.credential.add' | trans }}</a>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+{% endblock credentials_widget %}
+
+{% block credential_widget %}
+    <div data-type="entry">
+        <div class="input-group mb-2">
+            <span class="input-group-text"><i class="bi bi-key"></i></span>
+            <input
+                    type="text"
+                    class="form-control"
+                    name="{{ field_name(form.key) }}"
+                    value="{{ field_value(form.key) }}"
+                    placeholder="{{ field_label(form.key) }}"
+            />
+            <span class="input-group-text">
+                                    <i class="bi bi-shield-lock"></i>
+                                </span>
+            <input
+                    type="text"
+                    class="form-control"
+                    name="{{ field_name(form.value) }}"
+                    value="{{ field_value(form.value) }}"
+                    placeholder="{{ field_label(form.value) }}"
+            />
+            <span class="input-group-text"
+                  role="button" {{ stimulus_action('form-collection', 'deleteCollectionElement', 'click') }}><i
+                        class="bi bi-x-octagon"></i></span>
+            <div class="invalid-feedback mt-1 d-block">
+                <div class="float-start">{{ form_errors(form.key) }}</div>
+                <div class="float-end">{{ form_errors(form.value) }}</div>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+    </div>
+{% endblock credential_widget %}

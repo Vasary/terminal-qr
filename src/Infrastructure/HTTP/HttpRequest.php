@@ -17,4 +17,9 @@ final class HttpRequest
     {
         return $this->requestStack->getCurrentRequest();
     }
+
+    public function getId(): string
+    {
+        return $this->requestStack->getCurrentRequest()->get('id');
+    }
 }

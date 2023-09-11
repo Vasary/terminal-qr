@@ -6,6 +6,7 @@ namespace App\Domain\Repository;
 
 use App\Domain\Model\Gateway;
 use App\Domain\ValueObject\Credentials\Credential;
+use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Key;
 use Doctrine\ORM\Tools\Pagination\Paginator;
@@ -15,7 +16,7 @@ interface GatewayRepositoryInterface
 {
     public function findById(Id $id): ?Gateway;
 
-    public function create(string $title, string $callback, string $key, Credential $credential): Gateway;
+    public function create(string $title, string $callback, string $key, Credential $credential, Currency $currency): Gateway;
 
     public function find(): Generator;
 

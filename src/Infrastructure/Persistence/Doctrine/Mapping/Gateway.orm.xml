@@ -3,18 +3,19 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                    https://raw.github.com/doctrine/doctrine2/master/doctrine-mapping.xsd">
     <entity name="App\Domain\Model\Gateway" table="gateways">
-        <id name="id" type="id" />
+        <id name="id" type="id"/>
         <field name="title" type="title"/>
         <field name="callback" type="callback"/>
         <field name="key" type="key" unique="true"/>
-        <field name="credential" type="credential" />
+        <field name="credential" type="credential"/>
+        <field name="currency" type="currency"/>
         <field name="createdAt" type="datetimetz_immutable"/>
         <field name="updatedAt" type="datetimetz_immutable"/>
 
         <many-to-many target-entity="App\Domain\Model\Store" field="stores">
             <cascade>
-                <cascade-persist />
-                <cascade-refresh />
+                <cascade-persist/>
+                <cascade-refresh/>
             </cascade>
         </many-to-many>
     </entity>
