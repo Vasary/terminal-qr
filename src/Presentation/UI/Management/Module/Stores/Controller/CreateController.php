@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace App\Presentation\UI\Management\Module\Stores\Controller;
 
-use App\Application\Contract\TranslatorInterface;
 use App\Application\Store\Business\StoreFacadeInterface;
 use App\Domain\ValueObject\Id;
 use App\Infrastructure\Annotation\Route;
@@ -19,15 +18,15 @@ use App\Shared\Transfer\StoreCreate;
 #[Route(path: '/management/store', name: 'management_store_create', methods: ['GET', 'POST'])]
 final class CreateController extends AbstractController
 {
-    public function __construct(private readonly StoreFacadeInterface $storeFacade, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly StoreFacadeInterface $storeFacade)
     {
     }
 
-    public function createStore(Data $data): void
+    private function createStore(Data $data): void
     {
         $store = $this->storeFacade->create(StoreCreate::fromArray($data->toArray()));
 
-        foreach ($data->gateways as $gateway) {
+        foreach ($data->gateways() as $gateway) {
             $this->storeFacade->addGateway($store->id(), Id::fromString($gateway));
         }
     }
@@ -49,7 +48,7 @@ final class CreateController extends AbstractController
 
         $view = $this->renderTemplate('@management/form.html.twig', [
             'form' => $form,
-            'title' => $this->translator->trans('stores.page.title.create'),
+            'title' => 'stores.page.title.create',
         ]);
 
         return new HTMLResponse($view);

@@ -4,15 +4,17 @@ declare(strict_types = 1);
 
 namespace App\Shared\Transfer;
 
-final class GatewayUpdate
+final readonly class GatewayUpdate
 {
     use CreateFromTrait;
 
     public function __construct(
-        private readonly string $id,
-        private readonly string $title,
-        private readonly string $callback,
-    ) {
+        private string $id,
+        private string $title,
+        private string $callback,
+        private string $currency,
+    )
+    {
     }
 
     public function id(): string
@@ -28,5 +30,10 @@ final class GatewayUpdate
     public function callback(): string
     {
         return $this->callback;
+    }
+
+    public function currency(): string
+    {
+        return $this->currency;
     }
 }

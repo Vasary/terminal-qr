@@ -9,7 +9,6 @@ use App\Domain\Model\Payment;
 use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
-use App\Domain\ValueObject\Token;
 use App\Infrastructure\Test\Context\ContextTrait;
 use App\Infrastructure\Test\Context\ModelContextInterface;
 use App\Infrastructure\Test\Context\ModelContextTrait;
@@ -29,7 +28,6 @@ final class PaymentContext implements ModelContextInterface
     public string $idGateway = 'e96f2520-2ce2-488e-879b-d11f3796f7cd';
     public string $idStore = '2cdb88ac-71af-4b3d-b8df-51fbbca74a6b';
     public string $currency = 'RUB';
-    public ?string $token = 'token';
 
     public function __invoke(): Payment
     {
@@ -57,8 +55,8 @@ final class PaymentContext implements ModelContextInterface
             ->setProperty($model, 'gateway', $gateway)
             ->setProperty($model, 'store', $store)
             ->setProperty($model, 'qrCode', null)
-            ->setProperty($model, 'token', $this->token === null ? null : new Token($this->token))
             ->setProperty($model, 'logs', [])
+            ->setProperty($model, 'parameters', [])
             ->setTimestamps($model);
 
         return $model;

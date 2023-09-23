@@ -34,7 +34,7 @@ final class EditController extends AbstractController
             $store->removeGateway($gateway);
         }
 
-        foreach ($data->gateways as $gateway) {
+        foreach ($data->gateways() as $gateway) {
             $this->storeFacade->addGateway($store->id(), Id::fromString($gateway));
         }
     }
@@ -47,11 +47,11 @@ final class EditController extends AbstractController
         $store = $this->storeFacade->findById(Id::fromString($request->get('id')));
 
         $data = new Data();
-        $data->title = (string) $store->title();
-        $data->description = (string) $store->description();
+        $data->withTitle((string) $store->title());
+        $data->withDescription((string) $store->description());
 
         foreach ($store->gateway() as $gateway) {
-            $data->gateways[] = (string) $gateway->id();
+            $data->addGateway((string) $gateway->id());
         }
 
         $form = $this->createForm(UpdateType::class, $data);

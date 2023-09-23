@@ -42,6 +42,7 @@ describe('Gateway Facade', function () {
         $transfer = GatewayCreate::fromArray([
             'title' => faker()->title(),
             'callback' => faker()->url(),
+            'currency' => faker()->currencyCode(),
         ]);
 
         $credentials = [
@@ -95,6 +96,7 @@ describe('Gateway Facade', function () {
             'id' => (string) $gateway->id(),
             'title' => faker()->title(),
             'callback' => faker()->url(),
+            'currency' => faker()->currencyCode(),
         ]);
 
         $credentials = [
@@ -135,6 +137,7 @@ describe('Gateway Facade', function () {
                 'id' => faker()->uuid(),
                 'title' => faker()->title(),
                 'callback' => faker()->url(),
+                'currency' => faker()->currencyCode(),
             ]),
             []
         );

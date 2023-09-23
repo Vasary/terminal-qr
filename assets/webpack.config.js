@@ -10,7 +10,6 @@ Encore
     .addEntry('app', './app.js')
     .addEntry('terminal', './scripts/terminal/terminal.js')
     .addEntry('paymentStatus', './scripts/terminal/status.ts')
-    .addEntry('payment', './scripts/payment/payment.page.ts')
     .enableStimulusBridge('./controllers.json')
     .splitEntryChunks()
     .enableSingleRuntimeChunk()

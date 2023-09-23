@@ -47,29 +47,29 @@ final class EditController extends AbstractController
         }
 
         $data = new Data();
-        $data->email = (string) $user->email();
-        $data->password = '';
-        $data->roles = current($roles);
+        $data->withEmail((string) $user->email());
+        $data->withPassword('');
+        $data->withRoles(current($roles));
 
         foreach ($user->stores() as $store) {
             /** @var Store $store */
-            $data->stores[] = (string) $store->id();
+            $data->addStore((string) $store->id());
         }
 
         $form = $this->createForm(UpdateType::class, $data);
-
         $form->handleRequest($request);
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->updateUser($data, $user);
 
             return $this->redirectTo('management_users');
         }
 
-        $view = $this->renderTemplate('@management/form.html.twig', [
-            'form' => $form,
-            'title' => sprintf('%s: %s', $this->translator->trans(self::PAGE_TITLE), $user->email()),
-        ]);
-
-        return new HTMLResponse($view);
+        return new HTMLResponse(
+            $this->renderTemplate('@management/form.html.twig', [
+                'form' => $form,
+                'title' => sprintf('%s: %s', $this->translator->trans(self::PAGE_TITLE), $user->email()),
+            ])
+        );
     }
 }

@@ -14,6 +14,7 @@ use App\Infrastructure\Assert\Type;
 use App\Infrastructure\Assert\Url;
 use App\Infrastructure\Assert\Valid;
 use App\Infrastructure\Form\Data\PropertyAccessorTrait;
+use LogicException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
@@ -31,6 +32,9 @@ final class Data
 
     #[NotBlank]
     private string $type;
+
+    #[NotBlank]
+    private string $currency;
 
     /**
      * @var Credential[] $credentials
@@ -60,16 +64,30 @@ final class Data
             ],
         ];
 
-        $constraints = $constraintsCollection[$this->type];
+        $extractViolationsIndex = function (?string $name) use ($credentials) {
+            $name = substr($name, 1, -1);
+            $i = 0;
+            foreach (array_keys($credentials) as $key) {
+                if ($name === $key) {
+                    return $i;
+                }
 
+                $i++;
+            }
+
+            throw new LogicException('Invalid property path');
+        };
+
+        $constraints = $constraintsCollection[$this->type];
         $violations = $context->getValidator()->validate($credentials, $constraints);
         if ($violations->count() > 0) {
             foreach ($violations as $violation) {
+                $index = $extractViolationsIndex($violation->getPropertyPath());
+
                 $context
-                    ->buildViolation('{{ field }} ' . $violation->getMessage())
-                    ->setParameter('{{ field }}', $violation->getPropertyPath())
+                    ->buildViolation($violation->getMessage())
                     ->setTranslationDomain('messages')
-                    ->atPath('credentials')
+                    ->atPath(sprintf('credentials[%s].key', $index))
                     ->addViolation();
             }
         }
@@ -81,11 +99,23 @@ final class Data
             'title' => $this->title,
             'type' => $this->type,
             'callback' => $this->callback,
+            'currency' => $this->currency,
             'credentials' => array_map(
                 fn(Credential $credential) => $credential->toArray(),
                 $this->credentials,
             ),
         ];
+    }
+
+    public function currency(): string
+    {
+        return $this->currency;
+    }
+
+    public function withCurrency(string $currency): self
+    {
+        $this->currency = $currency;
+        return $this;
     }
 
     public function callback(): string

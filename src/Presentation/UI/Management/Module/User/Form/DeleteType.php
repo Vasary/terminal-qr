@@ -46,8 +46,6 @@ final class DeleteType extends AbstractType
     {
         return [
             'csrf_protection' => true,
-            'csrf_field_name' => 'user_delete',
-            'csrf_token_id' => 'user_delete',
             'attr' => [
                 'novalidate' => 'novalidate',
             ],

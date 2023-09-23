@@ -34,6 +34,21 @@ abstract class MutationType extends AbstractType
                 ],
             ],
             [
+                'type' => 'currency',
+                'class' => ChoiceType::class,
+                'options' => [
+                    'required' => true,
+                    'label' => 'gateways.attribute.currency.value',
+                    'trim' => true,
+                    'help' => 'gateways.attribute.currency.help',
+                    'multiple' => false,
+                    'expanded' => false,
+                    'choices' => [
+                        'currency.rub.name' => 'RUB',
+                    ],
+                ],
+            ],
+            [
                 'type' => 'type',
                 'class' => ChoiceType::class,
                 'options' => [

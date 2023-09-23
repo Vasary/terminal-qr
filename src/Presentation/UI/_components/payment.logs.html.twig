@@ -1,18 +1,15 @@
-<div>
-    <h3 class="mb-5">{{ 'payment.title.logs' | trans }}</h3>
-    <table class="table table-striped">
-        {% if payment.logs is empty %}
-            <tr>
-                <td>{{ 'payment.logs.empty' | trans }}</td>
-            </tr>
-        {% else %}
-            {% for log in payment.logs | sort((a, b) => b.time <=> a.time) %}
-                <tr>
-                    <td>{{ log.time | date('d.m.Y') }}</td>
-                    <td>{{ log.time | date('H:i') }}</td>
-                    <td>{{ log.value }}</td>
-                </tr>
+<div class="mb-2 bg-light">
+    <h5 class="bg-secondary w-100 text-white p-2">{{ 'payment.logs.title' | trans }}</h5>
+    <div class="p-2">
+        {% if payment.logs | length > 0 %}
+            {% for log in payment.logs %}
+                <div class="mb-2">
+                    <div class="text-muted">[ {{ log.time | date('Y-m-d H:i:s') }} ]: {{ log.value }} </div>
+                </div>
+                <hr />
             {% endfor %}
+        {% else %}
+            <div class="">{{ 'payment.logs.empty' | trans }}</div>
         {% endif %}
-    </table>
+    </div>
 </div>

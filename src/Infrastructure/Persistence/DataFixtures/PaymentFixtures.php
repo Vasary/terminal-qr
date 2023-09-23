@@ -17,7 +17,6 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 
-
 final class PaymentFixtures extends Fixture implements DependentFixtureInterface, FixtureGroupInterface
 {
     public function __construct(private readonly int $limit = 100)
@@ -63,10 +62,13 @@ final class PaymentFixtures extends Fixture implements DependentFixtureInterface
                 }
 
                 if (0 === mt_rand(1, 2) % 2) {
-                    $payment->withToken($faker->lexify());
-                    $payment->withQR(
-                        new QR('/build/images/qr.svg', '/build/images/qr.svg', now())
-                    );
+                    $payment->withQR(new QR('/build/images/qr.svg', '/build/images/qr.svg', now()));
+                    $payment->addParameter('token', $faker->lexify('??????????'));
+
+                    for ($j = 0; $j < $faker->randomDigit(); $j++) {
+                        $payment->addParameter(sprintf('Parameter %s', $j + 1), $faker->word());
+                    }
+
                     $payment->withStatus(PaymentStatusEnum::successfully);
                 }
 

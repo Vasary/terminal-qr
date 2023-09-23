@@ -15,11 +15,7 @@
             {% embed '@component/payment.details.html.twig' with {'payment': payment} %}{% endembed %}
         </div>
         <div class="mt-5">
-            {% embed '@component/payment.flow.html.twig' with {'payment': payment} %}{% endembed %}
-        </div>
-        <div class="mt-5">
             {% embed '@component/payment.logs.html.twig' with {'payment': payment} %}{% endembed %}
         </div>
     </div>
 {% endblock %}
-

@@ -20,7 +20,7 @@ final class CreateController extends AbstractController
 {
     private const PAGE_TITLE = 'users.page.title.create';
 
-    public function __construct(private readonly UserFacadeInterface $userFacade, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly UserFacadeInterface $userFacade)
     {
     }
 

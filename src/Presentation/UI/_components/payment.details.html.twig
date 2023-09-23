@@ -1,69 +1,72 @@
-<table class="table table-striped">
-    <tr>
-        <td>{{ 'payment.attribute.amount' | trans }}</td>
-        <td>{{ payment.amount | number_format(2, '.', ',') }} {{ payment.currency }}</td>
-        <td rowspan="8" class="align-middle">
-            <div class="card text-center">
-                <div class="card-body">
-                    {% if payment.qr is not null %}
-                        <p class="card-text">
-                            <img style="width: 200px; height: 200px;" src="{{ payment.qr.image }}">
-                        </p>
-                    {% else %}
-                        <p class="card-text">
-                            <img style="width: 200px; height: 200px;"
-                                 src="{{ asset('build/images/qr-not-found.svg') }}">
-                        </p>
-                    {% endif %}
-                </div>
-            </div>
-        </td>
-    </tr>
-    <tr>
-        <td>{{ 'payment.attribute.commission' | trans }}</td>
-        <td>{{ payment.commission | money }} {{ payment.currency }}</td>
-    </tr>
-    <tr>
-        <td>{{ 'payment.attribute.status' | trans }}</td>
-        <td>{{ paymentStatus(payment.status) | raw }}</td>
-    </tr>
-    <tr>
-        <td>{{ 'payment.attribute.qr.title' | trans }}</td>
-        <td>{{ qr(payment.qr) | raw }}</td>
-    </tr>
-    <tr>
-        <td>{{ 'payment.attribute.callback' | trans }}</td>
-        <td>
-            <a class="link-opacity-100 text-decoration-none"
-               href="{{ payment.callback }}">{{ payment.callback }}</a>
-        </td>
-    </tr>
-    <tr>
-        <td>{{ 'payment.attribute.gateway' | trans }}</td>
-        <td>
-            <a class="link-opacity-100 text-decoration-none"
-               href="{{ path('management_gateways', {'searchValue' : payment.gateway.title, 'searchFields[]' : 'title'}) }}">
-                {{ payment.gateway.title }}
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>{{ 'payment.attribute.store' | trans }}</td>
-        <td>
-            <a class="link-opacity-100 text-decoration-none"
-               href="{{ path('management_stores', {'searchValue' : payment.store.title, 'searchFields[]' : 'title'}) }}">
-                {{ payment.store.title }}
-            </a>
-        </td>
-    </tr>
-    <tr>
-        <td>{{ 'payment.attribute.token.name' | trans }}</td>
-        <td>
-            {% if payment.token is not null %}
-                <span class="badge text-bg-warning">{{ payment.token }}</span>
-            {% else %}
-                <span class="badge text-bg-dark">{{ 'payment.attribute.token.absents' | trans }}</span>
-            {% endif %}
-        </td>
-    </tr>
-</table>
+<div class="container p-0">
+    <div>
+        <table class="table table-striped">
+            <tr>
+                <td>{{ 'payment.attribute.amount' | trans }}</td>
+                <td>{{ payment.amount | number_format(2, '.', ',') }} {{ payment.currency }}</td>
+                <td rowspan="8" class="align-middle">
+                    <div class="card text-center">
+                        <div class="card-body">
+                            {% if payment.qr is not null %}
+                                <p class="card-text">
+                                    <img style="width: 200px; height: 200px;" src="{{ payment.qr.image }}" alt="">
+                                </p>
+                            {% else %}
+                                <p class="card-text">
+                                    <img style="width: 200px; height: 200px;"
+                                         src="{{ asset('build/images/qr-not-found.svg') }}" alt=""
+                                    >
+                                </p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'payment.attribute.commission' | trans }}</td>
+                <td>{{ payment.commission | money }} {{ payment.currency }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'payment.attribute.status' | trans }}</td>
+                <td>{{ paymentStatus(payment.status) | raw }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'payment.attribute.qr.title' | trans }}</td>
+                <td>{{ qr(payment.qr) | raw }}</td>
+            </tr>
+            <tr>
+                <td>{{ 'payment.attribute.callback' | trans }}</td>
+                <td>
+                    <a class="link-opacity-100 text-decoration-none"
+                       href="{{ payment.callback }}">{{ payment.callback }}</a>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'payment.attribute.gateway' | trans }}</td>
+                <td>
+                    <a class="link-opacity-100 text-decoration-none"
+                       href="{{ path('management_gateways', {'searchValue' : payment.gateway.title, 'searchFields[]' : 'title'}) }}">
+                        {{ payment.gateway.title }}
+                    </a>
+                </td>
+            </tr>
+            <tr>
+                <td>{{ 'payment.attribute.store' | trans }}</td>
+                <td>
+                    <a class="link-opacity-100 text-decoration-none"
+                       href="{{ path('management_stores', {'searchValue' : payment.store.title, 'searchFields[]' : 'title'}) }}">
+                        {{ payment.store.title }}
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <div>
+        {% for parameter in payment.parameters %}
+            <span class="badge text-bg-{{ random(['primary', 'secondary', 'success', 'warning', 'info']) }}">
+                {{ parameter.key | capitalize }}: {{ parameter.value }}
+            </span>
+        {% endfor %}
+    </div>
+
+</div>

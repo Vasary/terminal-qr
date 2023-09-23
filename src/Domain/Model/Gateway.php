@@ -26,9 +26,10 @@ class Gateway
         private Callback $callback,
         private readonly Key $key,
         private Credential $credential,
-        private readonly Currency $currency,
+        private Currency $currency,
         DateTimeImmutable $now,
-    ) {
+    )
+    {
         $this->id = Id::create();
         $this->createdAt = $now;
         $this->updatedAt = $now;
@@ -117,5 +118,13 @@ class Gateway
     public function currency(): Currency
     {
         return $this->currency;
+    }
+
+    public function withCurrency(Currency $currency): self
+    {
+        $this->currency = $currency;
+        $this->updatedAt = new DateTimeImmutable();
+
+        return $this;
     }
 }

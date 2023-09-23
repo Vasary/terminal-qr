@@ -78,8 +78,6 @@ payment:
     timeout: не успешный, платеж просрочился
     unknown: неизвестный
   actions: Доступные действия
-
-login:
   message:
     as: Вы вошли как
     title: Вы успешно авторизиованы
@@ -93,6 +91,18 @@ login:
     email: Email
     password: Пароль
     remember: Запомнить меня
+    id:
+      value: Номер платежа
+    amount:
+      value: Сумма
+    commission:
+      value: Комиссия
+    store:
+      value: Точка оплаты
+    gateway:
+      value: Шлюз операции
+    qr_exists:
+      value: Статус QR кода
 dashboard:
   payments: Платежи
   terminals: Терминалы оплаты
@@ -191,3 +201,6 @@ form:
   empty:
     hint: Что бы добавить новое поле, нажмите кнопку "Добавить"
 Credentials: Параметры конфигурации
+currency:
+  rub:
+    name: Российский рубль (RUB)

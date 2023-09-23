@@ -10,7 +10,7 @@
         <field name="callback" type="callback"/>
         <field name="currency" type="currency"/>
         <field name="logs" type="log"/>
-        <field name="token" type="token" nullable="true"/>
+        <field name="parameters" type="parameter"/>
         <field name="createdAt" type="datetimetz_immutable"/>
         <field name="updatedAt" type="datetimetz_immutable"/>
 

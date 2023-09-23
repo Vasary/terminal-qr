@@ -10,6 +10,7 @@ use App\Domain\Repository\UserRepositoryInterface;
 use App\Domain\ValueObject\Email;
 use App\Infrastructure\Security\AbstractUserProvider;
 use RuntimeException;
+use Throwable;
 
 final class UserProvider extends AbstractUserProvider
 {
@@ -22,9 +23,11 @@ final class UserProvider extends AbstractUserProvider
      */
     public function loadUserByIdentifier(string $identifier): User
     {
-        if ($user = $this->repository->findByEmail(new Email($identifier))) {
-            return new User($user);
-        }
+        try {
+            if ($user = $this->repository->findByEmail(new Email($identifier))) {
+                return new User($user);
+            }
+        } catch (Throwable) {}
 
         throw new UserNotFoundException();
     }

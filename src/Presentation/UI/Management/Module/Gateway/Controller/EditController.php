@@ -77,6 +77,10 @@ final class EditController extends AbstractController
         $form = $this->createForm(UpdateType::class, $data);
         $form->handleRequest($request->getRequest());
 
+        if ($form->isSubmitted()) {
+//            dd($form->getErrors(true), $form->getViewData());
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $this->gatewayFacade->update($this->prepareTransfer($data, $gateway), $this->extractCredentials($data));
 

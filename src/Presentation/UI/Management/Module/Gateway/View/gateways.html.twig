@@ -35,6 +35,7 @@
                         <a class="text-decoration-none"
                            href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('title', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.title.value' | trans }}</a>
                     </th>
+                    <th>{{ 'gateways.attribute.currency.value' | trans }}</th>
                     <th>
                         <a class="text-decoration-none"
                            href="{{ path('management_gateways', {'page': page,'orderBy': orderBy('createdAt', 'desc', current.order.field, current.order.direction), 'searchValue': searchValue, 'searchFields': searchFields}) }}">{{ 'gateways.attribute.createdAt' | trans }}</a>
@@ -53,6 +54,7 @@
                         <td><span class="badge bg-dark ">{{ id }}</span></td>
                         <td>{{ item.key }}</td>
                         <td>{{ item.title }}</td>
+                        <td>{{ item.currency }}</td>
                         <td>{{ item.createdAt | date('d/m/Y H:i') }}</td>
                         <td>{{ item.updatedAt | date('d/m/Y H:i') }}</td>
                         <td>

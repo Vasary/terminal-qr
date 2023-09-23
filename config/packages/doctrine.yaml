@@ -18,7 +18,7 @@ doctrine:
             key: App\Infrastructure\Persistence\Doctrine\Type\KeyType
             email: App\Infrastructure\Persistence\Doctrine\Type\EmailType
             log: App\Infrastructure\Persistence\Doctrine\Type\LogType
-            token: App\Infrastructure\Persistence\Doctrine\Type\TokenType
+            parameter: App\Infrastructure\Persistence\Doctrine\Type\ParameterType
             credential: App\Infrastructure\Persistence\Doctrine\Type\CredentialType
     orm:
         auto_generate_proxy_classes: true

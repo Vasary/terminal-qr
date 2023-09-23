@@ -4,11 +4,11 @@ declare(strict_types = 1);
 
 namespace App\Shared\Transfer;
 
-final class GatewayCreate
+final readonly class GatewayCreate
 {
     use CreateFromTrait;
 
-    public function __construct(private readonly string $title, private readonly string $callback,)
+    public function __construct(private string $title, private string $callback, private string $currency)
     {
     }
 
@@ -20,5 +20,10 @@ final class GatewayCreate
     public function callback(): string
     {
         return $this->callback;
+    }
+
+    public function currency(): string
+    {
+        return $this->currency;
     }
 }

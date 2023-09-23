@@ -9,7 +9,7 @@ use App\Domain\ValueObject\Callback;
 use App\Domain\ValueObject\Currency;
 use App\Domain\ValueObject\Id;
 use App\Domain\ValueObject\Log;
-use App\Domain\ValueObject\Token;
+use App\Domain\ValueObject\PaymentParameter;
 use DateTimeImmutable;
 
 class Payment
@@ -21,7 +21,9 @@ class Payment
 
     /** @var Log[] */
     private array $logs;
-    private ?Token $token;
+
+    /** @var PaymentParameter[] */
+    private array $parameters;
 
     public function __construct(
         private readonly int $amount,
@@ -37,9 +39,9 @@ class Payment
         $this->id = Id::create();
         $this->qrCode = null;
         $this->logs = [];
+        $this->parameters = [];
         $this->createdAt = $now;
         $this->updatedAt = $now;
-        $this->token = null;
     }
 
     public function id(): Id
@@ -110,6 +112,19 @@ class Payment
         $this->updatedAt = new DateTimeImmutable();
     }
 
+    public function addParameter(string $parameter, ?string $value): self
+    {
+        $this->parameters[] = new PaymentParameter($parameter, $value);
+        $this->updatedAt = new DateTimeImmutable();
+
+        return $this;
+    }
+
+    public function parameters(): array
+    {
+        return $this->parameters;
+    }
+
     public function logs(): array
     {
         return $this->logs;
@@ -118,16 +133,5 @@ class Payment
     public function currency(): Currency
     {
         return $this->currency;
-    }
-
-    public function token(): ?Token
-    {
-        return $this->token;
-    }
-
-    public function withToken(string $token): void
-    {
-        $this->token = new Token($token);
-        $this->updatedAt = new DateTimeImmutable();
     }
 }

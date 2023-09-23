@@ -15,6 +15,7 @@ use App\Presentation\UI\Management\Module\Stores\Form\DeleteType;
 use App\Presentation\UI\Management\Module\User\Form\Delete;
 use App\Presentation\UI\Management\Response\HTMLResponse;
 use App\Shared\Transfer\UserDelete;
+use Symfony\Component\Form\SubmitButton;
 
 #[Route(path: '/management/users/delete/{id}', name: 'management_user_delete', methods: ['GET', 'POST'])]
 final class DeleteController extends AbstractController
@@ -41,7 +42,9 @@ final class DeleteController extends AbstractController
 
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get(DeleteType::BUTTON_CANCEL)->isClicked()) {
+            /** @var SubmitButton $submitButton */
+            $submitButton = $form->get(DeleteType::BUTTON_CANCEL);
+            if ($submitButton->isClicked()) {
                 return $this->redirectTo('management_users');
             }
 

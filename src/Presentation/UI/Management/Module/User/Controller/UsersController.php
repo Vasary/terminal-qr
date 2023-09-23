@@ -20,10 +20,10 @@ final class UsersController extends AbstractController
     {
         $this->isAccessGrantedUnless('ROLE_ADMIN');
 
-        $view = $this->renderTemplate('@user/users.html.twig', [
-            'users' => $this->facade->find(),
-        ]);
-
-        return new HTMLResponse($view);
+        return new HTMLResponse(
+            $this->renderTemplate('@user/users.html.twig', [
+                'users' => $this->facade->find(),
+            ])
+        );
     }
 }

@@ -27,3 +27,13 @@ trait PropertyAccessorTrait
         $this->$method($value);
     }
 }
+
+//     public function __call($name, $arguments): self
+//    {
+//        if (str_starts_with($name, 'with')) {
+//            $property = lcfirst(substr($name, 4));
+//            $this->$property = $arguments[0];
+//        }
+//
+//        return $this;
+//    }

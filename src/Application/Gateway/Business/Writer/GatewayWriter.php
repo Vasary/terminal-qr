@@ -34,7 +34,7 @@ final readonly class GatewayWriter
             $transfer->callback(),
             $key,
             $credentials,
-            new Currency('EUR')
+            new Currency($transfer->currency())
         );
     }
 
@@ -53,6 +53,7 @@ final readonly class GatewayWriter
             ->withTitle($transfer->title())
             ->withCallback($transfer->callback())
             ->withCredentials($credentials)
+            ->withCurrency(new Currency($transfer->currency()))
         ;
 
         $this->repository->update($gateway);

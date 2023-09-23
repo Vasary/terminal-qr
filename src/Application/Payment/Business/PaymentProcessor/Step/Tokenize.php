@@ -41,7 +41,7 @@ final class Tokenize extends AbstractStep
         $this->logger->info($logMessage, $this->getContext($payment));
         $payment->addLog($logMessage);
 
-        $payment->withToken($token);
+//        $payment->withToken($token);
 
         $this->statusHandler->handle($payment, WorkflowTransitionEnum::tokenized);
     }
