@@ -10,13 +10,9 @@ use ValueError;
 enum PaymentStatusEnum: int
 {
     case new = 0;
-    case token = 1;
-    case registered = 2;
-    case awaiting = 3; // INTERIM_SUCCESS
-    case successfully = 4; // SUCCESS
-    case failure = 5; // FAILED
-    case timeout = 6; // TRANSACTION_EXPIRED
-    case unknown = 1000; // UNKNOWN
+    case awaiting = 1;
+    case successfully = 2;
+    case failure = 3;
 
     public static function fromName(string $name): self
     {
@@ -30,25 +26,5 @@ enum PaymentStatusEnum: int
     public function status(): string
     {
         return $this->name;
-    }
-
-    public function isNew(): bool
-    {
-        return self::new->value == $this->value;
-    }
-
-    public function isTokenized(): bool
-    {
-        return self::token->value == $this->value;
-    }
-
-    public function isRegistered(): bool
-    {
-        return self::registered->value == $this->value;
-    }
-
-    public function isAwaiting(): bool
-    {
-        return self::awaiting->value == $this->value;
     }
 }

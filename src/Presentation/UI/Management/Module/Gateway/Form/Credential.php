@@ -8,6 +8,12 @@ use App\Infrastructure\Assert\Length;
 use App\Infrastructure\Assert\NotBlank;
 use App\Infrastructure\Form\Data\PropertyAccessorTrait;
 
+/**
+ * @method self withKey(string $key)
+ * @method self withValue(string $value)
+ * @method null|string key()
+ * @method null|string value()
+ */
 final class Credential
 {
     use PropertyAccessorTrait;
@@ -25,27 +31,5 @@ final class Credential
             'key' => $this->key,
             'value' => $this->value,
         ];
-    }
-
-    public function key(): ?string
-    {
-        return $this->key;
-    }
-
-    public function value(): ?string
-    {
-        return $this->value;
-    }
-
-    public function withKey(string $key): self
-    {
-        $this->key = $key;
-        return $this;
-    }
-
-    public function withValue(string $value): self
-    {
-        $this->value = $value;
-        return $this;
     }
 }

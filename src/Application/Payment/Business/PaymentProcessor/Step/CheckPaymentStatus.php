@@ -10,9 +10,9 @@ final class CheckPaymentStatus extends AbstractStep
 {
     public function handle(Payment $payment): void
     {
-        if ($payment->status()->isAwaiting()) {
-            $this->checkPaymentStatus($payment);
-        }
+//        if ($payment->status()->isAwaiting()) {
+//            $this->checkPaymentStatus($payment);
+//        }
 
         parent::handle($payment);
     }

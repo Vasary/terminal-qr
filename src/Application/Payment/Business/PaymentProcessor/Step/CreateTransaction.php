@@ -18,9 +18,9 @@ final class CreateTransaction extends AbstractStep
 
     public function handle(Payment $payment): void
     {
-        if ($payment->status()->isTokenized()) {
-            $this->createTransaction($payment);
-        }
+//        if ($payment->status()->isTokenized()) {
+//            $this->createTransaction($payment);
+//        }
 
         parent::handle($payment);
     }

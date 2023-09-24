@@ -8,32 +8,41 @@ use LogicException;
 
 trait PropertyAccessorTrait
 {
+    private function createErrorMessage(string $property): string
+    {
+        return sprintf('Property %s is not existing in the %s', lcfirst($property), static::class);
+    }
+
     public function __get(string $property): mixed {
-        if (!method_exists($this, $property)) {
-            throw new LogicException($property . ' is not existing in ' . static::class);
+        if (!property_exists($this, $property)) {
+            throw new LogicException($this->createErrorMessage($property));
         }
 
-        return $this->$property();
+        return $this->$property;
     }
 
     public function __set(string $property, mixed $value): void {
 
-        $method = 'with' . ucfirst($property);
-
-        if (!method_exists($this, $method)) {
-            throw new LogicException($method . ' is not existing in ' . static::class);
+        if (!property_exists($this, $property)) {
+            throw new LogicException($this->createErrorMessage($property));
         }
 
-        $this->$method($value);
+        $this->$property = $value;
+    }
+
+    public function __call(string $name, mixed $arguments): mixed
+    {
+        if (method_exists($this, $name)) {
+            return $this->$name();
+        }
+
+
+        if (str_starts_with($name, 'with')) {
+            $this->__set(lcfirst(substr($name, 4)), $arguments[0]);
+
+            return $this;
+        }
+
+        return $this->__get(lcfirst($name));
     }
 }
-
-//     public function __call($name, $arguments): self
-//    {
-//        if (str_starts_with($name, 'with')) {
-//            $property = lcfirst(substr($name, 4));
-//            $this->$property = $arguments[0];
-//        }
-//
-//        return $this;
-//    }

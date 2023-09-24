@@ -12,9 +12,9 @@ final class Tokenize extends AbstractStep
 {
     public function handle(Payment $payment): void
     {
-        if ($payment->status()->isNew()) {
-            $this->tokenize($payment);
-        }
+//        if ($payment->status()->isNew()) {
+//            $this->tokenize($payment);
+//        }
 
         parent::handle($payment);
     }

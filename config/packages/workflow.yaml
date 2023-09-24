@@ -8,48 +8,16 @@ framework:
         - App\Domain\Model\Payment
       places:
         new:
-          metadata:
-            bg_color: '#0d6efd'
-        token:
-          metadata:
-            bg_color: '#0dcaf0'
         awaiting:
-          metadata:
-            bg_color: '#ffc107'
         successfully:
-          metadata:
-            bg_color: '#198754'
         failure:
-          metadata:
-            bg_color: '#dc3545'
-        timeout:
-          metadata:
-            bg_color: '#dc3545'
-        unknown:
-          metadata:
-            bg_color: '#dc3545'
       transitions:
-        tokenized:
+        register:
           from: new
-          to: token
-        registered:
-          from: token
           to: awaiting
         complete:
           from: awaiting
           to: successfully
         failure:
-          from: [new, token, awaiting]
-          to: failure
-        timeout:
-          from: awaiting
-          to: timeout
-        unexpected:
-          from: awaiting
-          to: unknown
-        expire:
-          from: timeout
-          to: failure
-        alert:
-          from: unknown
+          from: [new, awaiting]
           to: failure

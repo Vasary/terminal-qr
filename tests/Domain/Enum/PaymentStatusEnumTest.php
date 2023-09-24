@@ -11,32 +11,16 @@ it('Enum should have cases', function () {
             'value' => 0,
         ],
         [
-            'name' => 'token',
+            'name' => 'awaiting',
             'value' => 1,
         ],
         [
-            'name' => 'registered',
+            'name' => 'successfully',
             'value' => 2,
         ],
         [
-            'name' => 'awaiting',
-            'value' => 3,
-        ],
-        [
-            'name' => 'successfully',
-            'value' => 4,
-        ],
-        [
             'name' => 'failure',
-            'value' => 5,
-        ],
-        [
-            'name' => 'timeout',
-            'value' => 6,
-        ],
-        [
-            'name' => 'unknown',
-            'value' => 1000,
+            'value' => 3,
         ],
     ];
 
@@ -52,48 +36,3 @@ it('Enum should have cases', function () {
 
     expect($cases)->toEqual($expectedCases);
 });
-
-it('Enum has conditional methods', function (PaymentStatusEnum $enum, array $methods) {
-    foreach ($methods as $method => $result) {
-        expect($result)->toEqual($enum->$method())->and($enum->status())->toEqual($enum->name);
-    }
-})->with(
-    [
-        'new' => [
-            'case' => PaymentStatusEnum::new,
-            'methods' => [
-                'isNew' => true,
-                'isTokenized' => false,
-                'isRegistered' => false,
-                'isAwaiting' => false,
-            ],
-        ],
-        'token' => [
-            'case' => PaymentStatusEnum::token,
-            'methods' => [
-                'isNew' => false,
-                'isTokenized' => true,
-                'isRegistered' => false,
-                'isAwaiting' => false,
-            ],
-        ],
-        'registered' => [
-            'case' => PaymentStatusEnum::registered,
-            'methods' => [
-                'isNew' => false,
-                'isTokenized' => false,
-                'isRegistered' => true,
-                'isAwaiting' => false,
-            ],
-        ],
-        'awaiting' => [
-            'case' => PaymentStatusEnum::awaiting,
-            'methods' => [
-                'isNew' => false,
-                'isTokenized' => false,
-                'isRegistered' => false,
-                'isAwaiting' => true,
-            ],
-        ],
-    ]
-);

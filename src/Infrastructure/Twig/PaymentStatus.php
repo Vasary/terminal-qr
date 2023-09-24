@@ -5,7 +5,6 @@ declare(strict_types = 1);
 namespace App\Infrastructure\Twig;
 
 use App\Domain\Enum\PaymentStatusEnum;
-use App\Domain\Model\Payment;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -14,13 +13,9 @@ final class PaymentStatus extends AbstractExtension
 {
     private const statusMap = [
         PaymentStatusEnum::new->value => 'primary',
-        PaymentStatusEnum::token->value => 'info',
-        PaymentStatusEnum::registered->value => 'secondary',
         PaymentStatusEnum::awaiting->value => 'warning',
         PaymentStatusEnum::successfully->value => 'success',
         PaymentStatusEnum::failure->value => 'danger',
-        PaymentStatusEnum::timeout->value => 'danger',
-        PaymentStatusEnum::unknown->value => 'danger',
     ];
 
     public function __construct(private readonly TranslatorInterface $translator)

@@ -12,7 +12,6 @@ use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
-
 final class UserFixtures extends Fixture implements FixtureGroupInterface
 {
     public function __construct(private readonly UserPasswordHasherInterface $hasher)

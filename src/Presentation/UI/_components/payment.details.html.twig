@@ -1,5 +1,5 @@
 <div class="container p-0">
-    <div>
+    <div class="mb-4">
         <table class="table table-striped">
             <tr>
                 <td>{{ 'payment.attribute.amount' | trans }}</td>
@@ -61,12 +61,17 @@
             </tr>
         </table>
     </div>
-    <div>
-        {% for parameter in payment.parameters %}
-            <span class="badge text-bg-{{ random(['primary', 'secondary', 'success', 'warning', 'info']) }}">
-                {{ parameter.key | capitalize }}: {{ parameter.value }}
-            </span>
-        {% endfor %}
-    </div>
-
+    {% if payment.parameters | length > 0 %}
+        <div class="mb-4">
+            <h5>{{ 'payment.details.extra.value' | trans }}</h5>
+            <span class="form-text">{{ 'payment.details.extra.hint' | trans }}</span>
+            <div class="mt-2 mb-2">
+            {% for parameter in payment.parameters %}
+                <span class="badge text-bg-{{ random(['primary', 'secondary', 'success', 'warning', 'info']) }}">
+                    {{ parameter.key | capitalize }}: {{ parameter.value }}
+                </span>
+            {% endfor %}
+            </div>
+        </div>
+    {% endif %}
 </div>

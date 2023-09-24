@@ -18,6 +18,18 @@ use LogicException;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
+/**
+ * @method self withCurrency(string $currency)
+ * @method string currency()
+ * @method self withCallback(string $callback)
+ * @method string callback()
+ * @method self withTitle(string $title)
+ * @method string title()
+ * @method self withType(string $type)
+ * @method string type()
+ * @method self withCredentials(array $credentials)
+ * @method Credential[] credentials()
+ */
 final class Data
 {
     use PropertyAccessorTrait;
@@ -107,64 +119,9 @@ final class Data
         ];
     }
 
-    public function currency(): string
-    {
-        return $this->currency;
-    }
-
-    public function withCurrency(string $currency): self
-    {
-        $this->currency = $currency;
-        return $this;
-    }
-
-    public function callback(): string
-    {
-        return $this->callback;
-    }
-
-    public function withCallback(string $callback): self
-    {
-        $this->callback = $callback;
-        return $this;
-    }
-
-    public function title(): string
-    {
-        return $this->title;
-    }
-
-    public function withTitle(string $title): self
-    {
-        $this->title = $title;
-        return $this;
-    }
-
-    public function type(): string
-    {
-        return $this->type;
-    }
-
-    public function withType(string $type): self
-    {
-        $this->type = $type;
-        return $this;
-    }
-
-    public function credentials(): array
-    {
-        return $this->credentials;
-    }
-
-    public function withCredential(Credential $credential): self
+    public function addCredential(Credential $credential): self
     {
         $this->credentials[] = $credential;
-        return $this;
-    }
-
-    public function withCredentials(array $credentials): self
-    {
-        $this->credentials = $credentials;
         return $this;
     }
 }

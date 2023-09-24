@@ -1,0 +1,13 @@
+<div class="container p-0">
+    <h5>{{ 'payment.details.actions.value' | trans }}</h5>
+    <span class="form-text">{{ 'payment.details.actions.hint' | trans }}</span>
+
+
+
+
+    <div class="mt-4 mb-4">
+        {% for transition in workflow_transitions(payment) %}
+            <button type="button" class="btn btn-danger">{{ transition.name | trans }}</button>
+        {% endfor %}
+    </div>
+</div>
